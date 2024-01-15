@@ -69,6 +69,9 @@ module.exports = {
           800: customColors("--c-neutral-800"),
           900: customColors("--c-neutral-900"),
         },
+
+        beprimary: "#4AB0BA",
+        besecondary: "#FAFAFA",
       },
       animation: {
         marquee: "marquee 25s linear infinite",
