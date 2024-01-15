@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  clients:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: tctt
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/tctt
+      - /usr/src/tctt/node_modules
