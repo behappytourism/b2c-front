@@ -13,7 +13,7 @@ import { RootState } from "@/redux/store";
 import Avatar from "@/shared/Avatar";
 import { useRouter } from "next/navigation";
 import { Route } from "next";
-import { ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { ShoppingCartIcon, UserIcon } from "@heroicons/react/24/outline";
 import Cart from "./Cart";
 import { PhoneIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
@@ -58,9 +58,14 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
             <SwitchDarkMode />
             <div className="px-1" />
             {!user?.name && (
-              <ButtonPrimary className="self-center" href={"/login" as Route}>
+              <Link className="self-center"  href={"/login" as Route}>
+              <div className="flex gap-1 items-center">
+                <UserIcon className="w-4 h-4" />
+              <p>
                 Login
-              </ButtonPrimary>
+              </p>
+              </div>
+              </Link>
             )}
 
             {user?.name && jwtToken && (

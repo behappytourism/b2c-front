@@ -29,9 +29,9 @@ const CardCategory3: FC<CardCategory3Props> = ({
         />
         <span className="opacity-0 group-hover:opacity-100 absolute inset-0 bg-black bg-opacity-10 transition-opacity"></span>
       </div>
-      <div className="mt-4 truncate">
+      <div className="-mt-8 rounded-b-2xl z-20 pl-4 bg-black truncate">
         <h2
-          className={`text-base sm:text-lg text-neutral-900 dark:text-neutral-100 font-medium truncate capitalize`}
+          className={`text-base mt-1 font-bold sm:text-lg text-white dark:text-neutral-100 truncate capitalize`}
         >
           {name}
         </h2>

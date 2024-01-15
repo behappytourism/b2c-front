@@ -28,7 +28,7 @@ const SectionHero: FC<SectionHeroProps> = ({
       }}
       className={`nc-SectionHero flex flex-col-reverse lg:flex-col relative ${className}`}
     >
-      <div className="absolute inset-0 bg-primary-6000/60" />
+      <div className="absolute inset-0 bg-primary-300/40" />
       {/* <div className="flex flex-col lg:flex-row lg:items-center">
         <div className="flex-shrink-0 lg:w-1/2 flex flex-col items-start space-y-8 sm:space-y-10 pb-14 lg:pb-64 xl:pr-14 lg:mr-10 xl:mr-0">
         <h2 className="font-medium text-4xl md:text-5xl xl:text-7xl !leading-[114%] ">

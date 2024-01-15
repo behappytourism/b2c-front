@@ -60,9 +60,9 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
                   router.push(`/${tab.toLowerCase()}` as Route)
                 }
               }}
-              className={`flex-shrink-0 flex items-center px-4 py-3  cursor-pointer text-sm lg:text-base font-medium ${active
-                ? "text-white border rounded-full  "
-                : " text-white hover:text-gray-100 dark:hover:text-neutral-200 rounded-full "
+              className={`flex-shrink-0 flex items-center px-4 py-3 cursor-pointer text-sm lg:text-base font-medium ${active
+                ? "text-white bg-primary-500 rounded-xl"
+                : " text-white hover:text-gray-100 bg-secondary-500 dark:hover:text-neutral-200 rounded-xl"
                 } `}
               key={tab}
             >
