@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from "react";
 import SectionHero from "@/app/(server-components)/SectionHero";
 import InquirySidebar from "@/components/InquirySidebar/InquirySidebar";
+import Link from "next/link";
+import { Route } from "next";
 
 interface VisaTC {
   details?: {
@@ -16,8 +18,15 @@ interface VisaTC {
   termsAndConditions?: string;
 }
 
+interface Nation {
+  slug: string;
+  nationality: string;
+}
+
 const visaHome = () => {
   const [visaTC, setVisaTC] = useState<VisaTC | null>(null);
+  const [nationality, setNationality] = useState<Nation[]>([]);
+
 
   const fetchVisaDetails = async () => {
     try {
@@ -41,7 +50,57 @@ const visaHome = () => {
 
   useEffect(() => {
     getVisaDetails();
+    getVisaNationality();
   }, []);
+
+  const visaNationality = async () => {
+    try {
+      const nationality = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/visa/all/nationality`
+      );
+      return nationality.json();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async function getVisaNationality() {
+    try {
+      const response = await visaNationality();
+      // {
+      //   response?.map((nationality: any, index: number) =>
+      //     setValue(nationality?.nationality)
+      //   );
+      // }
+
+      setNationality(response);
+
+      // You can also do further processing with the response data here.
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  console.log(nationality, "nationality");
+
+  const nationalities = () => {
+    return (
+      <div className="listingSection__wrap mt-4">
+        <h2 className="text-2xl font-semibold">Apply Hassle Free E-visas</h2>
+        <p className="text-sm">Hassle-Free travel with E-Visa: Your international gateway awaits!</p>
+        <div className="grid grid-cols-4 max-h-[200px] overflow-x-auto">
+          {nationality?.map((nations, index) => (
+            <Link href={`/visa/uae-visa?nationality=${nations?.slug}` as Route }>
+            <div className="p-1 border mb-3 rounded-xl mr-3 text-center cursor-pointer hover:bg-secondary-100">
+              <p>{nations?.nationality && nations.nationality.charAt(0).toUpperCase() + nations.nationality.slice(1)}</p>
+            </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    );
+  };
+  
 
   const termsAndConditions = visaTC?.termsAndConditions || "";
 
@@ -108,7 +167,7 @@ const visaHome = () => {
     return (
       <div className="listingSection__wrap">
         <div>
-          <p className="text-lg font-semibold">United Arab Emirates </p>
+          <p className="text-lg font-semibold">United Arab Emirates</p>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-y-6 gap-x-10 text-sm text-neutral-700 dark:text-neutral-300 ">
           <div className="items-center ">
@@ -237,12 +296,16 @@ const visaHome = () => {
               </div>
             </div>
           )}
+      
+          {nationality.length > 0 && nationalities()}
+
+          {visaTC?.faqs && visaTC.faqs.length > 0 && renderSection8()}
+          {visaTC?.termsAndConditions && renderSection2()}
+
           {visaTC?.details &&
             visaTC?.details?.length > 0 &&
             renderSectionTienIch()}
 
-          {visaTC?.faqs && visaTC.faqs.length > 0 && renderSection8()}
-          {visaTC?.termsAndConditions && renderSection2()}
         </div>
 
         <div className="block flex-grow mt-14 p-4 lg:mt-0">
