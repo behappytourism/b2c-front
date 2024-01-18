@@ -60,7 +60,7 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
                   router.push(`/${tab.toLowerCase()}` as Route)
                 }
               }}
-              className={`flex-shrink-0 flex items-center px-4 py-3 cursor-pointer text-sm lg:text-base font-medium ${active
+              className={`flex-shrink-0 flex h-fit items-center px-4 py-3 cursor-pointer text-sm lg:text-base font-medium ${active
                 ? "text-white bg-primary-500 rounded-xl"
                 : " text-white hover:text-gray-100 bg-secondary-500 dark:hover:text-neutral-200 rounded-xl"
                 } `}
@@ -99,7 +99,7 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
 
   return (
     <div
-      className={`nc-HeroSearchForm w-full max-w-6xl py-5 lg:py-0 z-10 ${className}`}
+      className={`nc-HeroSearchForm w-full max-w-6xl py-5 lg:py-0 z-10 ${className} flex gap-20 items-center`}
     >
       {renderTab()}
       {renderForm()}

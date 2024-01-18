@@ -60,7 +60,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
 
   const renderSliderGallery = () => {
     return (
-      <div className="relative w-full rounded-2xl overflow-hidden ">
+      <div className="relative w-full rounded-t-xl overflow-hidden ">
         <GallerySlider
           uniqueID={`ExperiencesCard_${"id"}`}
           ratioClass={ratioClass}
@@ -112,7 +112,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   };
 
   return (
-    <div className={`nc-ExperiencesCard group relative ${className}`}>
+    <div className={`nc-ExperiencesCard group relative shadow-2xl m-1 rounded-xl ${className}`}>
       {renderSliderGallery()}
       <Link href={`/${data?.destination?.name}/${data?.slug}` as Route}>{renderContent()}</Link>
     </div>

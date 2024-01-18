@@ -81,8 +81,6 @@ const visaHome = () => {
     }
   }
 
-  console.log(nationality, "nationality");
-
   const nationalities = () => {
     return (
       <div className="listingSection__wrap mt-4">
@@ -190,7 +188,10 @@ const visaHome = () => {
           />
         </div>
       </header>
-      <main className="nc-PageHome container relative mt-11 flex flex-col lg:flex-row ">
+       <div className="container mt-5 p-4">
+      {nationality.length > 0 && nationalities()}
+       </div>
+      <main className="nc-PageHome container relative mt-5 flex flex-col lg:flex-row ">
         <nav
           className="flex px-5 py-3  md:hidden text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
           aria-label="Breadcrumb"
@@ -297,7 +298,7 @@ const visaHome = () => {
             </div>
           )}
       
-          {nationality.length > 0 && nationalities()}
+          
 
           {visaTC?.faqs && visaTC.faqs.length > 0 && renderSection8()}
           {visaTC?.termsAndConditions && renderSection2()}

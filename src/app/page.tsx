@@ -120,15 +120,17 @@ const PageHome = () => {
         <SectionHero currentPage="Experiences"
           currentTab="Experiences" className="hidden lg:block pt-10 lg:pt-16 lg:pb-16 " />
 
-        <div className=" relative container space-y-10 lg:space-y-12 mt-10 lg:mt-28">
+        <div className=" relative container space-y-10 lg:space-y-12 mt-10 lg:mt-10">
           {/* SECTION 1 */}
-          {attractionDestinations.length > 0 && (
-            <SectionSliderNewCategories destinations={attractionDestinations} />
-          )}
-
+       
           {globalData.topAttractions?.length ? (
             <SliderCards data={globalData.topAttractions} heading="Top attractions" subHeading="Visit our top listed attractions." />
           ) : ""}
+
+{attractionDestinations.length > 0 && (
+            <SectionSliderNewCategories destinations={attractionDestinations} />
+          )}
+
 
           {globalData.bestSellingAttractions?.length ? (
             <SliderCards data={globalData.bestSellingAttractions} heading="Best selling attractions" subHeading="Visit our best selling attractions." />

@@ -42,7 +42,7 @@ const RentalCarSearchForm: FC<RentalCarSearchFormProps> = ({ }) => {
 
 
   return (
-    <form className="w-full relative mt-8 md:rounded-xl rounded-xl shadow-xl dark:shadow-2xl bg-white dark:bg-neutral-800">
+    <form className="w-fit relative mt-8 md:rounded-xl rounded-xl shadow-xl dark:shadow-2xl bg-white dark:bg-neutral-800">
       {/* {renderRadioBtn()} */}
       <div className={`relative md:flex md:flex-row p-4 md:p-0`}>
         <VisaDestination
@@ -64,12 +64,11 @@ const RentalCarSearchForm: FC<RentalCarSearchFormProps> = ({ }) => {
         />
         <div className="self-center  border-slate-200 dark:border-slate-700 h-8"></div>
         {/* <RentalCarDatesRangeInput className="flex-1" /> */}
-        <div
+        {/* <div
           onClick={() => handleDispatchNationality(isNationality)}
           className="pr-2 xl:pr-4 pt-4">
-          {/* <ButtonSubmit href="/listing-car-detail" /> */}
           <ButtonSubmit href={`/visa/${visaDestination}?nationality=${Nationality}` as Route} />
-        </div>
+        </div> */}
       </div>
     </form>
   );
