@@ -42,16 +42,19 @@ const RentalCarSearchForm: FC<RentalCarSearchFormProps> = ({ }) => {
 
 
   return (
-    <form className="w-fit relative mt-8 md:rounded-xl rounded-xl shadow-xl dark:shadow-2xl bg-white dark:bg-neutral-800">
+    <form className="w-fit relative mt-8 md:rounded-xl rounded-xl shadow-xl dark:shadow-2xl dark:bg-neutral-800">
       {/* {renderRadioBtn()} */}
-      <div className={`relative md:flex md:flex-row p-4 md:p-0`}>
+      <div className={`relative md:flex md:flex-row p-4 md:p-0 gap-5 -mb-10`}>
+        <div className="bg-white rounded-xl shadow-xl dark:shadow-2xl dark:bg-neutral-800">
         <VisaDestination
           placeHolder="Destination"
           desc="Pick up location"
           className="flex-1"
           setVisaDestination={setVisaDestination}
-        />
+          />
+          </div>
         <div className="self-center hidden md:block border-r border-slate-200 dark:border-slate-700 h-8"></div>
+        <div className="bg-white rounded-xl shadow-xl dark:shadow-2xl dark:bg-neutral-800">
         <VisaNationality
           placeHolder="Nationality"
           desc="Pick your nationality"
@@ -62,13 +65,8 @@ const RentalCarSearchForm: FC<RentalCarSearchFormProps> = ({ }) => {
           Nationality={Nationality}
           setIsNationality={setIsNationality}
         />
+        </div>
         <div className="self-center  border-slate-200 dark:border-slate-700 h-8"></div>
-        {/* <RentalCarDatesRangeInput className="flex-1" /> */}
-        {/* <div
-          onClick={() => handleDispatchNationality(isNationality)}
-          className="pr-2 xl:pr-4 pt-4">
-          <ButtonSubmit href={`/visa/${visaDestination}?nationality=${Nationality}` as Route} />
-        </div> */}
       </div>
     </form>
   );

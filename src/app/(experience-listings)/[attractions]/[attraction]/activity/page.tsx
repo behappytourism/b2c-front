@@ -178,14 +178,14 @@ function ActivityDetailPage<ActivityDetailPageProps>({
 
   const renderSidebar = () => {
     return (
-      <div className="listingSectionSidebar__wrap shadow-xl max-w-sm">
+      <div className="rounded-xl shadow-2xl p-5 max-w-sm">
 
         {/* SUM */}
         {activities.length ? (
-          <div className="flex flex-col space-y-4">
+          <div className="flex flex-col space-y-4 mb-5">
             {selectedActivities.map((activity) => (
               <div>
-                <p className="font-medium text-sm pb-2">{activity.name}</p>
+                <p className="font-medium text-sm pb-5">{activity.name}</p>
                 <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
                   <span>Price</span>
                   <span>{priceConversion(activity.grandTotal, selectedCurrency, true)}</span>
@@ -203,7 +203,9 @@ function ActivityDetailPage<ActivityDetailPageProps>({
         ) : ""}
 
         {/* SUBMIT */}
-        <ButtonPrimary onClick={() => handleAddToCart()}>Checkout</ButtonPrimary>
+        <div>
+        <ButtonPrimary className="w-full" onClick={() => handleAddToCart()}>Checkout</ButtonPrimary>
+        </div>
       </div>
     );
   };

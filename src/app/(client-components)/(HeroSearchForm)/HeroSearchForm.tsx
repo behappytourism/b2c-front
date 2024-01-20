@@ -99,9 +99,11 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
 
   return (
     <div
-      className={`nc-HeroSearchForm w-full max-w-6xl py-5 lg:py-0 z-10 ${className} flex gap-20 items-center`}
+      className={`nc-HeroSearchForm w-full max-w-6xl py-5 lg:py-0 z-10 ${className} items-center`}
     >
+      <div className="w-full flex justify-center -mt-10 mb-[120px]">
       {renderTab()}
+      </div>
       {renderForm()}
     </div>
   );

@@ -33,7 +33,7 @@ const ExperiencesSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) =
 
   const renderForm = () => {
     return (
-      <form className="w-full max-w-[600px] relative mt-8 flex flex-col md:flex-row rounded-xl md:rounded-xl md:shadow-xl dark:shadow-2xl md:bg-white dark:bg-neutral-800 ">
+      <form className="w-full max-w-[600px] relative -mb-10 flex flex-col md:flex-row rounded-xl md:rounded-xl md:shadow-xl dark:shadow-2xl md:bg-white dark:bg-neutral-800 ">
         <LocationInput closeModal={closeModal} data={response} setQuery={setQuery} setDestination={setDestination} className="flex-[1.5]" />
         {/* <div className="self-center border-r border-slate-200 dark:border-slate-700 h-8"></div> */}
         {/* <ExperiencesDateSingleInput className="flex-1" /> */}

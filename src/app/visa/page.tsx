@@ -27,7 +27,6 @@ const visaHome = () => {
   const [visaTC, setVisaTC] = useState<VisaTC | null>(null);
   const [nationality, setNationality] = useState<Nation[]>([]);
 
-
   const fetchVisaDetails = async () => {
     try {
       const nationality = await fetch(
@@ -83,30 +82,35 @@ const visaHome = () => {
 
   const nationalities = () => {
     return (
-      <div className="listingSection__wrap mt-4">
+      <div className="p-5 shadow-2xl rounded-xl mt-4">
         <h2 className="text-2xl font-semibold">Apply Hassle Free E-visas</h2>
-        <p className="text-sm">Hassle-Free travel with E-Visa: Your international gateway awaits!</p>
-        <div className="grid grid-cols-4 max-h-[200px] overflow-x-auto">
+        <p className="text-sm mb-5">
+          Hassle-Free travel with E-Visa: Your international gateway awaits!
+        </p>
+        <div className="grid grid-cols-4 max-h-[300px] overflow-x-auto">
           {nationality?.map((nations, index) => (
-            <Link href={`/visa/uae-visa?nationality=${nations?.slug}` as Route }>
-            <div className="p-1 border mb-3 rounded-xl mr-3 text-center cursor-pointer hover:bg-secondary-100">
-              <p>{nations?.nationality && nations.nationality.charAt(0).toUpperCase() + nations.nationality.slice(1)}</p>
-            </div>
+            <Link href={`/visa/uae-visa?nationality=${nations?.slug}` as Route}>
+              <div className="p-1 border mb-3 rounded-xl mr-3 text-center cursor-pointer hover:bg-secondary-100">
+                <p>
+                  {nations?.nationality &&
+                    nations.nationality.charAt(0).toUpperCase() +
+                      nations.nationality.slice(1)}
+                </p>
+              </div>
             </Link>
           ))}
         </div>
       </div>
     );
   };
-  
 
   const termsAndConditions = visaTC?.termsAndConditions || "";
 
   const renderSectionTienIch = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="p-5 shadow-2xl rounded-xl mt-4">
         <div>
-          <p className="text-lg font-semibold">
+          <p className="text-2xl font-semibold mb-5">
             Documents required for Dubai Visa{" "}
           </p>
         </div>
@@ -124,8 +128,8 @@ const visaHome = () => {
 
   const renderSection8 = () => {
     return (
-      <div className="listingSection__wrap mt-4">
-        <h2 className="text-2xl font-semibold">Things to know</h2>
+      <div className="p-5 shadow-2xl rounded-xl mt-4">
+        <h2 className="text-2xl font-semibold mb-5">Things to know</h2>
         {visaTC?.faqs?.map((ele: any, i: number) => (
           <div className="p-1 relative " key={ele?._id}>
             <input
@@ -151,7 +155,7 @@ const visaHome = () => {
 
   const renderSection2 = () => {
     return (
-      <div className="listingSection__wrap mt-4">
+      <div className="p-5 shadow-2xl rounded-xl mt-4">
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-y-6 gap-x-10 text-sm text-neutral-700 dark:text-neutral-300 ">
           <div className="flex items-center space-x-4 text-base">
             <div dangerouslySetInnerHTML={{ __html: termsAndConditions }} />
@@ -188,9 +192,9 @@ const visaHome = () => {
           />
         </div>
       </header>
-       <div className="container mt-5 p-4">
-      {nationality.length > 0 && nationalities()}
-       </div>
+      <div className="container mt-5 p-4">
+        {nationality.length > 0 && nationalities()}
+      </div>
       <main className="nc-PageHome container relative mt-5 flex flex-col lg:flex-row ">
         <nav
           className="flex px-5 py-3  md:hidden text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
@@ -241,7 +245,7 @@ const visaHome = () => {
             </li>
           </ol>
         </nav>
-        <div className="lg:w-3/5 xl:w-2/3 p-4 space-y-8 lg:pr-10 lg:space-y-10">
+        <div className="mb-10 space-y-8 lg:pr-10 lg:space-y-10">
           {!visaTC && (
             <div>
               <div
@@ -297,23 +301,21 @@ const visaHome = () => {
               </div>
             </div>
           )}
-      
-          
-
-          {visaTC?.faqs && visaTC.faqs.length > 0 && renderSection8()}
-          {visaTC?.termsAndConditions && renderSection2()}
 
           {visaTC?.details &&
             visaTC?.details?.length > 0 &&
             renderSectionTienIch()}
 
+          {visaTC?.faqs && visaTC.faqs.length > 0 && renderSection8()}
+
+          {visaTC?.termsAndConditions && renderSection2()}
         </div>
 
-        <div className="block flex-grow mt-14 p-4 lg:mt-0">
+        {/* <div className="block flex-grow mt-14 p-4 lg:mt-0">
           <div className="hidden lg:block mt-10 sticky top-28">
             <InquirySidebar />
           </div>
-        </div>
+        </div> */}
       </main>
     </div>
   );

@@ -244,9 +244,9 @@ const VisaNationality: FC<LocationInputProps> = ({
             }}
             ref={inputRef}
           />
-          <span className="block mt-0.5 text-sm text-neutral-400 font-light ">
+          {/* <span className="block mt-0.5 text-sm text-neutral-400 font-light ">
             <span className="line-clamp-1">{!!value ? placeHolder : desc}</span>
-          </span>
+          </span> */}
           {value && (
             <ClearDataButton
               onClick={() => {

@@ -31,6 +31,10 @@ module.exports = {
     //   body: ["var(--font-body)", ...defaultTheme.fontFamily.sans],
     // },
 
+      fontFamily: {
+        demo: ["Montserrat", "sans-serif"],
+      },
+
     extend: {
       colors: {
         primary: {

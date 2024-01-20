@@ -26,7 +26,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   size = "default",
   className = "",
   data,
-  ratioClass = "aspect-w-3 aspect-h-3",
+  ratioClass = "aspect-w-3 aspect-h-2",
 }) => {
 
   const dispatch = useDispatch<AppDispatch>()
@@ -60,32 +60,45 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
 
   const renderSliderGallery = () => {
     return (
-      <div className="relative w-full rounded-t-xl overflow-hidden ">
+      <div className="relative w-full rounded-t-xl overflow-hidden">
         <GallerySlider
           uniqueID={`ExperiencesCard_${"id"}`}
           ratioClass={ratioClass}
           galleryImgs={images}
           href={data && `/${data?.destination?.name}/${data?.slug}` as Route}
-          galleryClass={size === "default" ? undefined : ""}
+          galleryClass={size === "default" ? "" : ""}
         />
         <BtnLikeIcon isLiked={isLiked} onClick={handleLikeExc} className="absolute right-3 top-3" />
         {isPromoCode && <SaleOffBadge desc={"Promotion available"} className="absolute capitalize left-3 top-3" />}
+
+        {isPromoCode && (
+         <div className="absolute left-3 top-9 flex gap-1 items-center text-white text-sm bg-primary-500 px-3 rounded-xl">
+        {size === "default" && <MapPinIcon className="w-4 h-4" />}
+            <span className="capitalize">{destination.name}</span>
+            </div>
+            )}
+
+          {!isPromoCode && (
+         <div className="absolute left-3 top-3 flex gap-1 items-center text-white text-sm bg-primary-500 px-3 rounded-xl">
+        {size === "default" && <MapPinIcon className="w-4 h-4" />}
+            <span className="capitalize">{destination.name}</span>
+            </div>
+            )}
       </div>
     );
   };
 
   const renderContent = () => {
     return (
-      <div className={size === "default" ? "py-4 space-y-3" : "p-3 space-y-1"}>
-        <div className="space-y-2">
+      <div className={size === "default" ? "p-3 space-y-1" : "p-3 space-y-1"}>
+        <div className="space-y-5">
           <div className="flex items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-2">
-            {size === "default" && <MapPinIcon className="w-4 h-4" />}
-            <span className="capitalize">{destination.name}</span>
             {category && <Badge name={category.categoryName} className=" relative capitalize " color="blue" />}
+            {bookingType && <Badge name={bookingType} className=" relative capitalize " color="green" />}
           </div>
 
           <div className="flex items-center space-x-2">
-            {bookingType && <Badge name={bookingType} className=" relative capitalize " color="green" />}
+          
             <h2
               className={` font-medium capitalize overflow-hidden ${size === "default" ? "text-base" : "text-base"
                 }`}

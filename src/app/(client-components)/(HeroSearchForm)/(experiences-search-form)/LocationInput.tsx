@@ -35,7 +35,7 @@ export interface LocationInputProps {
 
 const LocationInput: FC<LocationInputProps> = ({
   autoFocus = false,
-  placeHolder = "Location",
+  placeHolder = "Select Location",
   desc = "Where are you going?",
   className = "nc-flex-1.5",
   divHideVerticalLineClass = "left-10 -right-0.5",
@@ -204,9 +204,9 @@ const LocationInput: FC<LocationInputProps> = ({
             }}
             ref={inputRef}
           />
-          <span className="block mt-0.5 text-sm text-neutral-400 font-light ">
+          {/* <span className="block mt-0.5 text-sm text-neutral-400 font-light ">
             <span className="line-clamp-1">{!!value ? placeHolder : desc}</span>
-          </span>
+          </span> */}
         </div>
       </div>
 

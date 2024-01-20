@@ -85,7 +85,7 @@ const SliderCards: FC<SliderCardsProps> = ({
     if (!numberOfItems) return null;
 
     return (
-        <div className={`nc-SectionSliderNewCategories ${className}`}>
+        <div className={`nc-SectionSliderNewCategories  ${className}`}>
             <Heading desc={subHeading} isCenter={sliderStyle === "style2"}>
                 {heading}
             </Heading>
