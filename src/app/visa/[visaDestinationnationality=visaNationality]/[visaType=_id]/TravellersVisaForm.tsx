@@ -200,7 +200,7 @@ const TravellersVisaForm: FC<ListVisaDetailPage> = ({
 
   const renderSidebarInquiry = () => {
     return (
-      <div className="listingSectionSidebar__wrap  mt-4">
+      <div className="listingSectionSidebar__wrap">
         <div className="flex justify-between">
           <span className="text-xl font-semibold">Adult</span>
         </div>
@@ -586,7 +586,7 @@ const TravellersVisaForm: FC<ListVisaDetailPage> = ({
 
   return (
     <div>
-      <main className=" relative z-10 mt-11 flex flex-col lg:flex-row ">
+      <main className=" relative z-10 mt-5 flex flex-col lg:flex-row ">
         {renderSidebarInquiry()}
       </main>
     </div>

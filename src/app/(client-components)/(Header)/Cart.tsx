@@ -75,7 +75,7 @@ const Cart: FC<CartProps> = ({ className }) => {
                     <>
                       {cart?.map((item, index) => (
                         <div className="p-2">
-                          <div className="border shadow-sm p-4 rounded-3xl flex justify-between">
+                          <div className="shadow-2xl p-5 rounded-xl flex justify-between">
                             <div className="flex flex-col gap-1">
                               <p className="font-medium">{item?.name}</p>
                               <p>
@@ -140,7 +140,7 @@ const Cart: FC<CartProps> = ({ className }) => {
                         </div>
                       ))}
                       <div className="p-2">
-                        <div className="border shadow-sm flex justify-between p-4 rounded-3xl">
+                        <div className="shadow-2xl rounded-xl flex justify-between p-5">
                           <p>Grand Total:</p>
                           {priceConversion(price, selectedCurrency, true)}
                         </div>

@@ -317,126 +317,11 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
 
   let [categories] = useState(["Car for rent"]);
 
-  const renderSection1 = () => {
-    return (
-      <div className="listingSection__wrap">
-        <div>
-          <h2 className="text-2xl font-semibold">{`Types of United Arab Emirates Visa`}</h2>
-        </div>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
-
-        <div>
-          <Tab.Group>
-            <Tab.List className="flex space-x-1 overflow-x-auto">
-              {categories.map((item) => (
-                <Tab key={item} as={Fragment}>
-                  {({ selected }) => (
-                    <button
-                      className={`flex-shrink-0 block !leading-none font-medium px-5 py-2.5 text-sm sm:text-base sm:px-6 sm:py-3 capitalize rounded-full focus:outline-none ${selected
-                        ? "bg-secondary-900 text-secondary-50 "
-                        : "text-neutral-500 dark:text-neutral-400 dark:hover:text-neutral-100 hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                        } `}
-                    >
-                      Visa
-                    </button>
-                  )}
-                </Tab>
-              ))}
-            </Tab.List>
-            <Tab.Panels>
-              <Tab.Panel className="">
-                <div className="mt-8 grid grid-cols-1 gap-6 md:gap-7 sm:grid-cols-2">
-                  {visaDetails && (
-                    <>
-                      {visaDetails?.map((visa: VisaDetails, index: number) => {
-                        return (
-                          <CarCard
-                            key={visa?._id}
-                            data={visa}
-                            destination={visaDestination}
-                            nationality={visaNationality}
-                          />
-                        );
-                      })}
-                    </>
-                  )}
-                </div>
-              </Tab.Panel>
-            </Tab.Panels>
-          </Tab.Group>
-        </div>
-      </div>
-    );
-  };
-
-  const renderSectionTienIch = () => {
-    return (
-      <div className="listingSection__wrap">
-        <div>
-          <p className="text-lg font-semibold">
-            Documents required for Dubai Visa{" "}
-          </p>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-1 gap-y-6 gap-x-10 text-sm text-neutral-700 dark:text-neutral-300 ">
-          {visaTC?.details?.map((item: any, index: number) => (
-            <div key={index} className="items-center ">
-              <p className="font-bold">{item.title}</p>
-              <p>{item.body}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  };
-
-  const renderSection8 = () => {
-    return (
-      <div className="listingSection__wrap">
-        <h2 className="text-2xl font-semibold">Things to know</h2>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700" />
-
-        {visaTC?.faqs?.map((ele: any, i: number) => (
-          <div className="p-5 relative " key={ele?._id}>
-            <input
-              type="checkbox"
-              className="peer absolute top-0 inset-x-0 w-full h-10 opacity-0  cursor-pointer"
-            />
-            <div className="flex items-center space-x-3 ">
-              <span className="">+</span>
-              <span className="text-lightblue">{ele?.question}</span>
-            </div>
-            <div
-              className={`text-sm text-gray-400 font-light overflow-hidden  max-h-0 peer-checked:max-h-[100vh] transition-all duration-700 `}
-            >
-              <div className="p-4">
-                <p className="">{ele?.answer}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700" />
-      </div>
-    );
-  };
-
-  const renderSection2 = () => {
-    return (
-      <div className="listingSection__wrap">
-        <div className="grid grid-cols-1 lg:grid-cols-1 gap-y-6 gap-x-10 text-sm text-neutral-700 dark:text-neutral-300 ">
-          <div className="flex items-center space-x-4 ">
-            <div dangerouslySetInnerHTML={{ __html: termsAndConditions }} />
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   const renderSection3 = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="p-5 rounded-xl shadow-2xl">
         <div>
-          <h2 className="text-2xl font-semibold">Itenary</h2>
+          <h2 className="text-2xl font-semibold mb-5">Itenary</h2>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 text-sm text-neutral-700 dark:text-neutral-300 ">
           {filteredVisas?.map((item: any) => (
@@ -456,7 +341,7 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
           ))}
         </div>
 
-        <div className="flex w-full gap-4">
+        <div className="flex w-full gap-4 mt-5">
           <div className="col-span-2 flex flex-col w-full">
             <label htmlFor="" className="label">
               Adult
@@ -503,7 +388,7 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
             </select>
           </div>
         </div>
-        <ButtonPrimary onClick={() => setItenaryCompletion(!itenaryCompletion)}>
+        <ButtonPrimary className="w-full mt-5" onClick={() => setItenaryCompletion(!itenaryCompletion)}>
           Continue
         </ButtonPrimary>
       </div>
@@ -512,9 +397,9 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
 
   const itenaryComplete = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="shadow-2xl rounded-xl p-5">
         <div>
-          <h2 className="text-2xl font-semibold">Itenary</h2>
+          <h2 className="text-2xl font-semibold mb-5">Itenary</h2>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 text-sm text-neutral-700 dark:text-neutral-300 ">
           {filteredVisas?.map((item: any) => (
@@ -534,7 +419,7 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
           ))}
         </div>
 
-        <div className="flex w-full gap-4">
+        <div className="flex w-full gap-4 mt-5">
           <div className="col-span-2 flex flex-col w-full">
             <label htmlFor="" className="label">
               Adult
@@ -548,7 +433,7 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
                 setNoOfAdults(e.target.value as unknown as number)
               }
               placeholder="Select"
-              className="w-full py-2 dark:bg-gray-800 dark:border-gray-700 rounded-md p-1 text-primaryColor border border-lightblue outline-none"
+              className="w-full py-2 px-3 dark:bg-gray-800 dark:border-gray-700 rounded-md p-1 text-primaryColor border border-lightblue outline-none"
             >
               <option selected hidden disabled>
                 Select
@@ -572,7 +457,7 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
                 setNoOfChilds(e.target.value as unknown as number)
               }
               placeholder="Select"
-              className="w-full py-2 rounded-md dark:bg-gray-800 dark:border-gray-700 p-1 text-primaryColor border border-lightblue outline-none"
+              className="w-full py-2 px-3 rounded-md dark:bg-gray-800 dark:border-gray-700 p-1 text-primaryColor border border-lightblue outline-none"
             >
               <option selected hidden disabled>
                 Select
@@ -583,7 +468,7 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
             </select>
           </div>
         </div>
-        <ButtonPrimary onClick={() => setItenaryCompletion(!itenaryCompletion)}>
+        <ButtonPrimary className="w-full mt-5" onClick={() => setItenaryCompletion(!itenaryCompletion)}>
           Edit
         </ButtonPrimary>
       </div>
@@ -592,9 +477,9 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
 
   const renderSidebarPrice = () => {
     return (
-      <div className="listingSectionSidebar__wrap shadow-xl">
+      <div className="rounded-xl shadow-2xl p-5">
         <div className="flex justify-between">
-          <span className="text-3xl font-semibold">Price Details</span>
+          <span className="text-2xl font-semibold mb-5">Price Details</span>
         </div>
 
         {filteredVisas?.map((item: any) => (
@@ -642,9 +527,9 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
 
   const visaForm = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="rounded-xl shadow-2xl p-5">
         <div>
-          <h2 className="text-3xl font-semibold">Traveller Details</h2>
+          <h2 className="text-2xl font-semibold">Traveller Details</h2>
 
           {TravellerForms.map((index) => (
             <TravellersVisaForm
@@ -669,7 +554,7 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
           )}
         </div>
 
-        <ButtonPrimary onClick={postVisaDetail}>
+        <ButtonPrimary className="w-full mt-5" onClick={postVisaDetail}>
           {travellersArray.some(
             (traveller) =>
               !traveller.firstName &&
@@ -687,12 +572,12 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
 
   const visaFormCompletion = () => {
     return (
-      <div className="border rounded-xl p-7">
+      <div className="shadow-2xl rounded-xl p-5">
         <div className="flex gap-2 text-center items-center mb-3">
-          <h2 className="md:text-3xl text-xl font-semibold">
+          <h2 className="md:text-2xl text-xl font-semibold">
             Traveller Details Submitted
           </h2>
-          <i className="las la-check-circle text-4xl"></i>
+          <i className="las la-check-circle text-3xl"></i>
         </div>
         {visaOrderDetails.map((traveler, index) => (
           <>
@@ -770,7 +655,7 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
 
   const MakePaymentCompletion = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="rounded-xl shadow-2xl p-5">
         <div className="flex gap-2 text-center items-center">
           <h2 className="text-3xl font-semibold">Make Payment</h2>
         </div>
@@ -780,15 +665,15 @@ const VisaBookingPage: FC<ListVisaDetailPage> = ({ }) => {
 
   const MakePayment = () => {
     return (
-      <div className="listingSection__wrap">
-        <div className="flex gap-2 text-center items-center"></div>
-        <div className="grid grid-cols-2">
-          <div className="p-4 bg-primary-6000 w-fit rounded-2xl font-bold text-white">
+      <div className="rounded-xl shadow-2xl p-5">
+        <div className="">
+          {/* <div className="p-4 bg-primary-6000 w-fit rounded-2xl font-bold text-white">
             <p className="text-xl mb-4">Payments</p>
             <p className="bg-blue-800 rounded-lg p-2">CC Avenue</p>
-          </div>
+          </div> */}
           <div>
-            <h2 className="text-3xl text-center font-semibold">Make Payment</h2>
+            <h2 className="text-2xl  font-semibold">Make Payment</h2>
+            <p>By clicking on "Pay Now" button, you will be redirect to CC Avenue payment page to complete your order succesfully.</p>
 
             <ButtonPrimary
               className="w-full mt-4"

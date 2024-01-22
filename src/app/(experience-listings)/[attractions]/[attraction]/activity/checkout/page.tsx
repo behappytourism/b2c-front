@@ -199,17 +199,17 @@ const CheckoutPage = () => {
 
   const renderDetailsCollection = () => {
     return (
-      <div className="listingSection__wrap">
-        <div className="flex gap-3 text-center items-center">
+      <div className="rounded-xl shadow-2xl p-5">
+        <div className="flex gap-3 text-center items-center mb-5">
           <h2 className="text-2xl font-semibold">Lead Passenger Details</h2>
-          <p onClick={() => setLeadPaxDes(!leadPaxDes)}>?</p>
+          <p className="cursor-pointer" onClick={() => setLeadPaxDes(!leadPaxDes)}>?</p>
         </div>
         {leadPaxDes === true && (
-          <span className="absolute mt-7 bg-white rounded-full p-1 text-neutral-500 dark:text-neutral-400">
-            Provide the details of the lead passenger to book the attraction.
+          <span className="absolute -mt-2 bg-black px-4 text-white rounded-full p-1 dark:text-neutral-400">
+            Provide the details of the lead passenger to book the attraction
           </span>
         )}
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
+        {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div className="">
             <p className="text-neutral-500 dark:text-neutral-400 p-2">Mr/Mrs</p>
@@ -314,7 +314,7 @@ const CheckoutPage = () => {
 
   const renderPaymentSection = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="rounded-xl shadow-2xl p-5">
         <ErrorModal
           title="Something went wrong"
           text={error}
@@ -322,14 +322,14 @@ const CheckoutPage = () => {
           closeModal={closeModal}
         />
         <div>
-          <h2 className="text-2xl font-semibold">Pay</h2>
+          <h2 className="text-2xl font-semibold mb-5">Pay</h2>
           <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
             By clicking Pay Now you agree that you have read and understand our
             Terms and Conditions.
           </span>
         </div>
-        <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
-        <div className="">
+        {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
+        <div className="mt-5">
           <p className="">
             {grandTotal > 0
               ? "Final Payment " +
@@ -338,7 +338,7 @@ const CheckoutPage = () => {
           </p>
         </div>
         <div className="">
-          <ButtonPrimary disabled={isLoading} type="submit">
+          <ButtonPrimary className="w-full mt-5" disabled={isLoading} type="submit">
             {isLoading ? <BtnLoader /> : "Pay Now"}{" "}
           </ButtonPrimary>
         </div>
@@ -353,14 +353,14 @@ const CheckoutPage = () => {
           cart.map((item, i) => (
             <div
               key={item._id}
-              className="listingSectionSidebar__wrap shadow max-w-sm"
+              className="rounded-xl shadow-2xl p-5 max-w-sm"
             >
               <div className="flex flex-col gap-2 text-sm">
                 <div className="flex justify-between gap-2">
                   <p className="font-medium text-sm pb-3">{item.name}</p>
                   <i
                     onClick={() => handleRemoveActivityFromCart(item._id)}
-                    className="las la-times-circle text-xl text-red-600"
+                    className="las la-times-circle text-xl text-red-600 cursor-pointer"
                   ></i>
                 </div>
                 <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">

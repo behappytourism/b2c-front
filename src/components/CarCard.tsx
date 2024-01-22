@@ -56,7 +56,7 @@ const CarCard: FC<CarCardProps> = ({
     return (
       <div className={size === "default" ? "p-5  space-y-4" : "p-3  space-y-2"}>
         <div className="space-y-2">
-          <div className="flex items-center space-x-2">
+          {/* <div className="flex items-center space-x-2">
             {isAds && <Badge name="ADS" color="green" />}
             <h2
               className={`  capitalize ${size === "default"
@@ -66,14 +66,14 @@ const CarCard: FC<CarCardProps> = ({
             >
               <span className="line-clamp-1">{data?.visaName}</span>
             </h2>
-          </div>
-          <div className="flex items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-2">
+          </div> */}
+          <div className="flex font-semibold text-black items-center dark:text-neutral-400 text-lg space-x-2">
             <span className="">{data?.visaName}</span>
             {/* <span>-</span> */}
             {/* <span className="">{gearshift} </span> */}
           </div>
         </div>
-        <div className="w-14  border-b border-neutral-100 dark:border-neutral-800"></div>
+        {/* <div className="w-14  border-b border-neutral-100 dark:border-neutral-800"></div> */}
         <div className="flex justify-between items-center">
           <span className="text-base font-semibold">
             {priceConversion(data?.adultPrice, selectedCurrency, true)}

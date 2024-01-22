@@ -163,7 +163,7 @@ const ListVisaDetailPage: FC<ListVisaDetailPage> = ({}) => {
 
   const renderSection1 = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="shadow-2xl rounded-xl p-5">
         <div>
           <h2 className="text-2xl font-semibold">{`Types of United Arab Emirates Visa for ${
             Nationality.charAt(0).toUpperCase() + Nationality.slice(1) || visaNationality.charAt(0).toUpperCase() + visaNationality.slice(1)
@@ -200,9 +200,9 @@ const ListVisaDetailPage: FC<ListVisaDetailPage> = ({}) => {
 
   const renderSectionTienIch = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="p-5 shadow-2xl rounded-xl">
         <div>
-          <p className="text-lg font-semibold">
+          <p className="text-2xl font-semibold mb-5">
             Documents required for Dubai Visa{" "}
           </p>
         </div>
@@ -220,8 +220,8 @@ const ListVisaDetailPage: FC<ListVisaDetailPage> = ({}) => {
 
   const renderSection8 = () => {
     return (
-      <div className="listingSection__wrap">
-        <h2 className="text-2xl font-semibold">Things to know</h2>
+      <div className="p-5 shadow-2xl rounded-xl">
+        <h2 className="text-2xl font-semibold mb-5">Things to know</h2>
         {visaTC?.faqs?.map((ele: any, i: number) => (
           <div className="p-1 relative " key={ele?._id}>
             <input
@@ -247,7 +247,7 @@ const ListVisaDetailPage: FC<ListVisaDetailPage> = ({}) => {
 
   const renderSection2 = () => {
     return (
-      <div className="listingSection__wrap">
+      <div className="p-5 shadow-2xl rounded-xl">
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-y-6 gap-x-10 text-sm text-neutral-700 dark:text-neutral-300 ">
           <div className="flex items-center space-x-4 text-base">
             <div dangerouslySetInnerHTML={{ __html: termsAndConditions }} />
@@ -259,14 +259,14 @@ const ListVisaDetailPage: FC<ListVisaDetailPage> = ({}) => {
 
   return (
     <div className={` `}>
-      <header className="nc-PageHome hidden md:block relative pb-6 px-10 pt-1 bg-primary-6000">
-        <div className="container hidden  md:block">
+      <header className="nc-PageHome hidden md:block relative pb-20 px-10 pt-1 bg-primary-6000">
+        <div className="container hidden  md:flex items-center justify-center">
           <RentalCarSearchForm Nationality={visaNationality} />
         </div>
       </header>
 
       <main className="container relative z-10 mt-11 flex flex-col lg:flex-row ">
-        <div className="w-full lg:w-3/5 xl:w-2/3 p-4 space-y-8 lg:pr-10 lg:space-y-10">
+        <div className="w-full p-5 space-y-8 lg:pr-10 lg:space-y-10">
           <nav
             className="flex px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
             aria-label="Breadcrumb"
@@ -437,11 +437,11 @@ const ListVisaDetailPage: FC<ListVisaDetailPage> = ({}) => {
         </div>
 
         {/* SIDEBAR */}
-        <div className="block flex-grow mt-14 p-4 lg:mt-0">
+        {/* <div className="block flex-grow mt-14 p-4 lg:mt-0">
           <div className="hidden lg:block mt-10 sticky top-28">
             <InquirySidebar />
           </div>
-        </div>
+        </div> */}
       </main>
     </div>
   );

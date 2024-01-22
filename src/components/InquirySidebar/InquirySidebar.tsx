@@ -57,9 +57,9 @@ function InquirySidebar() {
 
   return (
     <>
-      <div className="nc-PropertyCardH border rounded-xl p-4">
-        <div className="flex justify-center">
-          <span className="text-xl font-semibold mb-1">Customer Support</span>
+      <div className="nc-PropertyCardH shadow-2xl rounded-xl p-5">
+        <div className="mb-5">
+          <span className="text-2xl font-semibold">Customer Support</span>
         </div>
 
         <form>
