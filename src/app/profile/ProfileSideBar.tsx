@@ -107,8 +107,8 @@ const ProfileSideBar: React.FC<ProfileSideBarProps> = ({ currentTab }) => {
   }, [user, jwtToken, isLoggedIn]);
 
   return (
-    <div className=" w-full flex flex-col lg:items-center text-center sm:rounded-2xl sm:border border-neutral-200 dark:border-neutral-700 space-y-6 sm:space-y-7 px-0 sm:p-6 xl:p-8">
-      <Avatar
+    <div className="w-full flex flex-col lg:items-center text-center sm:rounded-2xl rounded-xl shadow-2xl space-y-6 sm:space-y-7 px-0 sm:p-6 xl:p-8">
+      {/* <Avatar
         hasChecked
         hasCheckedClass="w-6 h-6 -top-0.5 right-2"
         sizeClass="w-28 h-28"
@@ -119,12 +119,12 @@ const ProfileSideBar: React.FC<ProfileSideBarProps> = ({ currentTab }) => {
         <h2 className="text-3xl font-semibold">
           Welcome, {user?.name?.split(" ")[0]}!
         </h2>
-      </div>
+      </div> */}
 
-      <div className="border-b border-neutral-200 dark:border-neutral-700 w-14"></div>
+      {/* <div className="border-b border-neutral-200 dark:border-neutral-700 w-14"></div> */}
 
       {/* ---- */}
-      <div className="space-y-4">
+      {/* <div className="space-y-4">
         {!user?.email && (
           <>
             <div role="status" className="space-y-2.5 animate-pulse max-w-lg">
@@ -159,9 +159,9 @@ const ProfileSideBar: React.FC<ProfileSideBarProps> = ({ currentTab }) => {
         )}
       </div>
 
-      <div className="border-b border-neutral-200 dark:border-neutral-700 w-14"></div>
+      <div className="border-b border-neutral-200 dark:border-neutral-700 w-14"></div> */}
 
-      <div className="grid grid-cols-1 gap-4">
+      <div className="flex justify-between gap-14">
         <div
           onClick={() => router.push("/profile" as Route)}
           className="flex items-center cursor-pointer space-x-4"
