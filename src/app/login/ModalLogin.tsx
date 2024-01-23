@@ -138,13 +138,16 @@ const ModalLogin: FC<PageLoginProps> = ({}) => {
   return (
     <div className={`nc-PageLogin`}>
       <div className="container">
-        <h2 className="my-3 flex items-center text-2xl leading-[115%] md:text-3xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
+        {/* <h2 className="my-2 flex items-center text-2xl leading-[115%] md:text-2xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
           Login to Continue
-        </h2>
-        <div className="max-w-md mx-auto space-y-6">
+        </h2> */}
+        <p className="text-sm mb-5">
+        Sign in to unlock a world of rewards - accumulate BeHappy Affiliate points <br /> for a cash prize and exclusive discounts on your booked travel experiences!
+        </p>
+        <div className="max-w-lg mx-auto space-y-6">
           <div className="grid gap-3">
               <a
-                onClick={() => signIn("google", { callbackUrl: "https://mytravellerschoice.com/api/auth/callback/google" })}
+                onClick={() => signIn("google", { callbackUrl: "http://localhost:3250/api/auth/callback/google" })}
                 className="flex cursor-pointer w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
               >
                 <Image

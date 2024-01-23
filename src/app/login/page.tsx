@@ -144,7 +144,7 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
         <div className="max-w-md mx-auto space-y-6">
           <div className="grid gap-3">
               <a
-                onClick={() => signIn("google", { callbackUrl: "https://mytravellerschoice.com/api/auth/callback/google" })}
+                onClick={() => signIn("google", { callbackUrl: "http://localhost:3250/api/auth/callback/google" })}
                 className="flex cursor-pointer w-full rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
               >
                 <Image

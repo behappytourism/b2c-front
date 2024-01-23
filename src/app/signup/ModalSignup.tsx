@@ -142,15 +142,17 @@ const ModalSignUp: FC<PageSignUpProps> = ({ }) => {
 
 
   return (
-    <div className={`nc-PageSignUp  `}>
+    <div className={`nc-PageSignUp`}>
       <div className="container">
-        <h2 className="my-3 flex items-center text-3xl leading-[115%] md:text-3xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
+        {/* <h2 className="my-3 flex items-center text-3xl leading-[115%] md:text-3xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
           Signup to Continue
-        </h2>
-        <div className="max-w-md mx-auto space-y-6 ">
+        </h2> */}
+          <p className="text-sm mb-5">
+          Create an account to unlock exclusive travel deals & affiliate Points, perso-  <br /> nalized  recommendations, and seamless booking experiences.</p>
+        <div className="max-w-lg mx-auto space-y-6 ">
           <div className="grid gap-3">
             <a
-              onClick={() => signIn("google", { callbackUrl: "https://mytravellerschoice.com/api/auth/callback/google" })}
+              onClick={() => signIn("google", { callbackUrl: "http://localhost:3250/api/auth/callback/google" })}
               className="flex w-full cursor-pointer rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
             >
               <Image
