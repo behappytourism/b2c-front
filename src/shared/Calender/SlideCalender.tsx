@@ -193,7 +193,7 @@ export default function SlideCalender({
                                 </button>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4  md:grid-cols-4 gap-0 h-52 md:w-[600px] md:h-[300px] border mt-2 text-sm bg-white dark:bg-gray-800 shadow-xl p-2 rounded-xl">
+                        <div className="grid grid-cols-4  md:grid-cols-5 gap-0 h-52 md:w-[700px] md:h-[300px] border mt-2 text-sm bg-white dark:bg-gray-800 shadow-xl p-2 rounded-xl">
                             {days.map((day, dayIdx) => (
                                 <div className="h-20 " key={day.toString()}>
                                     <button

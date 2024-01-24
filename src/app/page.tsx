@@ -139,6 +139,7 @@ const PageHome = () => {
             ""
           )}
 
+          
           {attractionDestinations.length === 0 && (
             <>
               <ComponentLoader />
