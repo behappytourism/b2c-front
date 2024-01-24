@@ -33,7 +33,7 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
 
   const renderTab = () => {
     return (
-      <ul className="ml-2 sm:ml-6 md:ml-12 hidden md:flex space-x-5 sm:space-x-8 lg:space-x-11 overflow-x-auto hiddenScrollbar">
+      <ul className="ml- sm:ml- md:ml- hidden md:flex space-x-5 sm:space-x-8 lg:space-x-3 overflow-x-auto hiddenScrollbar">
         {tabs.map((tab) => {
 
           const renderIcons = (tab: SearchTab) => {
@@ -101,10 +101,19 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
     <div
       className={`nc-HeroSearchForm w-full max-w-6xl py-5 lg:py-0 z-10 ${className} items-center`}
     >
-      <div className="w-full flex justify-center -mt-10 mb-[120px]">
+      {/* <div className="w-full flex justify-center -mt-10 mb-[120px]">
       {renderTab()}
       </div>
-      {renderForm()}
+      {renderForm()} */}
+
+    <div className="w-full ">
+      {renderTab()}
+      </div>
+      <div className="pt-2">
+        {renderForm()}
+      </div>
+
+
     </div>
   );
 };

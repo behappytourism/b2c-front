@@ -147,7 +147,7 @@ export default function SlideCalender({
         <div className="">
             <div className="">
                 <div className=" space-y-10">
-                    <div className="">
+                    <div className="md:w-[576px]">
                         <div className="flex justify-between items-center py-2">
                             <div className="flex  items-center">
                                 <button
@@ -193,9 +193,9 @@ export default function SlideCalender({
                                 </button>
                             </div>
                         </div>
-                        <div className="grid grid-cols-5 md:grid-cols-10 mt-2 text-sm">
+                        <div className="grid grid-cols-4  md:grid-cols-4 gap-0 h-52 md:w-[600px] md:h-[300px] border mt-2 text-sm bg-white dark:bg-gray-800 shadow-xl p-2 rounded-xl">
                             {days.map((day, dayIdx) => (
-                                <div key={day.toString()}>
+                                <div className="h-20 " key={day.toString()}>
                                     <button
                                         type="button"
                                         onClick={() => {
@@ -240,7 +240,7 @@ export default function SlideCalender({
                                                 : isBefore(day, new Date())
                                                     ? " text-gray-300 "
                                                     : "",
-                                            "mx-auto flex h-16 w-16 items-center justify-center rounded "
+                                            "mx-auto flex h-20 w-20 items-center justify-center rounded "
                                         )}
                                     >
                                         <time

@@ -35,7 +35,7 @@ const DetailtLayout = ({ children }: { children: ReactNode }) => {
 
       {/* OTHER SECTION */}
       <div className=" pt-20">
-        <div className="relative py-16">
+        {/* <div className="relative py-16">
           <BackgroundSection />
           <SectionSliderNewCategories
             heading="Explore by popular destinations"
@@ -45,7 +45,7 @@ const DetailtLayout = ({ children }: { children: ReactNode }) => {
             sliderStyle="style2"
             destinations={attractionDestinations}
           />
-        </div>
+        </div> */}
         {/* <SectionSubscribe2 className="pt-24 lg:pt-32" /> */}
       </div>
     </div>
