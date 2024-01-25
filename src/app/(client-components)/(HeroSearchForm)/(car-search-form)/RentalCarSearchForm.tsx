@@ -44,8 +44,8 @@ const RentalCarSearchForm: FC<RentalCarSearchFormProps> = ({ }) => {
   return (
     <form className="w-fit relative mt-8 md:rounded-xl rounded-xl dark:shadow-2xl dark:bg-neutral-800">
       {/* {renderRadioBtn()} */}
-      <div className={`relative md:flex md:flex-row p-4 md:p-0 gap-5 -mb-10`}>
-        <div className="bg-white rounded-xl shadow-xl dark:shadow-2xl dark:bg-neutral-800">
+      <div className={`relative md:flex md:flex-row p-4 md:p-0 gap-1 -mb-10 `}>
+        <div className="bg-white rounded-xl shadow-xl dark:shadow-2xl dark:bg-neutral-800 w-[500px]">
         <VisaDestination
           placeHolder="Destination"
           desc="Pick up location"

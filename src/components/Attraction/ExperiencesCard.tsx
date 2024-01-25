@@ -20,6 +20,7 @@ export interface ExperiencesCardProps {
   ratioClass?: string;
   data?: SearchByDestination;
   size?: "default" | "small";
+  indx: number
 }
 
 const ExperiencesCard: FC<ExperiencesCardProps> = ({
@@ -27,6 +28,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   className = "",
   data,
   ratioClass = "aspect-w-3 aspect-h-2",
+  indx
 }) => {
 
   const dispatch = useDispatch<AppDispatch>()
@@ -90,7 +92,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
 
   const renderContent = () => {
     return (
-      <div className={size === "default" ? "p-3 space-y-1" : "p-3 space-y-1"}>
+      <div className={`${size === "default" ? "p-3 space-y-1 " : "p-3 space-y-1"}`}>
         <div className="space-y-5">
           <div className="flex items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-2">
             {category && <Badge name={category.categoryName} className=" relative capitalize " color="blue" />}
@@ -125,7 +127,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   };
 
   return (
-    <div className={`nc-ExperiencesCard group relative shadow-2xl m-1 rounded-xl ${className}`}>
+    <div className={`nc-ExperiencesCard group relative shadow-xl m-1 rounded-xl bg-slate-100 dark:bg-gray-800 h-96 ${className}`}>
       {renderSliderGallery()}
       <Link href={`/${data?.destination?.name}/${data?.slug}` as Route}>{renderContent()}</Link>
     </div>

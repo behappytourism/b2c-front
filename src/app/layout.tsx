@@ -75,7 +75,7 @@ export default function RootLayout({
             <FetchUserData />
             <SiteHeader />
             {children}
-            <SectionDowloadApp />
+            {/* <SectionDowloadApp /> */}
             <FooterNav />
             <Footer />
           </ReduxProvider>

@@ -82,7 +82,7 @@ const visaHome = () => {
 
   const nationalities = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl mt-4">
+      <div className="p-5 shadow-2xl rounded-xl mt-44">
         <h2 className="text-2xl font-semibold">Apply Hassle Free E-visas</h2>
         <p className="text-sm mb-5">
           Hassle-Free travel with E-Visa: Your international gateway awaits!
@@ -108,7 +108,7 @@ const visaHome = () => {
 
   const renderSectionTienIch = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl mt-4">
+      <div className={`p-5 shadow-2xl rounded-xl ${!nationality?.length ? "mt-32" : "mt-4"}`}>
         <div>
           <p className="text-2xl font-semibold mb-5">
             Documents required for Dubai Visa{" "}
@@ -247,10 +247,10 @@ const visaHome = () => {
         </nav>
         <div className="mb-10 space-y-8 lg:pr-10 lg:space-y-10">
           {!visaTC && (
-            <div>
+            <div className="">
               <div
                 role="status"
-                className="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center"
+                className="space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse md:flex md:items-center mt-40"
               >
                 <div className="flex items-center justify-center w-full h-48 bg-gray-300 rounded sm:w-96 dark:bg-gray-700">
                   <svg
