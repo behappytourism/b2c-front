@@ -96,7 +96,7 @@ const SliderCards: FC<SliderCardsProps> = ({
                 }}
             >
                 <div className={`relative flow-root`} {...handlers}>
-                    <div className={`overflow-hidden rounded-xl grid md:grid-cols-4 gap-2` }>
+                    <div className={`overflow-hidden rounded-xl grid sm:grid-cols-2 md:grid-cols-4 gap-2` }>
                         {/* <motion.ul
                             initial={false}
                             className="relative whitespace-nowrap -mx-2 xl:-mx-4"
