@@ -676,7 +676,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
     >
       {renderSelectedBadge()}
       <div
-        className={`bg-white border  dark:border-neutral-700 dark:bg-neutral-800 rounded-xl shadow-sm p-4 ${data.isChecked ? " ring-4 ring-green-500/20 " : " "
+        className={`bg-white border  dark:border-neutral-700 dark:bg-neutral-800  shadow-sm p-4 ${data.isChecked ? " ring-4 ring-green-500/20 " : " "
           }`}
       >
         <div
