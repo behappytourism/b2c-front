@@ -46,10 +46,10 @@ const SectionHero: FC<SectionHeroProps> = ({
       {/* Other Desing */}
       <div className="flex flex-col lg:flex-row lg:items-center ">
         <div className="flex-shrink-0 lg:w-1/2 flex flex-col items-start space-y-8 sm:space-y-10 xl:pr-14 lg:mr-10 xl:mr-0">
-        <h2 className="font-medium text-4xl md:text-5xl xl:text-7xl !leading-[114%] px-5 ">
+        <h2 className="font-medium text-4xl md:text-5xl xl:text-7xl !leading-[114%] px-10 ">
         Attractions, Visa & experiences
         </h2>
-        <span className="text-base md:text-lg text-neutral-500 dark:text-neutral-400 px-5">
+        <span className="text-base md:text-lg text-neutral-500 dark:text-neutral-400 px-10">
         Accompanying us, you have a trip full of experiences. With Chisfis,
         booking accommodation, resort villas, hotels
         </span>
