@@ -82,7 +82,7 @@ const visaHome = () => {
 
   const nationalities = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl mt-44">
+      <div className="p-5 border-b mt-44">
         <h2 className="text-2xl font-semibold">Apply Hassle Free E-visas</h2>
         <p className="text-sm mb-5">
           Hassle-Free travel with E-Visa: Your international gateway awaits!
@@ -108,7 +108,7 @@ const visaHome = () => {
 
   const renderSectionTienIch = () => {
     return (
-      <div className={`p-5 shadow-2xl rounded-xl ${!nationality?.length ? "mt-32" : "mt-4"}`}>
+      <div className={`p-5 border-b ${!nationality?.length ? "mt-32" : "mt-4"}`}>
         <div>
           <p className="text-2xl font-semibold mb-5">
             Documents required for Dubai Visa{" "}
@@ -128,7 +128,7 @@ const visaHome = () => {
 
   const renderSection8 = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl mt-4">
+      <div className="p-5 border-b mt-4">
         <h2 className="text-2xl font-semibold mb-5">Things to know</h2>
         {visaTC?.faqs?.map((ele: any, i: number) => (
           <div className="p-1 relative " key={ele?._id}>
@@ -155,7 +155,7 @@ const visaHome = () => {
 
   const renderSection2 = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl mt-4">
+      <div className="p-5 mt-4">
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-y-6 gap-x-10 text-sm text-neutral-700 dark:text-neutral-300 ">
           <div className="flex items-center space-x-4 text-base">
             <div dangerouslySetInnerHTML={{ __html: termsAndConditions }} />

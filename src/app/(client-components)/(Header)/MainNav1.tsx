@@ -83,7 +83,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
                 Contact us
               </Link>
 
-              <a
+              {/* <a
                 href={`tel:${globalData?.home?.phoneNumber1}`}
                 className="self-center px-3 cursor-pointer flex items-center"
               >
@@ -91,7 +91,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
                   <PhoneIcon className="w-4 h-4" />
                 </span>
                 <span className="">{globalData?.home?.phoneNumber1}</span>
-              </a>
+              </a> */}
               <Cart className="flex items-center" />
               <CurrencySelector className="flex items-center" />
               <SwitchDarkMode />

@@ -200,9 +200,9 @@ const TravellersVisaForm: FC<ListVisaDetailPage> = ({
 
   const renderSidebarInquiry = () => {
     return (
-      <div className="listingSectionSidebar__wrap">
+      <div className="p-5 rounded-lg border">
         <div className="flex justify-between">
-          <span className="text-xl font-semibold">Adult</span>
+          <span className="text-2xl pb-2 border-b font-semibold mb-5">Adult</span>
         </div>
 
         <form>

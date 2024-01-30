@@ -203,9 +203,9 @@ const ChildrenVisaForm: FC<ListVisaDetailPage> = ({
 
   const renderSidebarInquiry = () => {
     return (
-      <div className="listingSectionSidebar__wrap mt-4">
+      <div className="mt-4 p-5 rounded-lg border">
         <div className="flex justify-between">
-          <span className="text-xl font-semibold">Child</span>
+          <span className="text-2xl pb-2 border-b font-semibold mb-5">Child</span>
         </div>
 
         <form>

@@ -163,7 +163,7 @@ const ListVisaDetailPage: FC<ListVisaDetailPage> = ({}) => {
 
   const renderSection1 = () => {
     return (
-      <div className="shadow-2xl rounded-xl p-5">
+      <div className="border-b p-5">
         <div>
           <h2 className="text-2xl font-semibold">{`Types of United Arab Emirates Visa for ${
             Nationality.charAt(0).toUpperCase() + Nationality.slice(1) || visaNationality.charAt(0).toUpperCase() + visaNationality.slice(1)
@@ -200,7 +200,7 @@ const ListVisaDetailPage: FC<ListVisaDetailPage> = ({}) => {
 
   const renderSectionTienIch = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl">
+      <div className="p-5 border-b">
         <div>
           <p className="text-2xl font-semibold mb-5">
             Documents required for Dubai Visa{" "}
@@ -220,7 +220,7 @@ const ListVisaDetailPage: FC<ListVisaDetailPage> = ({}) => {
 
   const renderSection8 = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl">
+      <div className="p-5 border-b">
         <h2 className="text-2xl font-semibold mb-5">Things to know</h2>
         {visaTC?.faqs?.map((ele: any, i: number) => (
           <div className="p-1 relative " key={ele?._id}>
@@ -247,7 +247,7 @@ const ListVisaDetailPage: FC<ListVisaDetailPage> = ({}) => {
 
   const renderSection2 = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl">
+      <div className="p-5">
         <div className="grid grid-cols-1 lg:grid-cols-1 gap-y-6 gap-x-10 text-sm text-neutral-700 dark:text-neutral-300 ">
           <div className="flex items-center space-x-4 text-base">
             <div dangerouslySetInnerHTML={{ __html: termsAndConditions }} />

@@ -993,7 +993,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     return (
       <div className="p-5 border rounded-xl">
         {/* PRICE */}
-        <div className="flex justify-between mb-5">
+        <div className="flex justify-between mb-5 border-b pb-5">
           {GrandTotal === 0 && (
             <div className="text-2xl font-semibold">
               <p className="text-xs font-light text-neutral-700 dark:text-neutral-400">
@@ -1033,7 +1033,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
         </div>
 
         <div className="">
-          <label className="block mt-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label className="text-xs font-light text-neutral-700 dark:text-neutral-400">
             Select date
           </label>
           <SlideCalender

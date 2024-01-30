@@ -57,9 +57,9 @@ function InquirySidebar() {
 
   return (
     <>
-      <div className="nc-PropertyCardH shadow-2xl rounded-xl p-5">
+      <div className="nc-PropertyCardH border rounded-lg p-5">
         <div className="mb-5">
-          <span className="text-2xl font-semibold">Customer Support</span>
+          <span className="text-3xl border-b font-semibold">Customer Support</span>
         </div>
 
         <form>
@@ -124,7 +124,7 @@ function InquirySidebar() {
             />
           </div>
         </form>
-        <ButtonPrimary onClick={postInquiry} className="mt-1 w-full">
+        <ButtonPrimary onClick={postInquiry} className="mt-1 w-full rounded-lg">
           {loading ? <BtnLoader /> : "Submit Inquiry"}
         </ButtonPrimary>
 
