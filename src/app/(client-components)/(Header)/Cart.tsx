@@ -69,7 +69,7 @@ const Cart: FC<CartProps> = ({ className }) => {
               >
                 <Popover.Panel
                   static
-                  className="absolute right-0 z-10 max-h-[500px] overflow-x-auto top-full w-screen max-w-md bg-white dark:bg-neutral-800 rounded-xl shadow-xl border dark:border-neutral-700"
+                  className="absolute right-0 z-50 max-h-[500px] overflow-x-auto top-full w-screen max-w-md bg-white dark:bg-neutral-800 rounded-xl shadow-xl border dark:border-neutral-700"
                 >
                   {cart?.length ? (
                     <>

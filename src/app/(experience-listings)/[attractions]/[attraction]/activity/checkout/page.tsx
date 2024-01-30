@@ -389,7 +389,7 @@ const CheckoutPage = () => {
                     className="las la-times-circle text-xl text-red-600 cursor-pointer"
                   ></i>
                   {briefPayments[i] === false && (
-                    <p>
+                    <p className="cursor-pointer">
                       <ChevronDownIcon
                         onClick={() => toggleBriefPayment(i)}
                         height={20}
@@ -398,7 +398,7 @@ const CheckoutPage = () => {
                     </p>
                   )}
                   {briefPayments[i] === true && (
-                    <p>
+                    <p className="cursor-pointer">
                       <ChevronUpIcon
                         onClick={() => toggleBriefPayment(i)}
                         height={20}

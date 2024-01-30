@@ -131,7 +131,6 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   const [date, setDate] = useState<Date | null>(null);
   const { activities } = useSelector((state: RootState) => state.attraction);
   console.log(activities, "redux");
-  
 
   const [activitySelected, setActivitySelected] = useState(
     Array(attractionData?.activities.length).fill(false)
@@ -161,14 +160,19 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
       try {
         const response = await findAttraction(attraction);
         setAttractionData(response);
-        dispatch(storeAttractionActivity({ activity: response.activities, attraction: response, initialDate: initialDate }));
+        dispatch(
+          storeAttractionActivity({
+            activity: response.activities,
+            attraction: response,
+            initialDate: initialDate,
+          })
+        );
       } catch (error) {
         console.log(error);
       }
     };
     fecthApiResponse(attraction);
   }, [attraction]);
-
 
   // Fetching the reviews of attraction.
   const fetchReviewResponse = async ({
@@ -400,33 +404,37 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     dispatch(handleDateChange(date));
   };
 
-  
-const findSlotsAvailable = async ({ activity, jwtToken }: { activity: ActivityExcursion, jwtToken: string }) => {
-  try {
-    const slots = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/timeslot`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          productId: activity?.productId,
-          productCode: activity?.productCode,
-          timeSlotDate: activity?.date,
-          activityId: activity?._id
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
-        },
-      }
-    );
-    const res: TimeSlotExcursion[] = await slots.json()
+  const findSlotsAvailable = async ({
+    activity,
+    jwtToken,
+  }: {
+    activity: ActivityExcursion;
+    jwtToken: string;
+  }) => {
+    try {
+      const slots = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/timeslot`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            productId: activity?.productId,
+            productCode: activity?.productCode,
+            timeSlotDate: activity?.date,
+            activityId: activity?._id,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      const res: TimeSlotExcursion[] = await slots.json();
 
-    return res
-  } catch (error) {
-    console.log(error);
-  }
-};
-
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const renderActivitySection = () => {
     return (
@@ -434,16 +442,16 @@ const findSlotsAvailable = async ({ activity, jwtToken }: { activity: ActivityEx
         <h2 className="text-2xl font-semibold  mb-5">Select Tour Options</h2>
 
         {activities?.map((activity, index) => {
-                  return (
-                    <ActivityListCard
-                      key={activity?._id}
-                      attraction={attractionData}
-                      data={activity}
-                      index={index}
-                      findSlotsAvailable={findSlotsAvailable}
-                    />
-                  );
-                })}
+          return (
+            <ActivityListCard
+              key={activity?._id}
+              attraction={attractionData}
+              data={activity}
+              index={index}
+              findSlotsAvailable={findSlotsAvailable}
+            />
+          );
+        })}
 
         {/* {attractionData?.activities?.map((activity, index) => (
           <>
@@ -974,27 +982,46 @@ const findSlotsAvailable = async ({ activity, jwtToken }: { activity: ActivityEx
     }
   };
 
+  const GrandTotal: number = useMemo(() => {
+    let val: number = selectedActivities.reduce((acc, item) => {
+      return acc + item.grandTotal;
+    }, 0);
+    return val;
+  }, [activities]);
+
   const renderSidebar = () => {
     return (
       <div className="p-5 border rounded-xl">
         {/* PRICE */}
         <div className="flex justify-between mb-5">
-          <div className="text-2xl font-semibold">
-            <p className="text-xs font-light text-neutral-700 dark:text-neutral-400">
-              Starting from
-            </p>
-            {attractionData?.activities?.length &&
-              priceConversion(
-                attractionData?.activities[0]?.lowPrice,
-                selectedCurrency,
-                true
-              )}
-            <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
-              /
+          {GrandTotal === 0 && (
+            <div className="text-2xl font-semibold">
+              <p className="text-xs font-light text-neutral-700 dark:text-neutral-400">
+                Starting from
+              </p>
               {attractionData?.activities?.length &&
-                attractionData?.activities[0]?.base}
-            </span>
-          </div>
+                priceConversion(
+                  attractionData?.activities[0]?.lowPrice,
+                  selectedCurrency,
+                  true
+                )}
+              <span className="ml-1 text-base font-normal text-neutral-500 dark:text-neutral-400">
+                /
+                {attractionData?.activities?.length &&
+                  attractionData?.activities[0]?.base}
+              </span>
+            </div>
+          )}
+
+          {GrandTotal > 0 && (
+            <div className="text-2xl font-semibold">
+              <p className="text-xs font-light text-neutral-700 dark:text-neutral-400">
+                Grand Total
+              </p>
+              <p>{priceConversion(GrandTotal, selectedCurrency, true)}</p>
+            </div>
+          )}
+
           <StartRating
             point={
               attractionData?.averageRating
@@ -1006,20 +1033,20 @@ const findSlotsAvailable = async ({ activity, jwtToken }: { activity: ActivityEx
         </div>
 
         <div className="">
-                      <label className="block mt-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Select date
-                      </label>
-                      <SlideCalender
-                        handleFunction={handleDateOnclick}
-                        initialSelection={
-                          initialDate
-                            ? new Date(initialDate)
-                            : activities.length
-                            ? new Date(activities[0].date)
-                            : new Date()
-                        }
-                      />
-                    </div>
+          <label className="block mt-2 text-sm font-medium text-gray-900 dark:text-white">
+            Select date
+          </label>
+          <SlideCalender
+            handleFunction={handleDateOnclick}
+            initialSelection={
+              initialDate
+                ? new Date(initialDate)
+                : activities.length
+                ? new Date(activities[0].date)
+                : new Date()
+            }
+          />
+        </div>
 
         {/* FORM */}
         {/* <div className="mb-5">

@@ -41,7 +41,7 @@ const SectionHero: FC<SectionHeroProps> = ({
       {/* <div className="absolute inset-0 bg-primary-300/40" /> */}
 
       {/* want old desing comment this */}
-      <div className="absolute inset-0 " />
+      <div className="absolute inset-0" />
 
       {/* Other Desing */}
       <div className="flex flex-col lg:flex-row lg:items-center ">

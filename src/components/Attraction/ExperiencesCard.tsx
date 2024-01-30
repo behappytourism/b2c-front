@@ -117,7 +117,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
               <Badge
                 name={bookingType}
                 className=" relative capitalize "
-                color="green"
+                color="blue"
               />
             )}
             <StartRating
