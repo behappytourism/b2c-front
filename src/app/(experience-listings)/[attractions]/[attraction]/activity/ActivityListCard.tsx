@@ -11,7 +11,7 @@ import {
 } from "@/data/attraction/types";
 import { AppDispatch, RootState } from "@/redux/store";
 import priceConversion from "@/utils/priceConversion";
-import React, { FC, useEffect, useMemo } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TransferInput from "./TransferInput";
 import GuestsInput from "./GuestsInput";
@@ -19,6 +19,8 @@ import { handleChangeActivityData } from "@/redux/features/attractionSlice";
 import HourInput from "./HourInput";
 import { format } from "date-fns";
 import TimeSlot from "./TimeSlot";
+import Checkbox from "@/shared/Checkbox";
+import Image from "next/image";
 
 interface ActivityDetailPageProps {
   findSlotsAvailable: ({ activity, jwtToken }: { activity: ActivityExcursion, jwtToken: string }) => Promise<TimeSlotExcursion[] | undefined>
@@ -35,6 +37,8 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
   const { jwtToken } = useSelector(
     (state: RootState) => state.users
   );
+
+  const [priceDetails, setPriceDetails] = useState(false);
 
   // Promotion Calculation function.
   const promotionCalculationHandler = (
@@ -390,11 +394,30 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
 
   const PriceBreakDownSection = () => {
     return (
-      <div className=" py-2">
-        <p className="text-xs text-gray-400 ">Price Breakdown</p>
+      <div className="py-1">
+      <div onClick={() => setPriceDetails(!priceDetails)} className="flex gap-5 cursor-pointer">
+        <p className="text-xs">Price Breakdown</p>
+        {
+            !priceDetails ? (
+              <div>
+                <h1><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-4 h-4">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                </svg>
+                </h1>
+              </div>
+            ) : (
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-4 h-4 text-red-500">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+            )
+          }
+          </div>
         <p className="w-20 border-b my-1"></p>
 
         <div className="border-neutral-800 dark:border-neutral-600 rounded-md ">
+        {priceDetails && (
           <table className="w-full text-sm">
             <tbody>
               {data.activityType === ActivityTypeEnum.normal && data.base !== BaseTypeEnum.hourly ? (
@@ -414,6 +437,9 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
                       true
                     )
                   })}
+                  
+                  {data?.childCount !== 0 && (
+                    <>
                   {BreakdownComponentMaker({
                     name: "Child Price",
                     count: `${data.childCount}`,
@@ -429,6 +455,11 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
                       true
                     )
                   })}
+                   </>
+                  )}
+                    
+                    {data?.infantCount !== 0 && (
+                    <>
                   {BreakdownComponentMaker({
                     name: "Infant Price",
                     count: `${data.infantCount}`,
@@ -440,6 +471,8 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
                       true
                     )
                   })}
+                    </>
+                  )}
                 </>
               ) : <>
                 {data.base !== BaseTypeEnum.hourly ? (
@@ -524,6 +557,30 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
 
             </tbody>
           </table>
+          )}
+
+           {!priceDetails && (
+          <table className="w-full text-sm">
+            <tbody>
+              <tr>
+                <td className="py-1">
+                  <div className="flex gap-[15px] items-center w-full">
+                    <span className="font-medium">Grand Total</span>
+                    <div className="border-b border-dashed flex-1"></div>
+                    <span className="text-right font-medium text-lg">
+                      {priceConversion(
+                        data.grandTotal,
+                        selectedCurrency,
+                        true
+                      )}
+                    </span>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          )}
+
         </div>
       </div>
     );
@@ -672,30 +729,38 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
           ? " md:col-span-2  "
           : " md:col-span-2  "
         : ""
-        }`}
+        } mb-5`}
     >
       {renderSelectedBadge()}
       <div
-        className={`bg-white border  dark:border-neutral-700 dark:bg-neutral-800 rounded-xl shadow-sm p-4 ${data.isChecked ? " ring-4 ring-green-500/20 " : " "
+        className={`bg-white border  dark:border-neutral-700 dark:bg-neutral-800 rounded-xl shadow-sm p-4 ${data.isChecked ? " ring-2 ring-green-400/20 " : " "
           }`}
       >
         <div
-          onClick={() => handleChangeData("isChecked", !data.isChecked)}
-          className={"font-medium pb-2 cursor-pointer flex gap-2 justify-between"}
+        //  onClick={() => handleChangeData("isChecked", !data.isChecked)}
+          className={`p-2 cursor-pointer flex gap-2 justify-between ${data?.isChecked ? "border-b" : ""}`}
         >
 
-          <div className="flex gap-2">
+          <div className="flex gap-5">
             <div>
-              <input type="checkbox"
+              <Checkbox
                 className="appearance-none focus:outline-none"
-                checked={data.isChecked}
-                onClick={() => {
+                defaultChecked={data.isChecked}
+                onChange={() => 
                   handleChangeData("isChecked", !data.isChecked)
-                }} name="" id="" />
+                } name="" />
             </div>
-            <h1>{data.name}</h1>
+            <h1 className="font-semibold">{data.name}</h1>
           </div>
-          {
+          <div className="flex gap-5 items-center text-center">
+            <p>lowest price</p>
+            <p className="font-semibold">  {data?.isPromoCode && data?.promoAmountAdult ?
+                priceConversion(data?.lowPrice + data?.promoAmountAdult, selectedCurrency, true)
+                :
+                priceConversion(data?.lowPrice, selectedCurrency, true)
+              }</p>
+          </div>
+          {/* {
             !data.isChecked ? (
               <div>
                 <h1><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -710,17 +775,29 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
                 </svg>
               </div>
             )
-          }
+          } */}
         </div>
-        <hr />
         {data.isChecked ? (
           <>
-            <div className="md:flex gap-5">
+            <div className="flex">
+              <div className="w-3/12">
+                <Image
+                   alt="activity photo"
+                   src={`${process.env.NEXT_PUBLIC_CDN_URL?.concat(
+                     attraction?.images[1] || ""
+                   )}`}
+                   className="w-full pr-4 pt-3 min-h-[150px]"
+                   width={300}
+                   height={100}
+                />
+              </div>
 
-              <div className="md:w-1/2">
+              <div className="w-9/12">
+
+              <div className="flex justify-between">
                 <div className="py-2">
                   <p className=" text-xs text-gray-400 py-1">
-                    Choose tranfser type?
+                    Choose transfer type?
                   </p>
                   <TransferInput
                     data={data}
@@ -758,12 +835,13 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
                 {renderTransferDetails()}
               </div>
 
-              <div className="md:w-1/2">
+              <div className="">
                 {/* Price Breadown section */}
-                <div className=" py-2">{PriceBreakDownSection()} </div>
+                <div className="">{PriceBreakDownSection()} </div>
               </div>
+              </div>
+
             </div>
-            <hr />
           </>
         ) : (
           ""
@@ -779,7 +857,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
             {renderTimeSlotSection()}
           </div>
         ) : ""}
-        <div className="flex justify-between gap-2 text-gray-500 pt-2">
+        {/* <div className="flex justify-between gap-2 text-gray-500 pt-2">
           <div className="text-sm">per {data?.base}*</div>
           <div className="text-xs text-gray-400 ">
             lowest Price
@@ -791,7 +869,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
               }
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

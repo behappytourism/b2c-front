@@ -41,7 +41,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
         <div className="absolute w-full mt-20 flex justify-center backdrop-blur-xl bg-opacity-30 bg-black">
           <div
             onClick={() => setEnableLogin(false)}
-            className="absolute mt-6 -mr-[500px] bg-white rounded-full cursor-pointer"
+            className="absolute mt-6 right-[300px] bg-white rounded-full cursor-pointer"
           >
             <XMarkIcon height={40} width={40} />
           </div>

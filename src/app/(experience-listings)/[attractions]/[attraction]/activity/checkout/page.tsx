@@ -20,6 +20,7 @@ import { format } from "date-fns";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 
 const CheckoutPage = () => {
   const thisPathname = usePathname();
@@ -55,6 +56,16 @@ const CheckoutPage = () => {
   );
   const { jwtToken } = useSelector((state: RootState) => state.users);
   const { cart } = useSelector((state: RootState) => state.attraction);
+
+  const [briefPayments, setBriefPayments] = useState(cart.map(() => true));
+
+  const [finalPayment, setFinalPayment] = useState(true);
+
+  const toggleBriefPayment = (index: number) => {
+    const updatedBriefPayments = [...briefPayments];
+    updatedBriefPayments[index] = !updatedBriefPayments[index];
+    setBriefPayments(updatedBriefPayments);
+  };
 
   useEffect(() => {
     const filteredCountries = countries?.filter(
@@ -199,20 +210,25 @@ const CheckoutPage = () => {
 
   const renderDetailsCollection = () => {
     return (
-      <div className="rounded-xl shadow-2xl p-5">
+      <div className="rounded-lg shadow-xl p-5">
         <div className="flex gap-3 text-center items-center mb-5">
-          <h2 className="text-2xl font-semibold">Lead Passenger Details</h2>
-          <p className="cursor-pointer" onClick={() => setLeadPaxDes(!leadPaxDes)}>?</p>
+          <h2 className="text-xl font-semibold">Lead Passenger Details</h2>
+          <p
+            className="cursor-pointer"
+            onClick={() => setLeadPaxDes(!leadPaxDes)}
+          >
+            ?
+          </p>
         </div>
         {leadPaxDes === true && (
-          <span className="absolute -mt-2 bg-black px-4 text-white rounded-full p-1 dark:text-neutral-400">
+          <span className="absolute text-sm -mt-2 bg-primary-500 font-thin px-4 text-white rounded-lg p-1 dark:text-neutral-400">
             Provide the details of the lead passenger to book the attraction
           </span>
         )}
         {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div className="">
-            <p className="text-neutral-500 dark:text-neutral-400 p-2">Mr/Mrs</p>
+            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">Mr/Mrs</p> */}
             <Select
               name="gender"
               value={pax.gender}
@@ -225,51 +241,55 @@ const CheckoutPage = () => {
             </Select>
           </div>
           <div className="">
-            <p className="text-neutral-500 dark:text-neutral-400 p-2">
+            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Firstname
-            </p>
+            </p> */}
             <Input
               type="text"
               name="firstname"
+              placeholder="first name"
               value={pax.firstname}
               onChange={onChangeHandler}
               required
             />
           </div>
           <div className="">
-            <p className="text-neutral-500 dark:text-neutral-400 p-2">
+            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Lastname
-            </p>
+            </p> */}
             <Input
               type="text"
               name="lastname"
               value={pax.lastname}
+              placeholder="last name"
               onChange={onChangeHandler}
               required
             />
           </div>
           <div className="">
-            <p className="text-neutral-500 dark:text-neutral-400 p-2">Email</p>
+            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">Email</p> */}
             <Input
               type="email"
               name="email"
               value={pax.email}
               onChange={onChangeHandler}
               required
+              placeholder="email"
             />
           </div>
           <div className="">
-            <p className="text-neutral-500 dark:text-neutral-400 p-2">
+            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Country
-            </p>
+            </p> */}
             <Select
               name="country"
               value={pax.country}
               onChange={onChangeHandler}
               required
+              placeholder="country"
               className="capitalize"
             >
-              <option hidden></option>
+              <option>country</option>
               {countries?.map((item) => (
                 <option className="capitalize" key={item._id} value={item._id}>
                   {item.countryName}{" "}
@@ -278,17 +298,16 @@ const CheckoutPage = () => {
             </Select>
           </div>
           <div className="">
-            <p className="text-neutral-500 dark:text-neutral-400 p-2">
+            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Phone Number
-            </p>
-            <div className="flex items-center border rounded-2xl">
-              <p className="border-r pl-1 pr-1 text-[12px]">
-                {paxphoneCode}
-              </p>
+            </p> */}
+            <div className="flex items-center border rounded-xl">
+              <p className="border-r pl-1 pr-1 text-[14px]">{paxphoneCode}</p>
               <Input
                 type="number"
                 name="phone"
                 value={pax.phone}
+                placeholder="phone number"
                 onChange={onChangeHandler}
                 min={0}
                 maxLength={10}
@@ -298,10 +317,11 @@ const CheckoutPage = () => {
             </div>
           </div>
           <div className="md:col-span-2 lg:col-span-3">
-            <p className="text-neutral-500 dark:text-neutral-400 p-2">
+            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Special Request
-            </p>
+            </p> */}
             <Textarea
+            placeholder="Special Request"
               name="special_request_text"
               value={pax.special_request_text}
               onChange={onChangeHandler}
@@ -329,18 +349,22 @@ const CheckoutPage = () => {
           </span>
         </div>
         {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
-        <div className="mt-5">
+        {/* <div className="mt-5">
           <p className="">
             {grandTotal > 0
               ? "Final Payment " +
-              priceConversion(grandTotal, selectedCurrency, true)
+                priceConversion(grandTotal, selectedCurrency, true)
               : ""}
           </p>
-        </div>
+        </div> */}
         <div className="">
-          <ButtonPrimary className="w-full mt-5" disabled={isLoading} type="submit">
+          <button
+            className="w-full mt-5 bg-primary-500 text-white p-3 rounded-lg font-semibold"
+            disabled={isLoading}
+            type="submit"
+          >
             {isLoading ? <BtnLoader /> : "Pay Now"}{" "}
-          </ButtonPrimary>
+          </button>
         </div>
       </div>
     );
@@ -351,103 +375,145 @@ const CheckoutPage = () => {
       <div className="flex flex-col gap-5">
         {cart.length ? (
           cart.map((item, i) => (
-            <div
-              key={item._id}
-              className="rounded-xl shadow-2xl p-5 max-w-sm"
-            >
+            <div key={item._id} className="rounded-lg shadow-lg max-w-sm p-3">
               <div className="flex flex-col gap-2 text-sm">
-                <div className="flex justify-between gap-2">
-                  <p className="font-medium text-sm pb-3">{item.name}</p>
+                <div
+                  className={`flex justify-between items-center gap-2 ${
+                    briefPayments[i] === false ? "" : "border-b"
+                  }`}
+                >
+                  <p className="text-md p-3 font-semibold">{item.name}</p>
+                  <div className="flex gap-3">
                   <i
                     onClick={() => handleRemoveActivityFromCart(item._id)}
                     className="las la-times-circle text-xl text-red-600 cursor-pointer"
                   ></i>
+                  {briefPayments[i] === false && (
+                    <p>
+                      <ChevronDownIcon
+                        onClick={() => toggleBriefPayment(i)}
+                        height={20}
+                        width={20}
+                      />
+                    </p>
+                  )}
+                  {briefPayments[i] === true && (
+                    <p>
+                      <ChevronUpIcon
+                        onClick={() => toggleBriefPayment(i)}
+                        height={20}
+                        width={20}
+                      />
+                    </p>
+                  )}
+                  </div>
                 </div>
-                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                  <span>Transfer Type</span>
-                  <span className="capitalize">
-                    {item.transferType + " Transfer"}
-                  </span>
-                </div>
-                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                  <span>Date</span>
-                  <span>{format(new Date(item.date), "d MMM, yyyy")}</span>
-                </div>
-                {item.hasOwnProperty("slot") && item.slot ? (
-                  <>
+                {briefPayments[i] === true && (
+                  <div className="">
                     <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                      <span>Slot</span>
-                      <span>{item.slot.EventName}</span>
-                    </div>{" "}
-                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                      <span>Slot Date</span>
-                      <span>
-                        {format(new Date(item.slot?.StartDateTime), "d-M-yyyy")}
+                      <span>Transfer Type</span>
+                      <span className="capitalize">
+                        {item.transferType + " Transfer"}
                       </span>
                     </div>
-                  </>
-                ) : (
-                  ""
-                )}
-                {item.base === BaseTypeEnum.hourly ? (
-                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                    <span>Hours</span>
-                    <span>{item.hourCount + " Hour"}</span>
-                  </div>
-                ) : (
-                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                    <span>Pax</span>
-                    <span>{`${item.adultCount} Adult`}</span>
-                    {item.childCount > 0 ? (
-                      <span>{`${item.childCount} Child`}</span>
+                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                      <span>Date</span>
+                      <span>{format(new Date(item.date), "d MMM, yyyy")}</span>
+                    </div>
+                    {item.hasOwnProperty("slot") && item.slot ? (
+                      <>
+                        <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                          <span>Slot</span>
+                          <span>{item.slot.EventName}</span>
+                        </div>{" "}
+                        <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                          <span>Slot Date</span>
+                          <span>
+                            {format(
+                              new Date(item.slot?.StartDateTime),
+                              "d-M-yyyy"
+                            )}
+                          </span>
+                        </div>
+                      </>
                     ) : (
                       ""
                     )}
-                    {item.infantCount < 0 ? (
-                      <span>{`${item.infantCount} Infant`}</span>
+
+                    {item.base === BaseTypeEnum.hourly ? (
+                      <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                        <span>Hours</span>
+                        <span>{item.hourCount + " Hour"}</span>
+                      </div>
                     ) : (
-                      ""
+                      <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                        <span>Pax</span>
+                        <span>{`${item.adultCount} Adult`}</span>
+                        {item.childCount > 0 ? (
+                          <span>{`${item.childCount} Child`}</span>
+                        ) : (
+                          ""
+                        )}
+                        {item.infantCount < 0 ? (
+                          <span>{`${item.infantCount} Infant`}</span>
+                        ) : (
+                          ""
+                        )}
+                      </div>
                     )}
-                  </div>
-                )}
-                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                  <span>Amount Incl. VAT</span>
-                  <span>
-                    {priceConversion(item.grandTotal, selectedCurrency, true)}
-                  </span>
-                </div>
-                {item.promoCode ? (
-                  <div className="p-1 rounded-xl flex justify-between  text-blue-700">
-                    <span className="flex gap-1 items-center">
-                      <span className="">
-                        <Toggle
-                          value={item.isPromoAdded}
-                          onChange={(e: { target: { checked: boolean } }) =>
-                            handleChangeData(i, "isPromoAdded", e.target.checked)
-                          }
-                        />
+                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                      <span>Amount Incl. VAT</span>
+                      <span>
+                        {priceConversion(
+                          item.grandTotal,
+                          selectedCurrency,
+                          true
+                        )}
                       </span>
-                      <span>{item?.isPromoAdded ? "Coupon applied" : "Apply coupon"} </span>
-                    </span>
-                    <span className="font-medium">{item.promoCode}</span>
+                    </div>
+                    {item.promoCode !== "FALSE" && (
+                      <div className="p-1 rounded-xl flex justify-between  text-blue-700">
+                        <span className="flex gap-1 items-center">
+                          <span className="">
+                            <Toggle
+                              value={item.isPromoAdded}
+                              onChange={(e: { target: { checked: boolean } }) =>
+                                handleChangeData(
+                                  i,
+                                  "isPromoAdded",
+                                  e.target.checked
+                                )
+                              }
+                            />
+                          </span>
+                          <span>
+                            {item?.isPromoAdded
+                              ? "Coupon applied"
+                              : "Apply coupon"}{" "}
+                          </span>
+                        </span>
+                        <span className="font-medium">{item.promoCode}</span>
+                      </div>
+                    )}
+
+                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                      <span>Grand Total</span>
+                      <span>
+                        {item.isPromoAdded
+                          ? priceConversion(
+                              item.priceWithoutPromoGrandTotal,
+                              selectedCurrency,
+                              true
+                            )
+                          : priceConversion(
+                              item.grandTotal,
+                              selectedCurrency,
+                              true
+                            )}
+                      </span>
+                    </div>
                   </div>
-                ) : ""}
-                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                  <span>Grand Total</span>
-                  <span>
-                    {item.isPromoAdded
-                      ? priceConversion(
-                        item.priceWithoutPromoGrandTotal,
-                        selectedCurrency,
-                        true
-                      )
-                      : priceConversion(
-                        item.grandTotal,
-                        selectedCurrency,
-                        true
-                      )}
-                  </span>
-                </div>
+                )}
               </div>
             </div>
           ))
@@ -459,6 +525,63 @@ const CheckoutPage = () => {
                 <p className="">Your cart is empty.</p>
               </div>
               <ButtonPrimary href="/">Continue Shopping</ButtonPrimary>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const PriceSidebar = () => {
+    return (
+      <div 
+      onClick={() => setFinalPayment(!finalPayment)}
+      className="rounded-lg shadow-lg p-3 cursor-pointer mt-5">
+        <div
+          className={`flex justify-between items-center gap-2 ${
+            finalPayment === false ? "" : "border-b"
+          }`}
+        >
+          <p className="font-medium text-lg p-3">Final Payment</p>
+          {finalPayment === false && (
+            <p>
+              <ChevronDownIcon
+                onClick={() => setFinalPayment(!finalPayment)}
+                height={20}
+                width={20}
+              />
+            </p>
+          )}
+          {finalPayment === true && (
+            <p>
+              <ChevronUpIcon
+                onClick={() => setFinalPayment(!finalPayment)}
+                height={20}
+                width={20}
+              />
+            </p>
+          )}
+        </div>
+
+        {finalPayment === true && (
+          <div>
+            <div className="flex justify-between py-3">
+              <p>Total Amount Incl. VAT</p>
+              <p>
+                {" "}
+                {grandTotal > 0
+                  ? "" + priceConversion(grandTotal, selectedCurrency, true)
+                  : ""}
+              </p>
+            </div>
+
+            <div className="flex justify-between font-bold text-xl bg-gray-200 p-3 rounded-lg">
+              <p>Final Amount</p>
+              <p>
+                {grandTotal > 0
+                  ? "" + priceConversion(grandTotal, selectedCurrency, true)
+                  : ""}
+              </p>
             </div>
           </div>
         )}
@@ -480,6 +603,7 @@ const CheckoutPage = () => {
           {/* SIDEBAR */}
           <div className="hidden lg:block flex-grow mt-14 lg:mt-0">
             {renderSidebar()}
+            {PriceSidebar()}
           </div>
         </div>
       </form>

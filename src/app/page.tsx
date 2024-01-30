@@ -100,7 +100,7 @@ const PageHome = () => {
   }, []);
 
   return (
-    <main className="nc-PageHome relative overflow-hidden">
+    <main className="nc-PageHome container relative overflow-hidden">
       {/* GLASSMOPHIN */}
       <BgGlassmorphism />
 
@@ -125,9 +125,9 @@ const PageHome = () => {
             ""
           )}
 
-          {/* {attractionDestinations.length > 0 && (
+          {attractionDestinations.length > 0 && (
             <SectionSliderNewCategories destinations={attractionDestinations} />
-          )} */}
+          )}
 
           {globalData.bestSellingAttractions?.length ? (
             <SliderCards

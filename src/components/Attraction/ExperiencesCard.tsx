@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { FC, useMemo } from "react";
 import GallerySlider from "@/components/GallerySlider";
 import StartRating from "@/components/StartRating";
@@ -20,7 +20,6 @@ export interface ExperiencesCardProps {
   ratioClass?: string;
   data?: SearchByDestination;
   size?: "default" | "small";
-  indx: number
 }
 
 const ExperiencesCard: FC<ExperiencesCardProps> = ({
@@ -28,37 +27,44 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   className = "",
   data,
   ratioClass = "aspect-w-3 aspect-h-2",
-  indx
 }) => {
-
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
   const searchParams = useSearchParams()!;
   const date = searchParams?.get("date");
 
-  const { selectedCurrency } = useSelector((state: RootState) => state.initials)
-  const { favourites } = useSelector((state: RootState) => state.attraction)
+  const { selectedCurrency } = useSelector(
+    (state: RootState) => state.initials
+  );
+  const { favourites } = useSelector((state: RootState) => state.attraction);
 
   const {
-    _id, images, isPromoCode, bookingType, destination, title, activity, totalReviews, averageRating, category
-
+    _id,
+    images,
+    isPromoCode,
+    bookingType,
+    destination,
+    title,
+    activity,
+    totalReviews,
+    averageRating,
+    category,
   } = data as SearchByDestination;
 
-
   const isLiked = useMemo(() => {
-    const liked = favourites.find((item) => item._id === _id)
+    const liked = favourites.find((item) => item._id === _id);
     if (liked) {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
-  }, [favourites])
+  }, [favourites]);
 
   // handler for liking the attraction.
   const handleLikeExc = () => {
     if (data) {
-      dispatch(handleSetFavourites(data))
+      dispatch(handleSetFavourites(data));
     }
-  }
+  };
 
   const renderSliderGallery = () => {
     return (
@@ -67,69 +73,100 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
           uniqueID={`ExperiencesCard_${"id"}`}
           ratioClass={ratioClass}
           galleryImgs={images}
-          href={data && `/${data?.destination?.name}/${data?.slug}` as Route}
+          href={data && (`/${data?.destination?.name}/${data?.slug}` as Route)}
           galleryClass={size === "default" ? "" : ""}
         />
-        <BtnLikeIcon isLiked={isLiked} onClick={handleLikeExc} className="absolute right-3 top-3" />
-        {isPromoCode && <SaleOffBadge desc={"Promotion available"} className="absolute capitalize left-3 top-3" />}
+        <BtnLikeIcon
+          isLiked={isLiked}
+          onClick={handleLikeExc}
+          className="absolute right-3 top-3"
+        />
+     
 
-        {isPromoCode && (
-         <div className="absolute left-3 top-9 flex gap-1 items-center text-white text-sm bg-primary-500 px-3 rounded-xl">
-        {size === "default" && <MapPinIcon className="w-4 h-4" />}
+        {/* {isPromoCode && (
+          <div className="absolute left-3 top-9 flex gap-1 items-center text-white text-sm bg-primary-500 px-3 rounded-xl">
+            {size === "default" && <MapPinIcon className="w-4 h-4" />}
             <span className="capitalize">{destination.name}</span>
-            </div>
-            )}
+          </div>
+        )}
 
-          {!isPromoCode && (
-         <div className="absolute left-3 top-3 flex gap-1 items-center text-white text-sm bg-primary-500 px-3 rounded-xl">
-        {size === "default" && <MapPinIcon className="w-4 h-4" />}
+        {!isPromoCode && (
+          <div className="absolute left-3 top-3 flex gap-1 items-center text-white text-sm bg-primary-500 px-3 rounded-xl">
+            {size === "default" && <MapPinIcon className="w-4 h-4" />}
             <span className="capitalize">{destination.name}</span>
-            </div>
-            )}
+          </div>
+        )} */}
       </div>
     );
   };
 
   const renderContent = () => {
     return (
-      <div className={`${size === "default" ? "p-3 space-y-1 " : "p-3 space-y-1"}`}>
-        <div className="space-y-5">
+      <div
+        className={`${size === "default" ? "p-3 space-y-1 " : "p-3 space-y-1"}`}
+      >
+        <div className="space-y-5 mb-5">
           <div className="flex items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-2">
-            {category && <Badge name={category.categoryName} className=" relative capitalize " color="blue" />}
-            {bookingType && <Badge name={bookingType} className=" relative capitalize " color="green" />}
+          {isPromoCode && (
+          <SaleOffBadge
+            desc={"Coupon Offer"}
+            className="relative capitalize"
+          />
+        )}
+            {bookingType && (
+              <Badge
+                name={bookingType}
+                className=" relative capitalize "
+                color="green"
+              />
+            )}
+            <StartRating
+              reviewCount={totalReviews}
+              point={Number(averageRating?.toFixed(2))}
+            />
           </div>
 
-          <div className="flex items-center space-x-2">
-          
+          <div className="items-center space-y-3">
             <h2
-              className={` font-medium capitalize overflow-hidden ${size === "default" ? "text-base" : "text-base"
-                }`}
+              className={` font-medium capitalize overflow-hidden text-xl ${
+                size === "default" ? "text-base" : "text-base"
+              }`}
             >
               <span className={` line-clamp-1 `}>{title}</span>
             </h2>
+            <p
+              className={`font-thin text-sm capitalize overflow-hidden`}
+            >
+            {destination.name}, {category.categoryName}
+            </p>
           </div>
+
+    
         </div>
         <div className="border-b border-neutral-100 dark:border-neutral-800"></div>
         <div className="flex justify-between items-center">
           <span className="text-base font-semibold">
+            <span className="font-normal mr-3 text-sm">From</span>
             {priceConversion(activity?.lowPrice, selectedCurrency, true)}
             {` `}
-            {size === "default" && (
-              <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
-                /person
-              </span>
-            )}
+
+            <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
+              /person
+            </span>
           </span>
-          <StartRating reviewCount={totalReviews} point={Number(averageRating?.toFixed(2))} />
         </div>
       </div>
     );
   };
 
   return (
-    <div className={`nc-ExperiencesCard group relative shadow-xl m-1 rounded-xl bg-slate-100 dark:bg-gray-800 h-96 ${className}`}>
+    <div
+      className={`nc-ExperiencesCard border group relative shadow-xl m-1 rounded-xl bg-slate-100 dark:bg-gray-800 ${className}`}
+    >
       {renderSliderGallery()}
-      <Link href={`/${data?.destination?.name}/${data?.slug}` as Route}>{renderContent()}</Link>
+      <Link href={`/${data?.destination?.name}/${data?.slug}` as Route}>
+        {renderContent()}
+      </Link>
     </div>
   );
 };

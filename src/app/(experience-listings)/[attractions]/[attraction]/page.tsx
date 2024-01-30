@@ -17,10 +17,12 @@ import StayDatesRangeInput from "./StayDatesRangeInput";
 import { Route } from "next";
 import ListingImageGallery from "@/components/listing-image-gallery/ListingImageGallery";
 import {
+  ActivityExcursion,
   CancellationTypeEnum,
   ExcursionDetails,
   ReviewExcursion,
   SectionsExcursion,
+  TimeSlotExcursion,
 } from "@/data/attraction/types";
 import Breadcrumb, { BreadcrumbsList } from "@/components/General/BreadCrumb";
 import priceConversion from "@/utils/priceConversion";
@@ -32,10 +34,20 @@ import DefaultLoader from "@/components/loader/DefaultLoader";
 import ReactPlayer from "react-player";
 import { PlayCircleIcon } from "@heroicons/react/24/solid";
 import MobileFooterStickyDate from "../../MobileFooterStickyDate";
-import { handleSetFavourites } from "@/redux/features/attractionSlice";
+import {
+  handleAddtocart,
+  handleChangeActivityData,
+  handleDateChange,
+  handleSetFavourites,
+  storeAttractionActivity,
+} from "@/redux/features/attractionSlice";
 import placeholder from "@/images/placeholder-large-h.png";
 import Textarea from "@/shared/Textarea";
 import ErrorModal from "@/shared/Status/ErrorModal";
+import Checkbox from "@/shared/Checkbox";
+import SlideCalender from "@/shared/Calender/SlideCalender";
+import TransferInput from "./activity/TransferInput";
+import ActivityListCard from "./activity/ActivityListCard";
 
 export interface ListingExperiencesDetailPageProps {
   params: { attraction: string };
@@ -117,6 +129,31 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   const [ratingSubmitErr, setRatingSubmitErr] = useState<string>("");
   //
   const [date, setDate] = useState<Date | null>(null);
+  const { activities } = useSelector((state: RootState) => state.attraction);
+  console.log(activities, "redux");
+  
+
+  const [activitySelected, setActivitySelected] = useState(
+    Array(attractionData?.activities.length).fill(false)
+  );
+
+  const toggleActivitySelection = (index: number) => {
+    const updatedActivitySelected = [...activitySelected];
+    updatedActivitySelected[index] = !updatedActivitySelected[index];
+    setActivitySelected(updatedActivitySelected);
+  };
+
+  console.log(attractionData?.activities);
+
+  const handleChangeData = (keyName: string, value: any, index: number) => {
+    dispatch(
+      handleChangeActivityData({
+        index: index,
+        keyName: keyName,
+        value: value,
+      })
+    );
+  };
 
   // Fetching the attraction details.
   useEffect(() => {
@@ -124,12 +161,14 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
       try {
         const response = await findAttraction(attraction);
         setAttractionData(response);
+        dispatch(storeAttractionActivity({ activity: response.activities, attraction: response, initialDate: initialDate }));
       } catch (error) {
         console.log(error);
       }
     };
     fecthApiResponse(attraction);
   }, [attraction]);
+
 
   // Fetching the reviews of attraction.
   const fetchReviewResponse = async ({
@@ -274,7 +313,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   const renderSection1 = () => {
     return (
-      <div className="p-5 !space-y-5">
+      <div className="py-5 !space-y-5">
         {/* 1 */}
         <div className="flex justify-between items-center">
           <div className="flex gap-2">
@@ -322,7 +361,6 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
         </div>
 
         {/* 4 */}
-      
 
         {/* 5 */}
         <div className="flex items-center justify-between xl:justify-start space-x-8 xl:space-x-12 text-sm text-neutral-700 dark:text-neutral-300">
@@ -342,7 +380,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
           {attractionData?.bookingType == "ticket" && (
             <div className="flex flex-col sm:flex-row items-center space-y-3 sm:space-y-0 text-center sm:text-left sm:space-x-3 ">
               <i className="las la-bolt text-2xl"></i>
-              <span className=""> Instant Confirmation</span>
+              <span className="">Instant Confirmation</span>
             </div>
           )}
         </div>
@@ -352,9 +390,342 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     );
   };
 
+  // Fetching initial Date from query
+  const initialDate = new Date();
+
+  const handleDateOnclick = (date: Date | string) => {
+    if (new Date(date) < new Date()) {
+      return;
+    }
+    dispatch(handleDateChange(date));
+  };
+
+  
+const findSlotsAvailable = async ({ activity, jwtToken }: { activity: ActivityExcursion, jwtToken: string }) => {
+  try {
+    const slots = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/timeslot`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          productId: activity?.productId,
+          productCode: activity?.productCode,
+          timeSlotDate: activity?.date,
+          activityId: activity?._id
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      }
+    );
+    const res: TimeSlotExcursion[] = await slots.json()
+
+    return res
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+  const renderActivitySection = () => {
+    return (
+      <div className="">
+        <h2 className="text-2xl font-semibold  mb-5">Select Tour Options</h2>
+
+        {activities?.map((activity, index) => {
+                  return (
+                    <ActivityListCard
+                      key={activity?._id}
+                      attraction={attractionData}
+                      data={activity}
+                      index={index}
+                      findSlotsAvailable={findSlotsAvailable}
+                    />
+                  );
+                })}
+
+        {/* {attractionData?.activities?.map((activity, index) => (
+          <>
+            <div className="w-full border rounded-lg p-2 my-5">
+              <div
+                className={`flex justify-between items-center p-3 ${
+                  activitySelected[index] === false ? "" : "border-b"
+                }`}
+              >
+                <div
+                  onClick={() =>
+                    handleChangeData("isChecked", !activity.isChecked, index)
+                  }
+                  className="flex gap-5"
+                >
+                  <Checkbox
+                    name="selected"
+                    onChange={() => toggleActivitySelection(index)}
+                  />
+                  <p className="font-semibold">{activity?.name}</p>
+                </div>
+                <div className="flex gap-5 items-center text-center">
+                  <p>lowest price</p>
+                  <p className="font-semibold">{activity?.lowPrice} AED</p>
+                </div>
+              </div>
+
+              {activitySelected[index] === true && (
+                <div className="flex p-2">
+                  <div className="w-3/12">
+                    <div className="">
+                      <Image
+                        alt="activity photo"
+                        src={`${process.env.NEXT_PUBLIC_CDN_URL?.concat(
+                          attractionData?.images[1] || ""
+                        )}`}
+                        className="w-full pr-4 pt-3 min-h-[200px]"
+                        width={300}
+                        height={100}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="w-9/12">
+                    <div className="flex gap-4 items-center">
+                    <div className="py-2">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-neutral-200">
+                          Transfer
+                        </label>
+                  <TransferInput
+                    data={activity}
+                    handleChangeData={handleChangeData}
+                  />
+                </div>
+                     
+
+                      <div>
+                       
+                        <div className="flex gap-4">
+                          <div>
+                            <form className="max-w-xs mx-auto">
+                              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Adults:
+                              </label>
+                              <div className="relative flex items-center max-w-[8rem]">
+                                <button
+                                  type="button"
+                                  id="decrement-button"
+                                  data-input-counter-decrement="quantity-input"
+                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                                >
+                                  <svg
+                                    className="w-3 h-3 text-gray-900 dark:text-white"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 18 2"
+                                  >
+                                    <path
+                                      stroke="currentColor"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M1 1h16"
+                                    />
+                                  </svg>
+                                </button>
+                                <input
+                                  type="text"
+                                  id="quantity-input"
+                                  data-input-counter
+                                  aria-describedby="helper-text-explanation"
+                                  className="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  placeholder="1"
+                                  required
+                                />
+                                <button
+                                  type="button"
+                                  id="increment-button"
+                                  data-input-counter-increment="quantity-input"
+                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                                >
+                                  <svg
+                                    className="w-3 h-3 text-gray-900 dark:text-white"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 18 18"
+                                  >
+                                    <path
+                                      stroke="currentColor"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M9 1v16M1 9h16"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+
+                          <div>
+                            <form className="max-w-xs mx-auto">
+                              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Childrens:
+                              </label>
+                              <div className="relative flex items-center max-w-[8rem]">
+                                <button
+                                  type="button"
+                                  id="decrement-button"
+                                  data-input-counter-decrement="quantity-input"
+                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                                >
+                                  <svg
+                                    className="w-3 h-3 text-gray-900 dark:text-white"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 18 2"
+                                  >
+                                    <path
+                                      stroke="currentColor"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M1 1h16"
+                                    />
+                                  </svg>
+                                </button>
+                                <input
+                                  type="text"
+                                  id="quantity-input"
+                                  data-input-counter
+                                  aria-describedby="helper-text-explanation"
+                                  className="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  placeholder="0"
+                                  required
+                                />
+                                <button
+                                  type="button"
+                                  id="increment-button"
+                                  data-input-counter-increment="quantity-input"
+                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                                >
+                                  <svg
+                                    className="w-3 h-3 text-gray-900 dark:text-white"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 18 18"
+                                  >
+                                    <path
+                                      stroke="currentColor"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M9 1v16M1 9h16"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+
+                          <div>
+                            <form className="max-w-xs mx-auto">
+                              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Infants:
+                              </label>
+                              <div className="relative flex items-center max-w-[8rem]">
+                                <button
+                                  type="button"
+                                  id="decrement-button"
+                                  data-input-counter-decrement="quantity-input"
+                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                                >
+                                  <svg
+                                    className="w-3 h-3 text-gray-900 dark:text-white"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 18 2"
+                                  >
+                                    <path
+                                      stroke="currentColor"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M1 1h16"
+                                    />
+                                  </svg>
+                                </button>
+                                <input
+                                  type="text"
+                                  id="quantity-input"
+                                  data-input-counter
+                                  aria-describedby="helper-text-explanation"
+                                  className="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                  placeholder="0"
+                                  required
+                                />
+                                <button
+                                  type="button"
+                                  id="increment-button"
+                                  data-input-counter-increment="quantity-input"
+                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                                >
+                                  <svg
+                                    className="w-3 h-3 text-gray-900 dark:text-white"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 18 18"
+                                  >
+                                    <path
+                                      stroke="currentColor"
+                                      stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M9 1v16M1 9h16"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="">
+                      <label className="block mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Select date
+                      </label>
+                      <SlideCalender
+                        handleFunction={handleDateOnclick}
+                        initialSelection={
+                          initialDate
+                            ? new Date(initialDate)
+                            : activities.length
+                            ? new Date(activities[0].date)
+                            : new Date()
+                        }
+                      />
+                    </div>
+
+
+                   
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        ))} */}
+      </div>
+    );
+  };
+
   const renderSection2 = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl">
+      <div className="p-5 border-b">
         <h2 className="text-2xl font-semibold  mb-5">Highlights</h2>
         {attractionData?.highlights && (
           <div
@@ -368,9 +739,9 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   const renderSection3 = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl">
+      <div className="p-5 border-b">
         <div className=" mb-5">
-          <h2 className="text-2xl font-semibold">Availablity </h2>
+          <h2 className="text-2xl font-semibold">Availablity</h2>
           <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
             Included in the Time
           </span>
@@ -400,7 +771,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   const renderSection5 = (section: SectionsExcursion) => {
     return (
-      <div key={section._id} className="p-5 shadow-2xl rounded-xl">
+      <div key={section._id} className="p-5 border-b">
         {/* HEADING */}
         <h2 className="text-2xl font-semibold mb-5">{section.title}</h2>
 
@@ -417,7 +788,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   const renderSection6 = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl">
+      <div className="p-5 border-b">
         <ErrorModal
           title="Something went wrong"
           text={ratingSubmitErr}
@@ -498,7 +869,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   // Map section
   const renderSection7 = (latitude: number, longitude: number) => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl">
+      <div className="p-5">
         {/* HEADING */}
         <div>
           <h2 className="text-2xl font-semibold mb-5">Location</h2>
@@ -557,17 +928,15 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   const renderSection8 = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl">
+      <div className="p-5 border-b">
         {/* HEADING */}
         <h2 className="text-2xl font-semibold mb-5">Faq</h2>
 
-        {/* CONTENT */}
-
         {attractionData?.faqs &&
           attractionData?.faqs?.map((faq) => (
-            <div key={faq._id}>
+            <div key={faq._id} className="border p-3 rounded-lg mb-3">
               <h4 className="text-lg font-semibold">{faq.question}</h4>
-              <span className="block mt-3 text-neutral-500 dark:text-neutral-400">
+              <span className="block mt-1 text-neutral-500 dark:text-neutral-400">
                 {faq.answer}
               </span>
             </div>
@@ -576,9 +945,38 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     );
   };
 
+  const selectedActivities = useMemo(() => {
+    return activities.filter((activity) => activity.isChecked);
+  }, [activities]);
+
+  const [errorModalContent, setErrorModalContent] = useState("");
+  3;
+  const handleCloseErrorModal = () => {
+    setErrorModalContent("");
+  };
+
+  const handleAddToCart = () => {
+    try {
+      setErrorModalContent("");
+      for (let i = 0; i < selectedActivities?.length; i++) {
+        if (selectedActivities[i]?.slotsAvailable?.length) {
+          if (!selectedActivities[i].hasOwnProperty("slot")) {
+            throw new Error("Select the slot for the next step");
+          } else if (!selectedActivities[i]?.slot.hasOwnProperty("EventID")) {
+            throw new Error("Select the slot for the next step");
+          }
+        }
+      }
+      dispatch(handleAddtocart(selectedActivities));
+      router.push(`${thisPathname}/activity/checkout` as Route);
+    } catch (error) {
+      setErrorModalContent(`${error}`);
+    }
+  };
+
   const renderSidebar = () => {
     return (
-      <div className="p-5 shadow-2xl rounded-xl">
+      <div className="p-5 border rounded-xl">
         {/* PRICE */}
         <div className="flex justify-between mb-5">
           <div className="text-2xl font-semibold">
@@ -607,8 +1005,24 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
           />
         </div>
 
+        <div className="">
+                      <label className="block mt-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Select date
+                      </label>
+                      <SlideCalender
+                        handleFunction={handleDateOnclick}
+                        initialSelection={
+                          initialDate
+                            ? new Date(initialDate)
+                            : activities.length
+                            ? new Date(activities[0].date)
+                            : new Date()
+                        }
+                      />
+                    </div>
+
         {/* FORM */}
-        <div className="mb-5">
+        {/* <div className="mb-5">
           <div className="pb-2 px-2 text-lg font-medium text-neutral-900 dark:text-neutral-200">
             Select tour date
           </div>
@@ -618,16 +1032,16 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
               attraction={attractionData}
               className="flex-1 z-[11]"
             />
-            {/* <GuestsInput className="flex-1" /> */}
           </form>
-        </div>
+        </div> */}
 
         {/* SUBMIT */}
         <ButtonPrimary
-        className="w-full"
-          href={`${thisPathname}/activity?date=${date?.toString()}` as Route}
+          className="w-full"
+          onClick={() => handleAddToCart()}
+          //href={`${thisPathname}/activity?date=${date?.toString()}` as Route}
         >
-          Reserve
+          Checkout
         </ButtonPrimary>
       </div>
     );
@@ -635,6 +1049,9 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   return (
     <div className={` nc-ListingExperiencesDetailPage  `}>
+      <div className="my-3">
+        <Breadcrumb breadCrumbs={breadcrum} />
+      </div>
       <ListingImageGallery
         isShowModal={modal === "PHOTO_TOUR_SCROLLABLE"}
         onClose={handleCloseModalImageGallery}
@@ -731,21 +1148,17 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
         </div>
       </header>
 
-      <div className="relative z-10 mt-11">
-      <Breadcrumb breadCrumbs={breadcrum} />
-      <div className="mt-5">
-      {renderSection1()}
-      </div>
+      <div className="relative z-10 mt-4">
+        <div className="mt-2">{renderSection1()}</div>
       </div>
 
-      {/* MAIn */}
+      {/* Main */}
       <main className="relative z-10 mt-5 flex flex-col lg:flex-row">
         {/* CONTENT */}
         <div className="w-full lg:w-3/5 xl:w-2/3 space-y-8 lg:pr-10 ">
           {attractionData && (
             <>
-            
-        
+              {renderActivitySection()}
               {renderSection2()}
               {renderSection3()}
             </>

@@ -33,27 +33,27 @@ const GuestsInput: FC<GuestsInputProps> = ({
       {({ open }) => (
         <>
           <div
-            className={`flex-1 flex items-center focus:outline-none rounded-3xl border ${
+            className={`flex-1 flex items-center focus:outline-none rounded-lg border ${
               open ? "shadow-lg" : ""
             }`}
           >
             <Popover.Button
-              className={`relative z-10 flex-1 flex text-left items-center p-3 space-x-3 focus:outline-none`}
+              className={`relative z-10 flex-1 flex text-left items-center p-1 space-x-3 px-5 focus:outline-none`}
             >
               <div className="text-neutral-300 dark:text-neutral-400">
-                <UserPlusIcon className="w-5 h-5 lg:w-6 lg:h-6" />
+                <UserPlusIcon className="w-5 h-5 lg:w-5 lg:h-5" />
               </div>
-              <div className="flex-grow text-base divide-x-2 divide-gray-300">
-                <span className=" pr-1">{data.adultCount + " Adult "}</span>
+              <div className="flex-grow text-base divide-x divide-gray-200">
+                <span className="pr-1 text-sm">{data.adultCount + " Adult "}</span>
                 {data.childCount ? (
-                  <span className=" px-1">
+                  <span className="px-1  text-sm">
                     {data.childCount + " Children "}
                   </span>
                 ) : (
                   ""
                 )}
                 {data.infantCount ? (
-                  <span className=" pl-1">{data.infantCount + " Infant"}</span>
+                  <span className="pl-1 text-sm">{data.infantCount + " Infant"}</span>
                 ) : (
                   ""
                 )}
@@ -70,7 +70,7 @@ const GuestsInput: FC<GuestsInputProps> = ({
             leaveFrom="opacity-100 translate-y-0"
             leaveTo="opacity-0 translate-y-1"
           >
-            <Popover.Panel className="absolute right-0 z-10 w-full sm:min-w-[340px] max-w-sm bg-white dark:bg-neutral-700 top-full mt-3 py-5 sm:py-6 px-4 sm:px-8 rounded-3xl shadow-xl ring-1 ring-black ring-opacity-5 ">
+            <Popover.Panel className="absolute right-0 z-10 w-full sm:min-w-[340px] max-w-sm bg-white dark:bg-neutral-700 top-full mt-3 py-5 sm:py-6 px-4 sm:px-8 rounded-lg shadow-xl ring-1 ring-black ring-opacity-5 ">
               <NcInputNumber
                 className="w-full"
                 defaultValue={data.adultCount}

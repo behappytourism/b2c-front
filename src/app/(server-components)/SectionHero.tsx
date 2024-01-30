@@ -46,8 +46,8 @@ const SectionHero: FC<SectionHeroProps> = ({
       {/* Other Desing */}
       <div className="flex flex-col lg:flex-row lg:items-center ">
         <div className="flex-shrink-0 lg:w-1/2 flex flex-col items-start space-y-8 sm:space-y-10 xl:pr-14 lg:mr-10 xl:mr-0">
-        <h2 className="font-medium text-4xl md:text-5xl xl:text-7xl !leading-[114%] px-10 ">
-        Attractions, Visa & experiences
+        <h2 className="font-medium text-4xl md:text-5xl xl:text-5xl !leading-[10%] px-10">
+        Attractions & Visa
         </h2>
         <span className="text-base md:text-lg text-neutral-500 dark:text-neutral-400 px-10">
         Accompanying us, you have a trip full of experiences. With Chisfis,
@@ -59,7 +59,7 @@ const SectionHero: FC<SectionHeroProps> = ({
           <Image className="w-full" width={700} height={700} src={bannerImg} alt="hero" priority />
           </div>
         </div>
-      <div className="hidden container md:flex justify-center mb-12 lg:mb-0 lg:mt-10 w-full absolute left-44 right-0  top-[400px]">
+      <div className="hidden container md:flex justify-center lg:mb-0 lg:mt-10 w-full absolute left-44 right-0  top-[320px]">
         <HeroSearchForm currentPage={currentPage} currentTab={currentTab} />
       </div>
 

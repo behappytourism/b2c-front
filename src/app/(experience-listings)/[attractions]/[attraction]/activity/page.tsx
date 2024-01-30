@@ -211,6 +211,9 @@ function ActivityDetailPage<ActivityDetailPageProps>({
   };
 
 
+  console.log(activities, "moj");
+
+
   return (
     <div className="relative z-10 mt-11 flex flex-col  gap-10">
       {/* BREADCRUMBS */}

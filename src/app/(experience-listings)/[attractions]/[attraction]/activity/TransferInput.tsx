@@ -23,14 +23,14 @@ const TransferInput: FC<TransferInputProps> = ({
       {({ open, close }) => (
         <>
           <Popover.Button
-            className={`w-full flex items-center justify-between p-3 text-sm rounded-full border border-neutral-300 dark:border-neutral-700  focus:outline-none ${open ? " shadow-lg " : ""
+            className={`w-full flex items-center justify-between p-2 text-sm rounded-lg border border-neutral-300 dark:border-neutral-700  focus:outline-none ${open ? " shadow-lg " : ""
               }`}
           >
             <div className="flex items-center gap-1">
-              <div className="text-neutral-300 dark:text-neutral-400">
+              {/* <div className="text-neutral-300 dark:text-neutral-400">
                 <TruckIcon className="w-5 h-5 lg:w-6 lg:h-6" />
-              </div>
-              <div className="capitalize pl-2 text-base">
+              </div> */}
+              <div className="capitalize text-[11px]">
                 {data.transferType + " Transfer"}
               </div>
             </div>

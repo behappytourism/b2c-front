@@ -98,9 +98,7 @@ export default function SlideCalender({
         };
     }, []);
 
-    let numOfDays = useMemo(() => {
-        return windowWidth > 768 ? 9 : 4;
-    }, [windowWidth]);
+    let numOfDays = 4;
 
 
     let today = initialSelection ? new Date(initialSelection) : startOfToday();
@@ -147,7 +145,7 @@ export default function SlideCalender({
         <div className="">
             <div className="">
                 <div className=" space-y-10">
-                    <div className="md:w-[576px]">
+                    <div className="md:w-[400px]">
                         <div className="flex justify-between items-center py-2">
                             <div className="flex  items-center">
                                 <button
@@ -193,9 +191,9 @@ export default function SlideCalender({
                                 </button>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4  md:grid-cols-5 gap-0 h-52 md:w-[700px] md:h-[300px] border mt-2 text-sm bg-white dark:bg-gray-800 shadow-xl p-2 rounded-xl">
+                        <div className="grid grid-cols-4 md:grid-cols-5 gap-0 h-52 md:w-full md:h-full border mt-2 text-sm bg-white dark:bg-gray-800 p-2 rounded-lg">
                             {days.map((day, dayIdx) => (
-                                <div className="h-20 " key={day.toString()}>
+                                <div className="h-20" key={day.toString()}>
                                     <button
                                         type="button"
                                         onClick={() => {
@@ -212,7 +210,7 @@ export default function SlideCalender({
                                         className={classNames(
                                             isEqual(day, selectedDay) ? "text-black" : "",
                                             !isEqual(day, selectedDay) && isToday(day)
-                                                ? " text-blue-600 "
+                                                ? " text-blue-600"
                                                 : "",
                                             !isEqual(day, selectedDay) &&
                                                 !isToday(day) &&
@@ -244,7 +242,7 @@ export default function SlideCalender({
                                         )}
                                     >
                                         <time
-                                            className="font-bold  uppercase "
+                                            className="font-bold  uppercase"
                                             dateTime={format(day, "yyyy-MM-dd")}
                                         >
                                             <p
@@ -286,7 +284,7 @@ export default function SlideCalender({
                             ))}
                         </div>
                     </div>
-                    <section className="mt-5">
+                    <section className="mt-2">
                         <p className="text-sm text-green-600 font-mono pb-2">
                             <i className="lar la-check-circle text-lg"></i>
                             <span className="pl-1">
