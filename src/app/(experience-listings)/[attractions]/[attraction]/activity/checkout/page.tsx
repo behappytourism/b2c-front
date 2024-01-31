@@ -210,9 +210,9 @@ const CheckoutPage = () => {
 
   const renderDetailsCollection = () => {
     return (
-      <div className="rounded-lg shadow-xl p-5">
+      <div className="border-b pb-10">
         <div className="flex gap-3 text-center items-center mb-5">
-          <h2 className="text-xl font-semibold">Lead Passenger Details</h2>
+          <h2 className="md:text-3xl text-2xl border-b pb-3 font-semibold">Lead Passenger Details</h2>
           <p
             className="cursor-pointer"
             onClick={() => setLeadPaxDes(!leadPaxDes)}
@@ -334,7 +334,7 @@ const CheckoutPage = () => {
 
   const renderPaymentSection = () => {
     return (
-      <div className="rounded-xl shadow-2xl p-5">
+      <div className="border-b p-5">
         <ErrorModal
           title="Something went wrong"
           text={error}
@@ -342,7 +342,7 @@ const CheckoutPage = () => {
           closeModal={closeModal}
         />
         <div>
-          <h2 className="text-2xl font-semibold mb-5">Pay</h2>
+          <h2 className="text-2xl md:text-3xl border-b pb-3 w-fit font-semibold mb-5">Pay</h2>
           <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
             By clicking Pay Now you agree that you have read and understand our
             Terms and Conditions.
@@ -375,7 +375,7 @@ const CheckoutPage = () => {
       <div className="flex flex-col gap-5">
         {cart.length ? (
           cart.map((item, i) => (
-            <div key={item._id} className="rounded-lg shadow-lg max-w-sm p-3">
+            <div key={item._id} className="rounded-lg border max-w-sm p-3">
               <div className="flex flex-col gap-2 text-sm">
                 <div
                   className={`flex justify-between items-center gap-2 ${
@@ -536,7 +536,7 @@ const CheckoutPage = () => {
     return (
       <div 
       onClick={() => setFinalPayment(!finalPayment)}
-      className="rounded-lg shadow-lg p-3 cursor-pointer mt-5">
+      className="rounded-lg border p-3 cursor-pointer mt-5">
         <div
           className={`flex justify-between items-center gap-2 ${
             finalPayment === false ? "" : "border-b"

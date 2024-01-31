@@ -438,8 +438,14 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   const renderActivitySection = () => {
     return (
-      <div className="">
-        <h2 className="text-2xl font-semibold  mb-5">Select Tour Options</h2>
+      <div className="border-b pb-5">
+        <h2 className="text-2xl md:text-3xl w-fit pb-3 font-semibold">Select Tour Options</h2>
+        {attractionData?.highlights && (
+          <div
+            dangerouslySetInnerHTML={{ __html: attractionData?.highlights }}
+            className="text-neutral-6000 text-sm mb-10 dark:text-neutral-300"
+          ></div>
+        )}
 
         {activities?.map((activity, index) => {
           return (
@@ -452,293 +458,18 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
             />
           );
         })}
-
-        {/* {attractionData?.activities?.map((activity, index) => (
-          <>
-            <div className="w-full border rounded-lg p-2 my-5">
-              <div
-                className={`flex justify-between items-center p-3 ${
-                  activitySelected[index] === false ? "" : "border-b"
-                }`}
-              >
-                <div
-                  onClick={() =>
-                    handleChangeData("isChecked", !activity.isChecked, index)
-                  }
-                  className="flex gap-5"
-                >
-                  <Checkbox
-                    name="selected"
-                    onChange={() => toggleActivitySelection(index)}
-                  />
-                  <p className="font-semibold">{activity?.name}</p>
-                </div>
-                <div className="flex gap-5 items-center text-center">
-                  <p>lowest price</p>
-                  <p className="font-semibold">{activity?.lowPrice} AED</p>
-                </div>
-              </div>
-
-              {activitySelected[index] === true && (
-                <div className="flex p-2">
-                  <div className="w-3/12">
-                    <div className="">
-                      <Image
-                        alt="activity photo"
-                        src={`${process.env.NEXT_PUBLIC_CDN_URL?.concat(
-                          attractionData?.images[1] || ""
-                        )}`}
-                        className="w-full pr-4 pt-3 min-h-[200px]"
-                        width={300}
-                        height={100}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="w-9/12">
-                    <div className="flex gap-4 items-center">
-                    <div className="py-2">
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-neutral-200">
-                          Transfer
-                        </label>
-                  <TransferInput
-                    data={activity}
-                    handleChangeData={handleChangeData}
-                  />
-                </div>
-                     
-
-                      <div>
-                       
-                        <div className="flex gap-4">
-                          <div>
-                            <form className="max-w-xs mx-auto">
-                              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Adults:
-                              </label>
-                              <div className="relative flex items-center max-w-[8rem]">
-                                <button
-                                  type="button"
-                                  id="decrement-button"
-                                  data-input-counter-decrement="quantity-input"
-                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
-                                >
-                                  <svg
-                                    className="w-3 h-3 text-gray-900 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 18 2"
-                                  >
-                                    <path
-                                      stroke="currentColor"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M1 1h16"
-                                    />
-                                  </svg>
-                                </button>
-                                <input
-                                  type="text"
-                                  id="quantity-input"
-                                  data-input-counter
-                                  aria-describedby="helper-text-explanation"
-                                  className="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  placeholder="1"
-                                  required
-                                />
-                                <button
-                                  type="button"
-                                  id="increment-button"
-                                  data-input-counter-increment="quantity-input"
-                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
-                                >
-                                  <svg
-                                    className="w-3 h-3 text-gray-900 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 18 18"
-                                  >
-                                    <path
-                                      stroke="currentColor"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M9 1v16M1 9h16"
-                                    />
-                                  </svg>
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-
-                          <div>
-                            <form className="max-w-xs mx-auto">
-                              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Childrens:
-                              </label>
-                              <div className="relative flex items-center max-w-[8rem]">
-                                <button
-                                  type="button"
-                                  id="decrement-button"
-                                  data-input-counter-decrement="quantity-input"
-                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
-                                >
-                                  <svg
-                                    className="w-3 h-3 text-gray-900 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 18 2"
-                                  >
-                                    <path
-                                      stroke="currentColor"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M1 1h16"
-                                    />
-                                  </svg>
-                                </button>
-                                <input
-                                  type="text"
-                                  id="quantity-input"
-                                  data-input-counter
-                                  aria-describedby="helper-text-explanation"
-                                  className="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  placeholder="0"
-                                  required
-                                />
-                                <button
-                                  type="button"
-                                  id="increment-button"
-                                  data-input-counter-increment="quantity-input"
-                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
-                                >
-                                  <svg
-                                    className="w-3 h-3 text-gray-900 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 18 18"
-                                  >
-                                    <path
-                                      stroke="currentColor"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M9 1v16M1 9h16"
-                                    />
-                                  </svg>
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-
-                          <div>
-                            <form className="max-w-xs mx-auto">
-                              <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Infants:
-                              </label>
-                              <div className="relative flex items-center max-w-[8rem]">
-                                <button
-                                  type="button"
-                                  id="decrement-button"
-                                  data-input-counter-decrement="quantity-input"
-                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
-                                >
-                                  <svg
-                                    className="w-3 h-3 text-gray-900 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 18 2"
-                                  >
-                                    <path
-                                      stroke="currentColor"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M1 1h16"
-                                    />
-                                  </svg>
-                                </button>
-                                <input
-                                  type="text"
-                                  id="quantity-input"
-                                  data-input-counter
-                                  aria-describedby="helper-text-explanation"
-                                  className="bg-gray-50 border-x-0 border-gray-300 h-9 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                  placeholder="0"
-                                  required
-                                />
-                                <button
-                                  type="button"
-                                  id="increment-button"
-                                  data-input-counter-increment="quantity-input"
-                                  className="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-9 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
-                                >
-                                  <svg
-                                    className="w-3 h-3 text-gray-900 dark:text-white"
-                                    aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 18 18"
-                                  >
-                                    <path
-                                      stroke="currentColor"
-                                      stroke-linecap="round"
-                                      stroke-linejoin="round"
-                                      stroke-width="2"
-                                      d="M9 1v16M1 9h16"
-                                    />
-                                  </svg>
-                                </button>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="">
-                      <label className="block mt-2 text-sm font-medium text-gray-900 dark:text-white">
-                        Select date
-                      </label>
-                      <SlideCalender
-                        handleFunction={handleDateOnclick}
-                        initialSelection={
-                          initialDate
-                            ? new Date(initialDate)
-                            : activities.length
-                            ? new Date(activities[0].date)
-                            : new Date()
-                        }
-                      />
-                    </div>
-
-
-                   
-                  </div>
-                </div>
-              )}
-            </div>
-          </>
-        ))} */}
       </div>
     );
   };
 
   const renderSection2 = () => {
     return (
-      <div className="p-5 border-b">
-        <h2 className="text-2xl font-semibold  mb-5">Highlights</h2>
+      <div className="border-b pb-6">
+        <h2 className="text-2xl font-semibold md:text-3xl w-fit mb-3">Highlights</h2>
         {attractionData?.highlights && (
           <div
             dangerouslySetInnerHTML={{ __html: attractionData?.highlights }}
-            className="text-neutral-6000 dark:text-neutral-300"
+            className="text-neutral-6000 px-1 dark:text-neutral-300"
           ></div>
         )}
       </div>
@@ -747,10 +478,10 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   const renderSection3 = () => {
     return (
-      <div className="p-5 border-b">
-        <div className=" mb-5">
-          <h2 className="text-2xl font-semibold">Availablity</h2>
-          <span className="block mt-2 text-neutral-500 dark:text-neutral-400">
+      <div className="pb-10 border-b">
+        <div className="mb-5">
+          <h2 className="text-2xl font-semibold md:text-3xl w-fit pb-3">Availablity</h2>
+          <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
             Included in the Time
           </span>
         </div>
@@ -779,9 +510,9 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   const renderSection5 = (section: SectionsExcursion) => {
     return (
-      <div key={section._id} className="p-5 border-b">
+      <div key={section._id} className="pb-8 border-b">
         {/* HEADING */}
-        <h2 className="text-2xl font-semibold mb-5">{section.title}</h2>
+        <h2 className="text-2xl font-semibold md:text-3xl w-fit pb-3 mb-5">{section.title}</h2>
 
         {/* desc */}
         {section.body && (
@@ -796,7 +527,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   const renderSection6 = () => {
     return (
-      <div className="p-5 border-b">
+      <div className="pb-5 border-b">
         <ErrorModal
           title="Something went wrong"
           text={ratingSubmitErr}
@@ -804,7 +535,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
           closeModal={closeModal}
         />
         {/* HEADING */}
-        <h2 className="text-2xl font-semibold mb-3">
+        <h2 className="text-2xl md:text-3xl w-fit pb-3 font-semibold mb-3">
           Reviews ({attractionReviews?.totalAttractionReviews} reviews)
         </h2>
 
@@ -820,7 +551,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
               <Input
                 fontClass=""
                 sizeClass="h-16 px-4 py-3"
-                rounded="rounded-3xl"
+                rounded="rounded-lg"
                 placeholder="Title of feedback"
                 onChange={(e) => {
                   setReview((prev) => {
@@ -837,7 +568,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
                 placeholder="Share your thoughts ..."
               />
               <div className="flex justify-end">
-                <ButtonPrimary className="" type="submit">
+                <ButtonPrimary className="rounded-lg" type="submit">
                   Add Review <ArrowRightIcon className="w-5 h-5" />
                 </ButtonPrimary>
               </div>
@@ -877,10 +608,10 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   // Map section
   const renderSection7 = (latitude: number, longitude: number) => {
     return (
-      <div className="p-5">
+      <div className="">
         {/* HEADING */}
         <div>
-          <h2 className="text-2xl font-semibold mb-5">Location</h2>
+          <h2 className="text-2xl md:text-3xl w-fit pb-3 font-semibold mb-5">Location</h2>
         </div>
 
         {/* MAP */}
@@ -1064,7 +795,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
         {/* SUBMIT */}
         <ButtonPrimary
-          className="w-full"
+          className="w-full rounded-lg"
           onClick={() => handleAddToCart()}
           //href={`${thisPathname}/activity?date=${date?.toString()}` as Route}
         >
@@ -1186,7 +917,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
           {attractionData && (
             <>
               {renderActivitySection()}
-              {renderSection2()}
+              {/* {renderSection2()} */}
               {renderSection3()}
             </>
           )}
