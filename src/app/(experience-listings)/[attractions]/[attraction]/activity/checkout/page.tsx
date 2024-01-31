@@ -359,7 +359,7 @@ const CheckoutPage = () => {
         </div> */}
         <div className="">
           <button
-            className="w-full mt-5 bg-primary-500 text-white p-3 rounded-lg font-semibold"
+            className="w-full mt-5 bg-orange-500 hover:bg-orange-700 text-white p-3 rounded-lg font-semibold"
             disabled={isLoading}
             type="submit"
           >
