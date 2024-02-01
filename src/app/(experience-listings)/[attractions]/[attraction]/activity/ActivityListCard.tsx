@@ -294,21 +294,20 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
       <>
         {data.vehicles.length &&
           data.transferType === TransferTypeEmun.private ? (
-          <div className=" py-2">
+          <div className=" py-3">
             <p className="text-xs text-gray-400 ">Private Vehicles</p>
-            <p className="w-20 border-b my-1"></p>
 
             <div className="border-neutral-800 dark:border-neutral-600 rounded-md ">
-              <table className="w-full text-sm">
+              <table className="w-full text-xs">
                 <tbody className="divide-y">
                   {data.vehicles.map((vehicle) => (
                     <tr key={vehicle?._id}>
-                      <td className="py-2 ">
+                      <td className="py-2">
                         <div className="">
-                          <p className="">{vehicle.name}</p>
+                          <p className="border-r pr-2">{vehicle.name}</p>
                         </div>
                       </td>
-                      <td className="py-2 text-right">{priceConversion(vehicle.price, selectedCurrency, true)}</td>
+                      <td className="py-2 pl-2 text-right font-bold">{priceConversion(vehicle.price, selectedCurrency, true)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -327,18 +326,19 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
       <>
         {data.isSharedTransferAvailable &&
           data.transferType === TransferTypeEmun.shared ? (
-          <div className=" py-2">
-            <p className="text-xs text-gray-400 ">Shared Transfer</p>
-            <p className="w-20 border-b my-1"></p>
+          <div className=" py-3">
+            <p className="text-xs text-gray-400">Shared Transfer</p>
 
             <div className="border-neutral-800 dark:border-neutral-600 rounded-md ">
-              <table className="w-full text-sm">
+              <table className="w-full text-xs">
                 <tbody>
                   <tr>
-                    <td className="py-2 ">
-                      Shared transfer price
+                    <td className="py-2">
+                      <div>
+                        <p className="border-r pr-2">Shared transfer price</p>
+                      </div>
                     </td>
-                    <td className="py-2 text-right">{priceConversion(data.sharedTransferPrice, selectedCurrency, true)}</td>
+                    <td className="py-2 pl-2 text-right font-bold">{priceConversion(data.sharedTransferPrice, selectedCurrency, true)}</td>
                   </tr>
                 </tbody>
               </table>

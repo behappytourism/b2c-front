@@ -480,7 +480,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     return (
       <div className="pb-10 border-b">
         <div className="mb-5">
-          <h2 className="text-2xl font-semibold md:text-3xl w-fit pb-3">Availablity</h2>
+          <h2 className="text-2xl font-semibold md:text-3xl w-fit pb-3">Availability</h2>
           <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
             Included in the Time
           </span>
