@@ -197,6 +197,8 @@ export default function SlideCalender({
                                     <button
                                         type="button"
                                         onClick={() => {
+                                            console.log(day, "dayyyy");
+                                            
                                             if (isAfter(day, new Date())) {
                                                 setSelectedDay(day);
                                                 if (setSelectedDate) {

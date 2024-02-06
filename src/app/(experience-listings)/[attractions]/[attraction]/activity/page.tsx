@@ -77,6 +77,9 @@ function ActivityDetailPage<ActivityDetailPageProps>({
   const { selectedCurrency } = useSelector((state: RootState) => state.initials)
 
   const [attractionData, setAttractionData] = useState<ExcursionDetails>()
+  const [addToCart, setAddToCart] = useState(false);
+  const [ATCIndex, setATCIndex] = useState(0);
+
 
   // Fetching the attraction details.
   useEffect(() => {
@@ -211,9 +214,6 @@ function ActivityDetailPage<ActivityDetailPageProps>({
   };
 
 
-  console.log(activities, "moj");
-
-
   return (
     <div className="relative z-10 mt-11 flex flex-col  gap-10">
       {/* BREADCRUMBS */}
@@ -237,6 +237,11 @@ function ActivityDetailPage<ActivityDetailPageProps>({
                       attraction={attractionData}
                       data={activity}
                       index={index}
+                      setAddToCart={setAddToCart}
+                      addToCart={addToCart}
+                      checkout={addToCart}
+                      setCheckout={setAddToCart}
+                      setATCIndex={setATCIndex}
                       findSlotsAvailable={findSlotsAvailable}
                     />
                   );

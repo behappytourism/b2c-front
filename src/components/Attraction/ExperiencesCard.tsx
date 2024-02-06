@@ -26,7 +26,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   size = "default",
   className = "",
   data,
-  ratioClass = "aspect-w-3 aspect-h-2",
+  ratioClass = "aspect-w-6 aspect-h-4",
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const searchParams = useSearchParams()!;
@@ -68,7 +68,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
 
   const renderSliderGallery = () => {
     return (
-      <div className="relative w-full rounded-t-xl overflow-hidden">
+      <div className="relative w-full overflow-hidden">
         <GallerySlider
           uniqueID={`ExperiencesCard_${"id"}`}
           ratioClass={ratioClass}
@@ -81,21 +81,43 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
           onClick={handleLikeExc}
           className="absolute right-3 top-3"
         />
-     
 
-        {/* {isPromoCode && (
-          <div className="absolute left-3 top-9 flex gap-1 items-center text-white text-sm bg-primary-500 px-3 rounded-xl">
-            {size === "default" && <MapPinIcon className="w-4 h-4" />}
-            <span className="capitalize">{destination.name}</span>
+        {isPromoCode && (
+          <div className="absolute left-0 top-0 flex gap-1 items-center text-white font-bold text-sm">
+            <SaleOffBadge
+              desc={"Coupon Offer"}
+              className="relative capitalize"
+            />
           </div>
         )}
 
+        {isPromoCode && (
+          <>
+            {bookingType && (
+              <div className="absolute left-[100px] top-0 flex gap-1 items-center font-bold text-white text-sm">
+                <Badge
+                  name={bookingType}
+                  className=" relative capitalize "
+                  color="red"
+                />
+              </div>
+            )}
+          </>
+        )}
+
         {!isPromoCode && (
-          <div className="absolute left-3 top-3 flex gap-1 items-center text-white text-sm bg-primary-500 px-3 rounded-xl">
-            {size === "default" && <MapPinIcon className="w-4 h-4" />}
-            <span className="capitalize">{destination.name}</span>
-          </div>
-        )} */}
+          <>
+            {bookingType && (
+              <div className="absolute left-0 top-0 flex gap-1 items-center font-bold text-white text-sm">
+                <Badge
+                  name={bookingType}
+                  className=" relative capitalize "
+                  color="red"
+                />
+              </div>
+            )}
+          </>
+        )}
       </div>
     );
   };
@@ -105,55 +127,40 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
       <div
         className={`${size === "default" ? "p-3 space-y-1 " : "p-3 space-y-1"}`}
       >
-        <div className="space-y-5 mb-5">
-          <div className="flex items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-2">
-          {isPromoCode && (
-          <SaleOffBadge
-            desc={"Coupon Offer"}
-            className="relative capitalize"
-          />
-        )}
-            {bookingType && (
-              <Badge
-                name={bookingType}
-                className=" relative capitalize "
-                color="blue"
-              />
-            )}
-            <StartRating
-              reviewCount={totalReviews}
-              point={Number(averageRating?.toFixed(2))}
-            />
-          </div>
-
-          <div className="items-center space-y-3">
+        <div className="space-y-5 mb-1">
+          <div className="items-center space-y-1 mb-3">
             <h2
               className={` font-medium capitalize overflow-hidden text-xl ${
                 size === "default" ? "text-base" : "text-base"
               }`}
             >
-              <span className={` line-clamp-1 `}>{title}</span>
+              <span className={` line-clamp-1 text-center`}>{title}</span>
             </h2>
-            <p
-              className={`font-thin text-sm capitalize overflow-hidden`}
-            >
-            {destination.name}, {category.categoryName}
-            </p>
+            <div className="flex gap-5 text-gray-500 justify-center">
+              <p className={`font-thin text-sm capitalize overflow-hidden`}>
+                {destination.name}, {category.categoryName}
+              </p>
+              <StartRating
+                reviewCount={totalReviews}
+                point={Number(averageRating?.toFixed(2))}
+              />
+            </div>
           </div>
-
-    
         </div>
         <div className="border-b border-neutral-100 dark:border-neutral-800"></div>
         <div className="flex justify-between items-center">
-          <span className="text-base font-semibold">
-            <span className="font-normal mr-3 text-sm">From</span>
-            {priceConversion(activity?.lowPrice, selectedCurrency, true)}
-            {` `}
+          <div className="text-base font-semibold">
+            <p className="font-thin text-gray-400 text-sm capitalize">
+              Starting from
+            </p>
+            <p className="text-xl font-bold">
+              {priceConversion(activity?.lowPrice, selectedCurrency, true)}
+            </p>
 
-            <span className="text-sm text-neutral-500 dark:text-neutral-400 font-normal">
-              /person
-            </span>
-          </span>
+            <p className="text-xs text-gray-400 dark:text-neutral-400 font-thin">
+              * price varies
+            </p>
+          </div>
         </div>
       </div>
     );
@@ -161,7 +168,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
 
   return (
     <div
-      className={`nc-ExperiencesCard border group relative shadow-xl m-1 rounded-xl bg-slate-100 dark:bg-gray-800 ${className}`}
+      className={`nc-ExperiencesCard border group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
     >
       {renderSliderGallery()}
       <Link href={`/${data?.destination?.name}/${data?.slug}` as Route}>

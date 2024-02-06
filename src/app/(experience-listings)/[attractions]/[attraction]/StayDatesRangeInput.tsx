@@ -9,6 +9,8 @@ import DatePicker from "react-datepicker";
 import ClearDataButton from "@/app/(client-components)/(HeroSearchForm)/ClearDataButton";
 import { addDays, format } from "date-fns";
 import { ExcursionDetails } from "@/data/attraction/types";
+import { useDispatch } from "react-redux";
+import { handleDateChange } from "@/redux/features/attractionSlice";
 
 export interface StayDatesRangeInputProps {
   className?: string;
@@ -25,11 +27,19 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
   const [startDate, setStartDate] = useState<Date | null>(
     attraction && attraction.bookingPriorDays ? addDays(new Date(), Number(attraction.bookingPriorDays)) : addDays(new Date(), 1)
   );
+   const dispatch = useDispatch();
+
+  const handleDateOnclick = (date: Date | string) => {
+    if (new Date(date) < new Date()) {
+      return;
+    }
+    dispatch(handleDateChange(date));
+  };
 
   //Onchange settign date function.
   const onChangeDate = (dates: Date | null) => {
+    dispatch(handleDateChange(dates));
     setStartDate(dates ? new Date(dates) : dates);
-
     close()
   };
 
@@ -43,16 +53,16 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
     return (
       <>
         <div className="text-neutral-700 dark:text-neutral-400 ">
-          <CalendarIcon className="w-5 h-5 lg:w-7 lg:h-7" />
+          <CalendarIcon className="w-4 h-4 lg:w-4 lg:h-4" />
         </div>
         <div className="flex-grow text-left">
-          <span className="block xl:text-lg font-semibold">
+          <span className="block xl:text-xs">
             {startDate ? format(new Date(startDate), "MMM dd, yyyy") : "Add dates"}
 
           </span>
-          <span className="block mt-1 text-sm text-neutral-500 leading-none ">
+          {/* <span className="block mt-1 text-sm text-neutral-500 leading-none ">
             {"Travel Date"}
-          </span>
+          </span> */}
         </div>
       </>
     );
@@ -63,7 +73,7 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
       {({ open, close }) => (
         <>
           <Popover.Button
-            className={`flex-1 flex relative p-3 items-center space-x-3 focus:outline-none ${open ? "shadow-lg" : ""
+            className={`flex-1 flex relative p-2 items-center space-x-3 focus:outline-none ${open ? "shadow-lg" : ""
               }`}
           >
             {renderInput()}

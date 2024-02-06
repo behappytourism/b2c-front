@@ -7,7 +7,7 @@ import bannerImg from '@/images/dubaibanner.png'
 
 export interface SectionHeroProps {
   className?: string;
-  currentPage: "Stays" | "Experiences" | "Visa" | "Flights";
+  currentPage: "Stays" | "Experiences" | "Visa" | "Flights" | "Transfer";
   currentTab: SearchTab;
 }
 

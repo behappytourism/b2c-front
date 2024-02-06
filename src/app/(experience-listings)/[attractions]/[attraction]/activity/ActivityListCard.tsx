@@ -15,30 +15,59 @@ import React, { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TransferInput from "./TransferInput";
 import GuestsInput from "./GuestsInput";
-import { handleChangeActivityData } from "@/redux/features/attractionSlice";
+import { handleChangeActivityData, handleDateChange } from "@/redux/features/attractionSlice";
 import HourInput from "./HourInput";
 import { format } from "date-fns";
 import TimeSlot from "./TimeSlot";
 import Checkbox from "@/shared/Checkbox";
 import Image from "next/image";
+import StayDatesRangeInput from "../StayDatesRangeInput";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import GallerySlider from "@/components/GallerySlider";
+import Link from "next/link";
+import { Route } from "next";
+import SlideCalender from "@/shared/Calender/SlideCalender";
 
 interface ActivityDetailPageProps {
-  findSlotsAvailable: ({ activity, jwtToken }: { activity: ActivityExcursion, jwtToken: string }) => Promise<TimeSlotExcursion[] | undefined>
+  findSlotsAvailable: ({
+    activity,
+    jwtToken,
+  }: {
+    activity: ActivityExcursion;
+    jwtToken: string;
+  }) => Promise<TimeSlotExcursion[] | undefined>;
   data: ActivityExcursion;
   index: number;
-  attraction?: ExcursionDetails
+  attraction?: ExcursionDetails;
+  addToCart: boolean;
+  checkout: boolean;
+  setAddToCart: React.Dispatch<React.SetStateAction<boolean>>;
+  setCheckout: React.Dispatch<React.SetStateAction<boolean>>;
+  setATCIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsAvailable, attraction }) => {
+const ActivityListCard: FC<ActivityDetailPageProps> = ({
+  data,
+  index,
+  findSlotsAvailable,
+  attraction,
+  setAddToCart,
+  setCheckout,
+  setATCIndex,
+  addToCart,
+  checkout,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const { selectedCurrency, UAE } = useSelector(
     (state: RootState) => state.initials
   );
-  const { jwtToken } = useSelector(
-    (state: RootState) => state.users
-  );
+  const { jwtToken } = useSelector((state: RootState) => state.users);
 
   const [priceDetails, setPriceDetails] = useState(false);
+  const [date, setDate] = useState<Date | null>(null);
+  const [tab, setTab] = useState("");
+  const initialDate = new Date();
+
 
   // Promotion Calculation function.
   const promotionCalculationHandler = (
@@ -49,16 +78,19 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
     promoAmountAdult: number = 0,
     promoAmountChild: number = 0
   ) => {
-    if (data.base === BaseTypeEnum.hourly && data.activityType === ActivityTypeEnum.transfer) {
+    if (
+      data.base === BaseTypeEnum.hourly &&
+      data.activityType === ActivityTypeEnum.transfer
+    ) {
       handleChangeData("priceWithoutPromoGrandTotal", sum * data.hourCount);
     } else {
       handleChangeData("priceWithoutPromoGrandTotal", sum);
     }
     if (isPromoCodeExist) {
       const grandTotal =
-        sum + (adultCount * promoAmountAdult) + (childCount * promoAmountChild);
+        sum + adultCount * promoAmountAdult + childCount * promoAmountChild;
       const appliedPromoAmount =
-        (adultCount * promoAmountAdult) + (childCount * promoAmountChild);
+        adultCount * promoAmountAdult + childCount * promoAmountChild;
 
       handleChangeData("isPromoAdded", true);
       handleChangeData("grandTotal", grandTotal);
@@ -74,6 +106,16 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
         value: value,
       })
     );
+  };
+
+  const handleAddToCart = () => {
+    setAddToCart(!addToCart);
+    setATCIndex(index);
+  };
+
+  const handleCheckout = () => {
+    setCheckout(!checkout);
+    setATCIndex(index);
   };
 
   // Boolean for either transfer of [x] exist.
@@ -170,7 +212,6 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
 
         // Assigning the vehicles which calculated by capacity and pax.
         handleChangeData("vehicles", array);
-
       } // End of Is Private Transfer available.
 
       promotionCalculationHandler(
@@ -226,40 +267,44 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
     data.transferType,
     data.hourCount,
     data.isChecked,
-    data.slot
+    data.slot,
   ]);
 
-
   const vehicleArray = useMemo(() => {
-    let array: PrivateTransferExcursion[] = []
+    let array: PrivateTransferExcursion[] = [];
 
     if (data.vehicles && data.vehicles.length) {
       for (let i = 0; i < data.vehicles.length; i++) {
-
-        const ind = array.findIndex(val => val._id === data.vehicles[i]._id);
+        const ind = array.findIndex((val) => val._id === data.vehicles[i]._id);
 
         if (ind !== -1) {
           array[ind] = { ...array[ind] };
           if (array[ind].count) {
-            array[ind].count += 1
+            array[ind].count += 1;
           } else {
-            array[ind].count = 2
-
+            array[ind].count = 2;
           }
         } else {
-          array.push(data.vehicles[i])
+          array.push(data.vehicles[i]);
         }
       }
     }
-    return array
-  }, [data.vehicles])
-
+    return array;
+  }, [data.vehicles]);
 
   useEffect(() => {
-
-    const fecthApiResponse = async ({ activity, jwtToken }: { activity: ActivityExcursion, jwtToken: string }) => {
+    const fecthApiResponse = async ({
+      activity,
+      jwtToken,
+    }: {
+      activity: ActivityExcursion;
+      jwtToken: string;
+    }) => {
       try {
-        const response = await findSlotsAvailable({ activity: activity, jwtToken: jwtToken });
+        const response = await findSlotsAvailable({
+          activity: activity,
+          jwtToken: jwtToken,
+        });
         // dispatch  attraction activities.
         handleChangeData("slotsAvailable", response);
       } catch (error) {
@@ -269,10 +314,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
     if (data.isChecked && attraction?._id === "63ff12f5d7333637a938cad4") {
       fecthApiResponse({ activity: data, jwtToken: jwtToken });
     }
-
-  }, [data.isChecked])
-
-
+  }, [data.isChecked]);
 
   const renderSelectedBadge = () => {
     return (
@@ -293,7 +335,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
     return (
       <>
         {data.vehicles.length &&
-          data.transferType === TransferTypeEmun.private ? (
+        data.transferType === TransferTypeEmun.private ? (
           <div className=" py-3">
             <p className="text-xs text-gray-400 ">Private Vehicles</p>
 
@@ -307,7 +349,9 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
                           <p className="border-r pr-2">{vehicle.name}</p>
                         </div>
                       </td>
-                      <td className="py-2 pl-2 text-right font-bold">{priceConversion(vehicle.price, selectedCurrency, true)}</td>
+                      <td className="py-2 pl-2 text-right font-bold">
+                        {priceConversion(vehicle.price, selectedCurrency, true)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -325,7 +369,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
     return (
       <>
         {data.isSharedTransferAvailable &&
-          data.transferType === TransferTypeEmun.shared ? (
+        data.transferType === TransferTypeEmun.shared ? (
           <div className=" py-3">
             <p className="text-xs text-gray-400">Shared Transfer</p>
 
@@ -338,7 +382,13 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
                         <p className="border-r pr-2">Shared transfer price</p>
                       </div>
                     </td>
-                    <td className="py-2 pl-2 text-right font-bold">{priceConversion(data.sharedTransferPrice, selectedCurrency, true)}</td>
+                    <td className="py-2 pl-2 text-right font-bold">
+                      {priceConversion(
+                        data.sharedTransferPrice,
+                        selectedCurrency,
+                        true
+                      )}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -351,17 +401,16 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
     );
   };
 
-
   const renderTransferDetails = () => {
     switch (data.transferType) {
       case TransferTypeEmun.private:
-        return PrivateTransferVehicleListingSection()
+        return PrivateTransferVehicleListingSection();
       case TransferTypeEmun.shared:
-        return SharedTransferSection()
+        return SharedTransferSection();
       default:
-        return ""
+        return "";
     }
-  }
+  };
 
   const BreakdownComponentMaker = ({
     name,
@@ -369,218 +418,306 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
     count,
     sign,
     price,
-    key
+    key,
   }: {
-    name: string, total: string, count: string, sign: string, price: string, key?: string
+    name: string;
+    total: string;
+    count: string;
+    sign: string;
+    price: string;
+    key?: string;
   }) => {
     return (
       <tr key={key ? key : ""}>
         <td className="py-2 ">
           <div className="flex gap-[15px] items-center w-full">
-            <span className="">{name}
+            <span className="">
+              {name}
               {Number(count) > 0 ? (
-                <span className="text-xs text-gray-400 pl-1">({`${count} ${sign} ${price}`})</span>
-              ) : ""}
+                <span className="text-xs text-gray-400 pl-1">
+                  ({`${count} ${sign} ${price}`})
+                </span>
+              ) : (
+                ""
+              )}
             </span>
             <div className="border-b border-dashed flex-1"></div>
-            <span className="text-right">
-              {Number(count) > 0 ? total : 0}
-            </span>
+            <span className="text-right">{Number(count) > 0 ? total : 0}</span>
           </div>
         </td>
       </tr>
-    )
-  }
+    );
+  };
 
   const PriceBreakDownSection = () => {
     return (
       <div className="py-1">
-      <div onClick={() => setPriceDetails(!priceDetails)} className="flex gap-5 cursor-pointer">
-        <p className="text-xs">Price Breakdown</p>
-        {
-            !priceDetails ? (
-              <div>
-                <h1><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+        <div
+          onClick={() => setPriceDetails(!priceDetails)}
+          className="flex gap-5 cursor-pointer"
+        >
+          <p className="text-xs">Price Breakdown</p>
+          {!priceDetails ? (
+            <div>
+              <h1>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1}
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 8.25l-7.5 7.5-7.5-7.5"
+                  />
                 </svg>
-                </h1>
-              </div>
-            ) : (
-              <div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-4 h-4 text-red-500">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </div>
-            )
-          }
-          </div>
+              </h1>
+            </div>
+          ) : (
+            <div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1}
+                stroke="currentColor"
+                className="w-4 h-4 text-red-500"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </div>
+          )}
+        </div>
         <p className="w-20 border-b my-1"></p>
 
         <div className="border-neutral-800 dark:border-neutral-600 rounded-md ">
-        {priceDetails && (
-          <table className="w-full text-sm">
-            <tbody>
-              {data.activityType === ActivityTypeEnum.normal && data.base !== BaseTypeEnum.hourly ? (
-                <>
-                  {BreakdownComponentMaker({
-                    name: "Adult Price",
-                    count: `${data.adultCount}`,
-                    price: data.promoAmountAdult ? priceConversion(data.adultPrice + data.promoAmountAdult, selectedCurrency, true) : priceConversion(data.adultPrice, selectedCurrency, true),
-                    sign: "X",
-                    total: data.promoAmountAdult ? priceConversion(
-                      (data.adultPrice * data.adultCount) + data.promoAmountAdult,
-                      selectedCurrency,
-                      true
-                    ) : priceConversion(
-                      (data.adultPrice * data.adultCount),
-                      selectedCurrency,
-                      true
-                    )
-                  })}
-                  
-                  {data?.childCount !== 0 && (
-                    <>
-                  {BreakdownComponentMaker({
-                    name: "Child Price",
-                    count: `${data.childCount}`,
-                    price: data.promoAmountChild ? priceConversion(data.childPrice + data.promoAmountChild, selectedCurrency, true) : priceConversion(data.childPrice, selectedCurrency, true),
-                    sign: "X",
-                    total: data.promoAmountChild ? priceConversion(
-                      (data.childPrice * data.childCount) + data.promoAmountChild,
-                      selectedCurrency,
-                      true
-                    ) : priceConversion(
-                      data.childPrice * data.childCount,
-                      selectedCurrency,
-                      true
-                    )
-                  })}
-                   </>
-                  )}
-                    
-                    {data?.infantCount !== 0 && (
-                    <>
-                  {BreakdownComponentMaker({
-                    name: "Infant Price",
-                    count: `${data.infantCount}`,
-                    price: priceConversion(data.infantPrice, selectedCurrency, true),
-                    sign: "X",
-                    total: priceConversion(
-                      data.infantPrice * data.infantCount,
-                      selectedCurrency,
-                      true
-                    )
-                  })}
-                    </>
-                  )}
-                </>
-              ) : <>
-                {data.base !== BaseTypeEnum.hourly ? (
+          {priceDetails && (
+            <table className="w-full text-sm">
+              <tbody>
+                {data.activityType === ActivityTypeEnum.normal &&
+                data.base !== BaseTypeEnum.hourly ? (
                   <>
                     {BreakdownComponentMaker({
-                      name: "Number of paxes",
+                      name: "Adult Price",
+                      count: `${data.adultCount}`,
+                      price: data.promoAmountAdult
+                        ? priceConversion(
+                            data.adultPrice + data.promoAmountAdult,
+                            selectedCurrency,
+                            true
+                          )
+                        : priceConversion(
+                            data.adultPrice,
+                            selectedCurrency,
+                            true
+                          ),
+                      sign: "X",
+                      total: data.promoAmountAdult
+                        ? priceConversion(
+                            data.adultPrice * data.adultCount +
+                              data.promoAmountAdult,
+                            selectedCurrency,
+                            true
+                          )
+                        : priceConversion(
+                            data.adultPrice * data.adultCount,
+                            selectedCurrency,
+                            true
+                          ),
+                    })}
+
+                    {data?.childCount !== 0 && (
+                      <>
+                        {BreakdownComponentMaker({
+                          name: "Child Price",
+                          count: `${data.childCount}`,
+                          price: data.promoAmountChild
+                            ? priceConversion(
+                                data.childPrice + data.promoAmountChild,
+                                selectedCurrency,
+                                true
+                              )
+                            : priceConversion(
+                                data.childPrice,
+                                selectedCurrency,
+                                true
+                              ),
+                          sign: "X",
+                          total: data.promoAmountChild
+                            ? priceConversion(
+                                data.childPrice * data.childCount +
+                                  data.promoAmountChild,
+                                selectedCurrency,
+                                true
+                              )
+                            : priceConversion(
+                                data.childPrice * data.childCount,
+                                selectedCurrency,
+                                true
+                              ),
+                        })}
+                      </>
+                    )}
+
+                    {data?.infantCount !== 0 && (
+                      <>
+                        {BreakdownComponentMaker({
+                          name: "Infant Price",
+                          count: `${data.infantCount}`,
+                          price: priceConversion(
+                            data.infantPrice,
+                            selectedCurrency,
+                            true
+                          ),
+                          sign: "X",
+                          total: priceConversion(
+                            data.infantPrice * data.infantCount,
+                            selectedCurrency,
+                            true
+                          ),
+                        })}
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {data.base !== BaseTypeEnum.hourly ? (
+                      <>
+                        {BreakdownComponentMaker({
+                          name: "Number of paxes",
+                          count: ``,
+                          price: "",
+                          sign: "",
+                          total: `${
+                            data.adultCount + data.childCount
+                          } travellers`,
+                        })}
+                      </>
+                    ) : (
+                      <>
+                        {BreakdownComponentMaker({
+                          name: "Number of Hours",
+                          count: ``,
+                          price: "",
+                          sign: "",
+                          total: `${data.hourCount} hours`,
+                        })}
+                      </>
+                    )}
+                  </>
+                )}
+                {data.base === BaseTypeEnum.hourly &&
+                data.activityType === ActivityTypeEnum.normal ? (
+                  <>
+                    {BreakdownComponentMaker({
+                      name: "Hourly Price",
                       count: ``,
                       price: "",
                       sign: "",
-                      total: `${data.adultCount + data.childCount} travellers`
+                      total: priceConversion(
+                        data.hourlyCost,
+                        selectedCurrency,
+                        true
+                      ),
                     })}
                   </>
-                ) : <>
-                  {BreakdownComponentMaker({
-                    name: "Number of Hours",
-                    count: ``,
-                    price: "",
-                    sign: "",
-                    total: `${data.hourCount} hours`
-                  })}
-                </>}
-              </>}
-              {data.base === BaseTypeEnum.hourly && data.activityType === ActivityTypeEnum.normal ? (
-                <>
-                  {BreakdownComponentMaker({
-                    name: "Hourly Price",
-                    count: ``,
-                    price: "",
-                    sign: "",
-                    total: priceConversion(data.hourlyCost, selectedCurrency, true)
-                  })}
-                </>
-              ) : ""}
-              {vehicleArray.length && data.transferType === TransferTypeEmun.private ? vehicleArray.map((vehicle) => (
-                <>
-                  {BreakdownComponentMaker({
-                    key: vehicle._id,
-                    name: vehicle.name,
-                    count: `${vehicle.count || 1}`,
-                    price: priceConversion(vehicle.price, selectedCurrency, true),
-                    sign: "X",
-                    total: priceConversion(
-                      vehicle.price * (vehicle.count || 1),
-                      selectedCurrency,
-                      true
-                    )
-                  })}
-                </>
-              )) : ""}
-              {data.transferType === TransferTypeEmun.shared && isSharedTransferAvail ? (
-                <>
-                  {BreakdownComponentMaker({
-                    name: "Shared Transfer",
-                    count: `${data.adultCount + data.childCount}`,
-                    price: priceConversion(data.sharedTransferPrice, selectedCurrency, true),
-                    sign: "X",
-                    total: priceConversion(
-                      (data.adultCount + data.childCount) * data.sharedTransferPrice,
-                      selectedCurrency,
-                      true
-                    )
-                  })}
-                </>
-              ) : ""}
-
-
-              <tr>
-                <td className="py-2 ">
-                  <div className="flex gap-[15px] items-center w-full">
-                    <span className="font-medium">Grand Total</span>
-                    <div className="border-b border-dashed flex-1"></div>
-                    <span className="text-right font-medium text-lg">
-                      {priceConversion(
-                        data.grandTotal,
+                ) : (
+                  ""
+                )}
+                {vehicleArray.length &&
+                data.transferType === TransferTypeEmun.private
+                  ? vehicleArray.map((vehicle) => (
+                      <>
+                        {BreakdownComponentMaker({
+                          key: vehicle._id,
+                          name: vehicle.name,
+                          count: `${vehicle.count || 1}`,
+                          price: priceConversion(
+                            vehicle.price,
+                            selectedCurrency,
+                            true
+                          ),
+                          sign: "X",
+                          total: priceConversion(
+                            vehicle.price * (vehicle.count || 1),
+                            selectedCurrency,
+                            true
+                          ),
+                        })}
+                      </>
+                    ))
+                  : ""}
+                {data.transferType === TransferTypeEmun.shared &&
+                isSharedTransferAvail ? (
+                  <>
+                    {BreakdownComponentMaker({
+                      name: "Shared Transfer",
+                      count: `${data.adultCount + data.childCount}`,
+                      price: priceConversion(
+                        data.sharedTransferPrice,
                         selectedCurrency,
                         true
-                      )}
-                    </span>
-                  </div>
-                </td>
-              </tr>
-
-            </tbody>
-          </table>
-          )}
-
-           {!priceDetails && (
-          <table className="w-full text-sm">
-            <tbody>
-              <tr>
-                <td className="py-1">
-                  <div className="flex gap-[15px] items-center w-full">
-                    <span className="font-medium">Grand Total</span>
-                    <div className="border-b border-dashed flex-1"></div>
-                    <span className="text-right font-medium text-lg">
-                      {priceConversion(
-                        data.grandTotal,
+                      ),
+                      sign: "X",
+                      total: priceConversion(
+                        (data.adultCount + data.childCount) *
+                          data.sharedTransferPrice,
                         selectedCurrency,
                         true
-                      )}
-                    </span>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                      ),
+                    })}
+                  </>
+                ) : (
+                  ""
+                )}
+
+                <tr>
+                  <td className="py-2 ">
+                    <div className="flex gap-[15px] items-center w-full">
+                      <span className="font-medium">Grand Total</span>
+                      <div className="border-b border-dashed flex-1"></div>
+                      <span className="text-right font-medium text-lg">
+                        {priceConversion(
+                          data.grandTotal,
+                          selectedCurrency,
+                          true
+                        )}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           )}
 
+          {!priceDetails && (
+            <table className="w-full text-sm">
+              <tbody>
+                <tr>
+                  <td className="py-1">
+                    <div className="flex gap-[15px] items-center w-full">
+                      <span className="font-medium">Grand Total</span>
+                      <div className="border-b border-dashed flex-1"></div>
+                      <span className="text-right font-medium text-lg">
+                        {priceConversion(
+                          data.grandTotal,
+                          selectedCurrency,
+                          true
+                        )}
+                      </span>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     );
@@ -595,24 +732,20 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
             <p className="w-20 border-b my-1"></p>
 
             <table className="w-full text-sm">
-              <tbody >
+              <tbody>
                 <tr className="w-full ">
                   <td className="py-2 w-full ">
                     <div className="flex gap-[15px] items-center w-full">
-                      <span className="">Event ID
-                      </span>
+                      <span className="">Event ID</span>
                       <div className="border-b border-dashed flex-1"></div>
-                      <span className="text-right">
-                        {data?.slot?.EventID}
-                      </span>
+                      <span className="text-right">{data?.slot?.EventID}</span>
                     </div>
                   </td>
                 </tr>
                 <tr className="w-full ">
                   <td className="py-2 w-full ">
                     <div className="flex gap-[15px] items-center w-full">
-                      <span className="">Event Name
-                      </span>
+                      <span className="">Event Name</span>
                       <div className="border-b border-dashed flex-1"></div>
                       <span className="text-right">
                         {data?.slot?.EventName}
@@ -623,11 +756,13 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
                 <tr className="w-full ">
                   <td className="py-2 w-full ">
                     <div className="flex gap-[15px] items-center w-full">
-                      <span className="">Event Time
-                      </span>
+                      <span className="">Event Time</span>
                       <div className="border-b border-dashed flex-1"></div>
                       <span className="text-right">
-                        {format(new Date(data?.slot?.StartDateTime), "d MMM, yyyy")}
+                        {format(
+                          new Date(data?.slot?.StartDateTime),
+                          "d MMM, yyyy"
+                        )}
                       </span>
                     </div>
                   </td>
@@ -635,43 +770,57 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
               </tbody>
             </table>
           </div>
-        ) : ""}
-        <div className={`${data?.slot?.EventID?.length ? " flex justify-end " : " w-full "} py-2  `}>
-          <TimeSlot data={data} handleChangeData={handleChangeData} className={`${data?.slot?.EventID?.length ? " border text-neutral-600 dark:text-neutral-300 " : " w-full bg-blue-600 text-neutral-100 dark:text-neutral-300 "} p-2  rounded-lg `} />
+        ) : (
+          ""
+        )}
+        <div
+          className={`${
+            data?.slot?.EventID?.length ? " flex justify-end " : " w-full "
+          } py-2  `}
+        >
+          <TimeSlot
+            data={data}
+            handleChangeData={handleChangeData}
+            className={`${
+              data?.slot?.EventID?.length
+                ? " border text-neutral-600 dark:text-neutral-300 "
+                : " w-full bg-blue-600 text-neutral-100 dark:text-neutral-300 "
+            } p-2  rounded-lg `}
+          />
         </div>
       </div>
-    )
-  }
-
+    );
+  };
 
   const renderTimeSlot = () => {
     return (
       <div className=" my-4 p-2 border-4 border-blue-600/20 rounded-xl h-40 overflow-y-auto shadow-inner w-full">
         {data?.slotsAvailable && data?.slotsAvailable?.length > 0 ? (
-
           <div className="grid grid-cols-2 gap-3 relative">
             {data?.slotsAvailable?.map((slot) => (
               <div
                 key={slot?.EventID}
                 onClick={() => {
                   if (Number(slot?.Available) >= data?.adultCount) {
-                    handleChangeData("slot", slot)
+                    handleChangeData("slot", slot);
                   }
                 }}
-                className={` ${Number(slot?.Available) < data?.adultCount
-                  ? " border-red-500/20 text-stone-500  "
-                  : slot?.EventID === data.slot?.EventID
+                className={` ${
+                  Number(slot?.Available) < data?.adultCount
+                    ? " border-red-500/20 text-stone-500  "
+                    : slot?.EventID === data.slot?.EventID
                     ? " border-green-500/20 bg-green-100/50 "
                     : " border-green-500/20 "
-                  } relative border-4 rounded-full  w-full pt-2 shadow-md flex flex-col items-center justify-center cursor-pointer`}
+                } relative border-4 rounded-full  w-full pt-2 shadow-md flex flex-col items-center justify-center cursor-pointer`}
               >
                 {slot?.EventID === data.slot?.EventID ? (
-
                   <p className="text-sm text-green-600 font-mono pb-2">
                     <i className="lar la-check-circle text-sm"></i>
                     <span className="pl-1 text-xs">Selected</span>
                   </p>
-                ) : ""}
+                ) : (
+                  ""
+                )}
                 <p className="text-xs">
                   {format(new Date(slot?.StartDateTime), "d-M-yyyy") +
                     " TO " +
@@ -703,7 +852,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
                   <div
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleChangeData("slot", {})
+                      handleChangeData("slot", {});
                     }}
                     className="absolute bg-red-500 text-white h-5 w-5 rounded-full -top-1 right-1 flex gap-1 justify-center items-center"
                   >
@@ -715,148 +864,253 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({ data, index, findSlotsA
               </div>
             ))}
           </div>
-
-        ) : ""}
+        ) : (
+          ""
+        )}
       </div>
-    )
-  }
+    );
+  };
+
+
+    const handleDateOnclick = (date: Date | string) => {
+      if (new Date(date) < new Date()) {
+        return
+      }
+      dispatch(handleDateChange(date))
+    }
 
   return (
     <div
       key={data?._id}
-      className={`${data.isChecked
-        ? data.transferType === TransferTypeEmun.private
-          ? " md:col-span-2  "
-          : " md:col-span-2  "
-        : ""
-        } mb-5`}
+      className={`${
+        data.isChecked
+          ? data.transferType === TransferTypeEmun.private
+            ? " md:col-span-2  "
+            : " md:col-span-2  "
+          : ""
+      } mb-5`}
     >
-      {renderSelectedBadge()}
       <div
-        className={`bg-white border  dark:border-neutral-700 dark:bg-neutral-800 rounded-xl shadow-sm p-4 ${data.isChecked ? " ring-2 ring-green-400/20 " : " "
-          }`}
+        className={`bg-white border  dark:border-neutral-700 dark:bg-neutral-800 rounded-xl shadow-sm p-4 ${
+          data.isChecked ? " ring-2 ring-green-400/20 " : " "
+        }`}
       >
-        <div
-        //  onClick={() => handleChangeData("isChecked", !data.isChecked)}
-          className={`p-2 cursor-pointer flex gap-2 justify-between ${data?.isChecked ? "border-b" : ""}`}
-        >
-
-          <div className="flex gap-5">
-            <div>
-              <Checkbox
-                className="appearance-none focus:outline-none"
-                defaultChecked={data.isChecked}
-                onChange={() => 
-                  handleChangeData("isChecked", !data.isChecked)
-                } name="" />
+        <div className="flex">
+          <div className="w-3/12">
+            <div className="pt-3 pr-3">
+              <GallerySlider
+                uniqueID={`ExperiencesCard_${"id"}`}
+                ratioClass={"aspect-w-6 aspect-h-5"}
+                galleryImgs={attraction?.images || []}
+                galleryClass="rounded-none"
+              />
             </div>
-            <h1 className="font-semibold">{data.name}</h1>
           </div>
-          <div className="flex gap-5 items-center text-center">
-            <p>lowest price</p>
-            <p className="font-semibold">  {data?.isPromoCode && data?.promoAmountAdult ?
-                priceConversion(data?.lowPrice + data?.promoAmountAdult, selectedCurrency, true)
-                :
-                priceConversion(data?.lowPrice, selectedCurrency, true)
-              }</p>
+
+          <div className="w-4/12 p-2">
+            <h1 className="font-semibold mb-3">{data.name}</h1>
+            <p className="text-sm">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et...
+            </p>
+            <button
+              onClick={() => setTab("readmore")}
+              className="mb-5 text-sm text-orange-500 cursor-pointer"
+            >
+              read more
+            </button>
+
+            <div className="flex gap-2">
+              <button
+                onClick={() => setTab("overview")}
+                className="bg-primary-200 text-xs rounded px-2"
+              >
+                Overview
+              </button>
+              <button
+                onClick={() => setTab("inclusion")}
+                className="bg-primary-200 text-xs rounded px-2"
+              >
+                Inclusion & Exclusion
+              </button>
+              <button
+                onClick={() => setTab("tc")}
+                className="bg-primary-200 text-xs rounded px-2"
+              >
+                Terms & Conditions
+              </button>
+            </div>
+
+            <div className="flex gap-5 mt-[51px]">
+              <button
+                onClick={handleAddToCart}
+                className="mt-3 p-2 border border-orange-400 hover:border-orange-700 text-orange-500 hover:text-orange-700"
+              >
+                Add to cart
+              </button>
+              <Link href={"/cart" as Route}>
+                <button
+                  onClick={handleAddToCart}
+                  className="mt-3 p-2 ml-3 border border-red-400 hover:border-red-700 text-red-500 hover:text-red-700"
+                >
+                  Checkout
+                </button>
+              </Link>
+            </div>
           </div>
-          {/* {
-            !data.isChecked ? (
-              <div>
-                <h1><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-                </svg>
-                </h1>
-              </div>
-            ) : (
-              <div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-red-500">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </div>
-            )
-          } */}
-        </div>
-        {data.isChecked ? (
+
           <>
-            <div className="flex">
-              <div className="w-3/12">
-                <Image
-                   alt="activity photo"
-                   src={`${process.env.NEXT_PUBLIC_CDN_URL?.concat(
-                     attraction?.images[1] || ""
-                   )}`}
-                   className="w-full pr-4 pt-3 min-h-[150px]"
-                   width={300}
-                   height={100}
+            {tab === "readmore" && (
+              <div className="fixed w-full h-full z-50 left-0 top-0 backdrop-blur-xl bg-opacity-30 bg-black">
+                <div className="flex w-full justify-center">
+                  <div
+                    onClick={() => setTab("")}
+                    className="absolute top-[110px] right-[300px] bg-white rounded-full cursor-pointer"
+                  >
+                    <XMarkIcon height={40} width={40} />
+                  </div>
+                  <div className="bg-white mt-[120px] min-w-[400px] flex justify-center min-h-[300px] max-h-[510px] overflow-x-auto py-5 rounded-xl shadow-2xl">
+                    <p>Description</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+
+          <>
+            {tab === "overview" && (
+              <div className="fixed w-full h-full z-50 left-0 top-0 backdrop-blur-xl bg-opacity-30 bg-black">
+                <div className="flex w-full justify-center">
+                  <div
+                    onClick={() => setTab("")}
+                    className="absolute top-[110px] right-[300px] bg-white rounded-full cursor-pointer"
+                  >
+                    <XMarkIcon height={40} width={40} />
+                  </div>
+                  <div className="bg-white mt-[120px] min-w-[400px] flex justify-center min-h-[300px] max-h-[510px] overflow-x-auto py-5 rounded-xl shadow-2xl">
+                    <p>Overview</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+
+          <>
+            {tab === "inclusion" && (
+              <div className="fixed w-full h-full z-50 left-0 top-0 backdrop-blur-xl bg-opacity-30 bg-black">
+                <div className="flex w-full justify-center">
+                  <div
+                    onClick={() => setTab("")}
+                    className="absolute top-[110px] right-[300px] bg-white rounded-full cursor-pointer"
+                  >
+                    <XMarkIcon height={40} width={40} />
+                  </div>
+                  <div className="bg-white mt-[120px] min-w-[400px] flex justify-center min-h-[300px] max-h-[510px] overflow-x-auto py-5 rounded-xl shadow-2xl">
+                    <p>Inclusion</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+
+          <>
+            {tab === "tc" && (
+              <div className="fixed w-full h-full z-50 left-0 top-0 backdrop-blur-xl bg-opacity-30 bg-black">
+                <div className="flex w-full justify-center">
+                  <div
+                    onClick={() => setTab("")}
+                    className="absolute top-[110px] right-[300px] bg-white rounded-full cursor-pointer"
+                  >
+                    <XMarkIcon height={40} width={40} />
+                  </div>
+                  <div className="bg-white mt-[120px] min-w-[400px] flex justify-center min-h-[300px] max-h-[510px] overflow-x-auto py-5 rounded-xl shadow-2xl">
+                    <p>Terms & Conditions</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+
+          <div className="w-5/12">
+            <div className="flex justify-between">
+              <div className="py-2">
+                <p className=" text-xs text-gray-400 py-1">
+                  Choose transfer type?
+                </p>
+                <TransferInput
+                  data={data}
+                  handleChangeData={handleChangeData}
                 />
               </div>
 
-              <div className="w-9/12">
-
-              <div className="flex justify-between">
+              {/* On Hourly */}
+              {data.base !== BaseTypeEnum.person ? (
                 <div className="py-2">
                   <p className=" text-xs text-gray-400 py-1">
-                    Choose transfer type?
+                    Choose number of hours?
                   </p>
-                  <TransferInput
+                  <HourInput data={data} handleChangeData={handleChangeData} />
+                </div>
+              ) : (
+                ""
+              )}
+
+              {/* render transfer details */}
+              {renderTransferDetails()}
+            </div>
+
+            <div className="flex justify-between">
+              {/* On Person */}
+              {data.base !== BaseTypeEnum.hourly ? (
+                <div className="py-2">
+                  <p className=" text-xs text-gray-400 py-1">
+                    Choose your pax?
+                  </p>
+                  <GuestsInput
                     data={data}
                     handleChangeData={handleChangeData}
                   />
                 </div>
+              ) : (
+                ""
+              )}
 
-                {/* On Hourly */}
-                {data.base !== BaseTypeEnum.person ? (
-                  <div className="py-2">
-                    <p className=" text-xs text-gray-400 py-1">
-                      Choose number of hours?
-                    </p>
-                    <HourInput
-                      data={data}
-                      handleChangeData={handleChangeData}
-                    />
-                  </div>
-                ) : ""}
+              <div className="py-2 ">
+                <div className=" text-xs text-gray-400 dark:text-neutral-200 py-1">
+                  Select tour date
+                </div>
+                <form className="flex flex-col dark:bg-green-600/10 border border-gray-200 dark:border-gray-700 rounded-lg">
+                  <StayDatesRangeInput
+                    setDate={setDate}
+                    attraction={attraction}
+                    className="flex-1 z-[11]"
+                  />
+                {/* <SlideCalender  handleFunction={handleDateOnclick} initialSelection={initialDate ? new Date(initialDate) : activities.length ? new Date(activities[0].date) : new Date()} /> */}
 
-                {/* On Person */}
-                {data.base !== BaseTypeEnum.hourly ? (
-                  <div className="py-2">
-                    <p className=" text-xs text-gray-400 py-1">
-                      Choose your pax?
-                    </p>
-                    <GuestsInput
-                      data={data}
-                      handleChangeData={handleChangeData}
-                    />
-                  </div>
-                ) : ""}
-
-                {/* render transfer details */}
-                {renderTransferDetails()}
+                </form>
               </div>
-
-              <div className="">
-                {/* Price Breadown section */}
-                <div className="">{PriceBreakDownSection()} </div>
-              </div>
-              </div>
-
             </div>
-          </>
-        ) : (
-          ""
-        )}
+
+            <div className="">
+              {/* Price Breadown section */}
+              <div className="">{PriceBreakDownSection()} </div>
+            </div>
+          </div>
+        </div>
+
         {attraction?.isApiConnected &&
-          attraction?.connectedApi === "63f0a47b479d4a0376fe12f4" &&
-          data?.isChecked &&
-          data?.date &&
-          data?.adultCount > 0 ? (
+        attraction?.connectedApi === "63f0a47b479d4a0376fe12f4" &&
+        data?.isChecked &&
+        data?.date &&
+        data?.adultCount > 0 ? (
           <div className="mt-2">
             {/* render time slot component */}
             {/* {renderTimeSlot()} */}
             {renderTimeSlotSection()}
           </div>
-        ) : ""}
+        ) : (
+          ""
+        )}
         {/* <div className="flex justify-between gap-2 text-gray-500 pt-2">
           <div className="text-sm">per {data?.base}*</div>
           <div className="text-xs text-gray-400 ">

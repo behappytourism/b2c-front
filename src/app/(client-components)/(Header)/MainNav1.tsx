@@ -92,7 +92,13 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
                 </span>
                 <span className="">{globalData?.home?.phoneNumber1}</span>
               </a> */}
-              <Cart className="flex items-center" />
+              {/* <Cart className="flex items-center" /> */}
+             
+             <Link className="self-center"  href={"/cart" as Route}>
+              <ShoppingCartIcon  className="w-7 h-7"  />
+              </Link>
+
+
               <CurrencySelector className="flex items-center" />
               <SwitchDarkMode />
               <div className="px-1" />

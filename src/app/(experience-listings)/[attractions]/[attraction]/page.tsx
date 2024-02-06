@@ -115,6 +115,11 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   //
   const [skipReview, setSkipReview] = useState<number>(0);
   const [isVideoModal, setIsVideoModal] = useState<boolean>(false);
+  const [addToCart, setAddToCart] = useState<boolean>(false);
+  const [checkout, setCheckout] = useState<boolean>(false);
+  const [ATCIndex, setATCIndex] = useState<number>(0);
+  
+
 
   //
   const [attractionData, setAttractionData] = useState<ExcursionDetails>();
@@ -130,7 +135,6 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   //
   const [date, setDate] = useState<Date | null>(null);
   const { activities } = useSelector((state: RootState) => state.attraction);
-  console.log(activities, "redux");
 
   const [activitySelected, setActivitySelected] = useState(
     Array(attractionData?.activities.length).fill(false)
@@ -141,8 +145,6 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     updatedActivitySelected[index] = !updatedActivitySelected[index];
     setActivitySelected(updatedActivitySelected);
   };
-
-  console.log(attractionData?.activities);
 
   const handleChangeData = (keyName: string, value: any, index: number) => {
     dispatch(
@@ -396,6 +398,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   // Fetching initial Date from query
   const initialDate = new Date();
+  
 
   const handleDateOnclick = (date: Date | string) => {
     if (new Date(date) < new Date()) {
@@ -454,6 +457,11 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
               attraction={attractionData}
               data={activity}
               index={index}
+              setAddToCart={setAddToCart}
+              addToCart={addToCart}
+              setCheckout={setCheckout}
+              checkout={checkout}
+              setATCIndex={setATCIndex}
               findSlotsAvailable={findSlotsAvailable}
             />
           );
@@ -617,19 +625,6 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
         {/* MAP */}
         <div className="aspect-w-5 aspect-h-5 sm:aspect-h-3 ring-1 ring-black/10 rounded-xl z-0">
           <div className="rounded-xl overflow-hidden z-0">
-            {/* <iframe
-              width="100%"
-              height="100%"
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps/embed/v1/view?key=AIzaSyAGVJfZMAKYfZ71nzL_v5i3LjTTWnCYwTY&center=25.250508,55.298822&zoom=15"
-            ></iframe> */}
-            {/* <iframe width="100%"
-              height="100%"
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade" src={attractionData?.mapLink}  ></iframe> */}
             <div className=" overflow-hidden w-full h-full ">
               {latitude &&
               longitude &&
@@ -685,8 +680,11 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   };
 
   const selectedActivities = useMemo(() => {
-    return activities.filter((activity) => activity.isChecked);
+    return activities
   }, [activities]);
+
+  console.log(selectedActivities, "selected activites");
+  
 
   const [errorModalContent, setErrorModalContent] = useState("");
   3;
@@ -694,24 +692,73 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     setErrorModalContent("");
   };
 
-  const handleAddToCart = () => {
+  // const handleAddToCart = (index: number) => {
+  //   try {
+  //     setErrorModalContent("");
+  //     for (let i = 0; i < selectedActivities?.length; i++) {
+  //       if (selectedActivities[i]?.slotsAvailable?.length) {
+  //         if (!selectedActivities[i].hasOwnProperty("slot")) {
+  //           throw new Error("Select the slot for the next step");
+  //         } else if (!selectedActivities[i]?.slot.hasOwnProperty("EventID")) {
+  //           throw new Error("Select the slot for the next step");
+  //         }
+  //       }
+  //     }
+  //     dispatch(handleAddtocart(selectedActivities));
+  //     // router.push(`${thisPathname}/activity/checkout` as Route);
+  //   } catch (error) {
+  //     setErrorModalContent(`${error}`);
+  //   }
+  // };
+
+
+  const handleAddToCart = (index: number) => {
     try {
       setErrorModalContent("");
-      for (let i = 0; i < selectedActivities?.length; i++) {
-        if (selectedActivities[i]?.slotsAvailable?.length) {
-          if (!selectedActivities[i].hasOwnProperty("slot")) {
-            throw new Error("Select the slot for the next step");
-          } else if (!selectedActivities[i]?.slot.hasOwnProperty("EventID")) {
-            throw new Error("Select the slot for the next step");
-          }
+      const selectedActivityAtIndex = selectedActivities[index];
+  
+      if (selectedActivityAtIndex?.slotsAvailable?.length) {
+        if (!selectedActivityAtIndex.hasOwnProperty("slot") || 
+            !selectedActivityAtIndex.slot.hasOwnProperty("EventID")) {
+          throw new Error("Select the slot for the next step");
         }
       }
-      dispatch(handleAddtocart(selectedActivities));
-      router.push(`${thisPathname}/activity/checkout` as Route);
+  
+      dispatch(handleAddtocart([selectedActivityAtIndex]));
+      // router.push(`${thisPathname}/activity/checkout` as Route);
     } catch (error) {
       setErrorModalContent(`${error}`);
     }
   };
+
+
+  const handleCheckout = (index: number) => {
+    try {
+      setErrorModalContent("");
+      const selectedActivityAtIndex = selectedActivities[index];
+  
+      if (selectedActivityAtIndex?.slotsAvailable?.length) {
+        if (!selectedActivityAtIndex.hasOwnProperty("slot") || 
+            !selectedActivityAtIndex.slot.hasOwnProperty("EventID")) {
+          throw new Error("Select the slot for the next step");
+        }
+      }
+  
+      dispatch(handleAddtocart([selectedActivityAtIndex]));
+    } catch (error) {
+      setErrorModalContent(`${error}`);
+    }
+  };
+  
+
+  useEffect(() => {
+    handleAddToCart(ATCIndex)
+  },[addToCart])
+
+
+  useEffect(() => {
+    handleCheckout(ATCIndex)
+  },[checkout])
 
   const GrandTotal: number = useMemo(() => {
     let val: number = selectedActivities.reduce((acc, item) => {
@@ -794,13 +841,13 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
         </div> */}
 
         {/* SUBMIT */}
-        <ButtonPrimary
+        {/* <ButtonPrimary
           className="w-full rounded-lg"
           onClick={() => handleAddToCart()}
           //href={`${thisPathname}/activity?date=${date?.toString()}` as Route}
         >
           Checkout
-        </ButtonPrimary>
+        </ButtonPrimary> */}
       </div>
     );
   };
@@ -905,15 +952,20 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
           )}
         </div>
       </header>
-
+      
+    
+      {attractionData && (
+            <>
       <div className="relative z-10 mt-4">
         <div className="mt-2">{renderSection1()}</div>
       </div>
+      </>
+      )}
 
       {/* Main */}
       <main className="relative z-10 mt-5 flex flex-col lg:flex-row">
         {/* CONTENT */}
-        <div className="w-full lg:w-3/5 xl:w-2/3 space-y-8 lg:pr-10 ">
+        <div className="w-full space-y-8 lg:pr-10 ">
           {attractionData && (
             <>
               {renderActivitySection()}
@@ -1003,7 +1055,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
         </div>
 
         {/* SIDEBAR */}
-        <div className="hidden lg:block flex-grow mt-14 lg:mt-0">
+        {/* <div className="hidden lg:block flex-grow mt-14 lg:mt-0">
           <div className="sticky top-28">
             {attractionData && <>{renderSidebar()}</>}
           </div>
@@ -1050,7 +1102,8 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
               </div>
             </>
           )}
-        </div>
+        </div> */}
+
       </main>
       {/* STICKY FOOTER MOBILE */}
       <MobileFooterStickyDate attractionData={attractionData} />
