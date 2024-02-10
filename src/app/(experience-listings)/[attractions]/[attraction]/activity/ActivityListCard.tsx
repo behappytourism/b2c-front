@@ -66,9 +66,6 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
   );
   const { jwtToken } = useSelector((state: RootState) => state.users);
 
-  console.log(data, "data");
-  
-
   const [priceDetails, setPriceDetails] = useState(false);
   const [defaultImage, setDefaultImage] = useState(0);
   const [date, setDate] = useState<Date | null>(null);
@@ -902,21 +899,19 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
       >
         <div className="flex">
           <div className="w-3/12">
-            <div 
-            onClick={() => setTab("image")}
-            className="pt-3 pr-3">
+            <div onClick={() => setTab("image")} className="pt-3 pr-3">
               {/* <GallerySlider
                 uniqueID={`ExperiencesCard_${"id"}`}
                 ratioClass={"aspect-w-6 aspect-h-5"}
                 galleryImgs={data?.images || []}
                 galleryClass="rounded-none cursor-pointer"
               /> */}
-              <Image 
-              className="rounded-none cursor-pointer"
-              width={1000}
-              height={1000}
-              alt="picture 1"
-              src={`${process.env.NEXT_PUBLIC_CDN_URL}${data?.images[0]}`}
+              <Image
+                className="rounded-none cursor-pointer"
+                width={1000}
+                height={1000}
+                alt="picture 1"
+                src={`${process.env.NEXT_PUBLIC_CDN_URL}${data?.images[0]}`}
               />
             </div>
           </div>
@@ -952,12 +947,12 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
               </button>
               {data?.termsAndConditions && (
                 <button
-                onClick={() => setTab("tc")}
-                className="bg-primary-200 text-xs rounded px-2"
+                  onClick={() => setTab("tc")}
+                  className="bg-primary-200 text-xs rounded px-2"
                 >
-                Terms & Conditions
-              </button>
-                )}
+                  Terms & Conditions
+                </button>
+              )}
             </div>
 
             <div className="flex gap-5 mt-3">
@@ -1018,28 +1013,27 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                     <XMarkIcon height={40} width={40} />
                   </div>
                   <div className="bg-white mt-[10px] min-w-[400px] max-w-[700px] max-h-[600px] text-center overflow-x-auto rounded-xl shadow-2xl">
-                   <Image
-                   width={1000}
-                   height={300}
-                   alt="picture 1"
-                   src={`${process.env.NEXT_PUBLIC_CDN_URL}${data?.images[defaultImage]}`}
-                   />
+                    <Image
+                      width={1000}
+                      height={300}
+                      alt="picture 1"
+                      src={`${process.env.NEXT_PUBLIC_CDN_URL}${data?.images[defaultImage]}`}
+                    />
 
-
-                   <div className="grid grid-cols-6 gap-2">
-                   {data?.images?.map((image, index) => (
-                   <div className="-mt-[80px] ml-4">
-                      <Image
-                   width={100}
-                   onClick={() => setDefaultImage(index)}
-                   height={100}
-                  alt={`picture ${index + 1}`}
-                   className="rounded shadow-2xl w-full max-h-[70px] cursor-pointer"
-                   src={`${process.env.NEXT_PUBLIC_CDN_URL}${image}`}
-                   />
-                   </div>
-                   ))}
-                   </div>
+                    <div className="grid grid-cols-6 gap-2">
+                      {data?.images?.map((image, index) => (
+                        <div className="-mt-[80px] ml-4">
+                          <Image
+                            width={100}
+                            onClick={() => setDefaultImage(index)}
+                            height={100}
+                            alt={`picture ${index + 1}`}
+                            className="rounded shadow-2xl w-full max-h-[70px] cursor-pointer"
+                            src={`${process.env.NEXT_PUBLIC_CDN_URL}${image}`}
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

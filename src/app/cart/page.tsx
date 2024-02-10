@@ -80,10 +80,6 @@ const Cart = () => {
 
   const [finalPayment, setFinalPayment] = useState(true);
 
-  console.log(cart, "cart");
-
-  console.log(transferCart, "transferCart");
-
   const toggleBriefPayment = (index: number) => {
     const updatedBriefPayments = [...briefPayments];
     updatedBriefPayments[index] = !updatedBriefPayments[index];
@@ -615,7 +611,7 @@ const Cart = () => {
                         )}
                       </span>
                     </div>
-                    {item.promoCode !== "FALSE" && (
+                    {item.promoCode !== "" && (
                       <div className="p-1 rounded-xl flex justify-between  text-blue-700">
                         <span className="flex gap-1 items-center">
                           <span className="">

@@ -118,8 +118,6 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   const [addToCart, setAddToCart] = useState<boolean>(false);
   const [checkout, setCheckout] = useState<boolean>(false);
   const [ATCIndex, setATCIndex] = useState<number>(0);
-  
-
 
   //
   const [attractionData, setAttractionData] = useState<ExcursionDetails>();
@@ -398,7 +396,6 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
 
   // Fetching initial Date from query
   const initialDate = new Date();
-  
 
   const handleDateOnclick = (date: Date | string) => {
     if (new Date(date) < new Date()) {
@@ -442,13 +439,16 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   const renderActivitySection = () => {
     return (
       <div className="border-b pb-5">
-        <h2 className="text-2xl md:text-3xl w-fit pb-3 font-semibold">Select Tour Options</h2>
-        {typeof attractionData?.highlights === 'string' && attractionData?.highlights.length > 50 && (
-  <div
-    dangerouslySetInnerHTML={{ __html: attractionData?.highlights }}
-    className="text-neutral-6000 text-sm mb-10 dark:text-neutral-300"
-  ></div>
-)}
+        <h2 className="text-2xl md:text-3xl w-fit pb-3 font-semibold">
+          Select Tour Options
+        </h2>
+        {typeof attractionData?.highlights === "string" &&
+          attractionData?.highlights.length > 50 && (
+            <div
+              dangerouslySetInnerHTML={{ __html: attractionData?.highlights }}
+              className="text-neutral-6000 text-sm mb-10 dark:text-neutral-300"
+            ></div>
+          )}
 
         {activities?.map((activity, index) => {
           return (
@@ -473,7 +473,9 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   const renderSection2 = () => {
     return (
       <div className="border-b pb-6">
-        <h2 className="text-2xl font-semibold md:text-3xl w-fit mb-3">Highlights</h2>
+        <h2 className="text-2xl font-semibold md:text-3xl w-fit mb-3">
+          Highlights
+        </h2>
         {attractionData?.highlights && (
           <div
             dangerouslySetInnerHTML={{ __html: attractionData?.highlights }}
@@ -488,7 +490,9 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     return (
       <div className="pb-10 border-b">
         <div className="mb-5">
-          <h2 className="text-2xl font-semibold md:text-3xl w-fit pb-3">Availability</h2>
+          <h2 className="text-2xl font-semibold md:text-3xl w-fit pb-3">
+            Availability
+          </h2>
           <span className="block mt-5 text-neutral-500 dark:text-neutral-400">
             Included in the Time
           </span>
@@ -520,7 +524,9 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     return (
       <div key={section._id} className="pb-8 border-b">
         {/* HEADING */}
-        <h2 className="text-2xl font-semibold md:text-3xl w-fit pb-3 mb-5">{section.title}</h2>
+        <h2 className="text-2xl font-semibold md:text-3xl w-fit pb-3 mb-5">
+          {section.title}
+        </h2>
 
         {/* desc */}
         {section.body && (
@@ -619,7 +625,9 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
       <div className="">
         {/* HEADING */}
         <div>
-          <h2 className="text-2xl md:text-3xl w-fit pb-3 font-semibold mb-5">Location</h2>
+          <h2 className="text-2xl md:text-3xl w-fit pb-3 font-semibold mb-5">
+            Location
+          </h2>
         </div>
 
         {/* MAP */}
@@ -680,11 +688,10 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   };
 
   const selectedActivities = useMemo(() => {
-    return activities
+    return activities;
   }, [activities]);
 
-  console.log(selectedActivities, "selected activites");
-  
+  // console.log(selectedActivities, "selected activites");
 
   const [errorModalContent, setErrorModalContent] = useState("");
   3;
@@ -711,19 +718,20 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   //   }
   // };
 
-
   const handleAddToCart = (index: number) => {
     try {
       setErrorModalContent("");
       const selectedActivityAtIndex = selectedActivities[index];
-  
+
       if (selectedActivityAtIndex?.slotsAvailable?.length) {
-        if (!selectedActivityAtIndex.hasOwnProperty("slot") || 
-            !selectedActivityAtIndex.slot.hasOwnProperty("EventID")) {
+        if (
+          !selectedActivityAtIndex.hasOwnProperty("slot") ||
+          !selectedActivityAtIndex.slot.hasOwnProperty("EventID")
+        ) {
           throw new Error("Select the slot for the next step");
         }
       }
-  
+
       dispatch(handleAddtocart([selectedActivityAtIndex]));
       // router.push(`${thisPathname}/activity/checkout` as Route);
     } catch (error) {
@@ -731,47 +739,45 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     }
   };
 
-
   const handleCheckout = (index: number) => {
     try {
       setErrorModalContent("");
       const selectedActivityAtIndex = selectedActivities[index];
-  
+
       if (selectedActivityAtIndex?.slotsAvailable?.length) {
-        if (!selectedActivityAtIndex.hasOwnProperty("slot") || 
-            !selectedActivityAtIndex.slot.hasOwnProperty("EventID")) {
+        if (
+          !selectedActivityAtIndex.hasOwnProperty("slot") ||
+          !selectedActivityAtIndex.slot.hasOwnProperty("EventID")
+        ) {
           throw new Error("Select the slot for the next step");
         }
       }
-  
+
       dispatch(handleAddtocart([selectedActivityAtIndex]));
     } catch (error) {
       setErrorModalContent(`${error}`);
     }
   };
-  
 
   useEffect(() => {
-    {addToCart === true && (
-      handleAddToCart(ATCIndex)
-    )}
+    {
+      addToCart === true && handleAddToCart(ATCIndex);
+    }
 
-    {addToCart === true && (
-      setAddToCart(false)
-    )}
-  },[addToCart])
-
+    {
+      addToCart === true && setAddToCart(false);
+    }
+  }, [addToCart]);
 
   useEffect(() => {
-  
-    {checkout === true && (
-      handleCheckout(ATCIndex)
-    )}
+    {
+      checkout === true && handleCheckout(ATCIndex);
+    }
 
-    {checkout === true && (
-      setCheckout(false)
-    )}
-  },[checkout])
+    {
+      checkout === true && setCheckout(false);
+    }
+  }, [checkout]);
 
   const GrandTotal: number = useMemo(() => {
     let val: number = selectedActivities.reduce((acc, item) => {
@@ -965,14 +971,13 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
           )}
         </div>
       </header>
-      
-    
+
       {attractionData && (
-            <>
-      <div className="relative z-10 mt-4">
-        <div className="mt-2">{renderSection1()}</div>
-      </div>
-      </>
+        <>
+          <div className="relative z-10 mt-4">
+            <div className="mt-2">{renderSection1()}</div>
+          </div>
+        </>
       )}
 
       {/* Main */}
@@ -1116,7 +1121,6 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
             </>
           )}
         </div> */}
-
       </main>
       {/* STICKY FOOTER MOBILE */}
       <MobileFooterStickyDate attractionData={attractionData} />
