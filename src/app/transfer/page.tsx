@@ -113,7 +113,7 @@ const PageHome = () => {
         />
 
         <div className=" relative container space-y-10 lg:space-y-12 mt-[500px]">
-         <p>ahdusdhjs</p>
+        
         </div>
       </div>
     </main>

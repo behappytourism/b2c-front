@@ -217,7 +217,12 @@ export interface ActivityExcursion {
   _id: UUID | string;
   attraction: UUID | string;
   name: string;
+  images: string[]
   facilities: string;
+  slug: string;
+  destination: {
+    name: string;
+  };
   adultAgeLimit: number;
   adultPrice: number;
   childAgeLimit: number;
@@ -236,6 +241,9 @@ export interface ActivityExcursion {
   updatedAt: Date | string;
   __v?: number;
   description: string;
+  overview: string;
+  inculsionsAndExclusions: string;
+  termsAndConditions: string;
   activityType: ActivityTypeEnum;
   isPrivateTransferAvailable: boolean;
   isSharedTransferAvailable: boolean;

@@ -15,7 +15,10 @@ import React, { FC, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TransferInput from "./TransferInput";
 import GuestsInput from "./GuestsInput";
-import { handleChangeActivityData, handleDateChange } from "@/redux/features/attractionSlice";
+import {
+  handleChangeActivityData,
+  handleDateChange,
+} from "@/redux/features/attractionSlice";
 import HourInput from "./HourInput";
 import { format } from "date-fns";
 import TimeSlot from "./TimeSlot";
@@ -63,11 +66,14 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
   );
   const { jwtToken } = useSelector((state: RootState) => state.users);
 
+  console.log(data, "data");
+  
+
   const [priceDetails, setPriceDetails] = useState(false);
+  const [defaultImage, setDefaultImage] = useState(0);
   const [date, setDate] = useState<Date | null>(null);
   const [tab, setTab] = useState("");
   const initialDate = new Date();
-
 
   // Promotion Calculation function.
   const promotionCalculationHandler = (
@@ -871,13 +877,12 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
     );
   };
 
-
-    const handleDateOnclick = (date: Date | string) => {
-      if (new Date(date) < new Date()) {
-        return
-      }
-      dispatch(handleDateChange(date))
+  const handleDateOnclick = (date: Date | string) => {
+    if (new Date(date) < new Date()) {
+      return;
     }
+    dispatch(handleDateChange(date));
+  };
 
   return (
     <div
@@ -897,30 +902,42 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
       >
         <div className="flex">
           <div className="w-3/12">
-            <div className="pt-3 pr-3">
-              <GallerySlider
+            <div 
+            onClick={() => setTab("image")}
+            className="pt-3 pr-3">
+              {/* <GallerySlider
                 uniqueID={`ExperiencesCard_${"id"}`}
                 ratioClass={"aspect-w-6 aspect-h-5"}
-                galleryImgs={attraction?.images || []}
-                galleryClass="rounded-none"
+                galleryImgs={data?.images || []}
+                galleryClass="rounded-none cursor-pointer"
+              /> */}
+              <Image 
+              className="rounded-none cursor-pointer"
+              width={1000}
+              height={1000}
+              alt="picture 1"
+              src={`${process.env.NEXT_PUBLIC_CDN_URL}${data?.images[0]}`}
               />
             </div>
           </div>
 
           <div className="w-4/12 p-2">
-            <h1 className="font-semibold mb-3">{data.name}</h1>
+            <h1 className="font-semibold mb-3">{data?.name}</h1>
             <p className="text-sm">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et...
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: data?.description.slice(0, 100) + "...",
+                }}
+              />
+              <button
+                onClick={() => setTab("readmore")}
+                className="text-sm text-orange-500 cursor-pointer"
+              >
+                read more
+              </button>
             </p>
-            <button
-              onClick={() => setTab("readmore")}
-              className="mb-5 text-sm text-orange-500 cursor-pointer"
-            >
-              read more
-            </button>
 
-            <div className="flex gap-2">
+            <div className="flex gap-2 mt-3">
               <button
                 onClick={() => setTab("overview")}
                 className="bg-primary-200 text-xs rounded px-2"
@@ -933,15 +950,17 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
               >
                 Inclusion & Exclusion
               </button>
-              <button
+              {data?.termsAndConditions && (
+                <button
                 onClick={() => setTab("tc")}
                 className="bg-primary-200 text-xs rounded px-2"
-              >
+                >
                 Terms & Conditions
               </button>
+                )}
             </div>
 
-            <div className="flex gap-5 mt-[51px]">
+            <div className="flex gap-5 mt-3">
               <button
                 onClick={handleAddToCart}
                 className="mt-3 p-2 border border-orange-400 hover:border-orange-700 text-orange-500 hover:text-orange-700"
@@ -965,12 +984,62 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute top-[110px] right-[300px] bg-white rounded-full cursor-pointer"
+                    className="absolute top-[110px] right-[260px] bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white mt-[120px] min-w-[400px] flex justify-center min-h-[300px] max-h-[510px] overflow-x-auto py-5 rounded-xl shadow-2xl">
-                    <p>Description</p>
+                  <div className="bg-white mt-[120px] min-w-[400px]  max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">
+                    <p className="text-lg font-semibold underline pb-2">
+                      Description
+                    </p>
+                    <div>
+                      <p className="text-sm text-left">
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: data?.description,
+                          }}
+                        />
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+
+          <>
+            {tab === "image" && (
+              <div className="fixed w-full h-full z-50 left-0 top-0 backdrop-blur-xl bg-opacity-30 bg-black">
+                <div className="flex w-full justify-center">
+                  <div
+                    onClick={() => setTab("")}
+                    className="absolute top-[110px] right-[200px] bg-white rounded-full cursor-pointer"
+                  >
+                    <XMarkIcon height={40} width={40} />
+                  </div>
+                  <div className="bg-white mt-[10px] min-w-[400px] max-w-[700px] max-h-[600px] text-center overflow-x-auto rounded-xl shadow-2xl">
+                   <Image
+                   width={1000}
+                   height={300}
+                   alt="picture 1"
+                   src={`${process.env.NEXT_PUBLIC_CDN_URL}${data?.images[defaultImage]}`}
+                   />
+
+
+                   <div className="grid grid-cols-6 gap-2">
+                   {data?.images?.map((image, index) => (
+                   <div className="-mt-[80px] ml-4">
+                      <Image
+                   width={100}
+                   onClick={() => setDefaultImage(index)}
+                   height={100}
+                  alt={`picture ${index + 1}`}
+                   className="rounded shadow-2xl w-full max-h-[70px] cursor-pointer"
+                   src={`${process.env.NEXT_PUBLIC_CDN_URL}${image}`}
+                   />
+                   </div>
+                   ))}
+                   </div>
                   </div>
                 </div>
               </div>
@@ -987,8 +1056,19 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white mt-[120px] min-w-[400px] flex justify-center min-h-[300px] max-h-[510px] overflow-x-auto py-5 rounded-xl shadow-2xl">
-                    <p>Overview</p>
+                  <div className="bg-white mt-[120px] min-w-[400px] max-w-[450px] p-2 text-center max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">
+                    <p className="text-lg font-semibold underline pb-2">
+                      Overview
+                    </p>
+                    <div>
+                      <p className="text-sm text-left">
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: data?.overview,
+                          }}
+                        />
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1005,8 +1085,19 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white mt-[120px] min-w-[400px] flex justify-center min-h-[300px] max-h-[510px] overflow-x-auto py-5 rounded-xl shadow-2xl">
-                    <p>Inclusion</p>
+                  <div className="bg-white mt-[120px] min-w-[400px] max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">
+                    <p className="text-lg font-semibold underline pb-2">
+                      Inclusion & Exclusion
+                    </p>
+                    <div>
+                      <p className="text-sm text-left">
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: data?.inculsionsAndExclusions,
+                          }}
+                        />
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1023,8 +1114,20 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white mt-[120px] min-w-[400px] flex justify-center min-h-[300px] max-h-[510px] overflow-x-auto py-5 rounded-xl shadow-2xl">
-                    <p>Terms & Conditions</p>
+
+                  <div className="bg-white mt-[120px] min-w-[400px] max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">
+                    <p className="text-lg font-semibold underline pb-2">
+                      Terms & Conditions
+                    </p>
+                    <div>
+                      <p className="text-sm text-left">
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: data?.termsAndConditions,
+                          }}
+                        />
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1085,8 +1188,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                     attraction={attraction}
                     className="flex-1 z-[11]"
                   />
-                {/* <SlideCalender  handleFunction={handleDateOnclick} initialSelection={initialDate ? new Date(initialDate) : activities.length ? new Date(activities[0].date) : new Date()} /> */}
-
+                  {/* <SlideCalender  handleFunction={handleDateOnclick} initialSelection={initialDate ? new Date(initialDate) : activities.length ? new Date(activities[0].date) : new Date()} /> */}
                 </form>
               </div>
             </div>

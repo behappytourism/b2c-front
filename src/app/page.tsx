@@ -100,7 +100,7 @@ const PageHome = () => {
   }, []);
 
   return (
-    <main className="nc-PageHome container relative overflow-hidden">
+    <main className="nc-PageHome flex justify-center relative overflow-hidden">
       {/* GLASSMOPHIN */}
       <BgGlassmorphism />
 
@@ -112,7 +112,7 @@ const PageHome = () => {
           className="hidden lg:block pt-10 lg:pt-16 lg:pb-16 "
         />
 
-        <div className=" relative container space-y-10 lg:space-y-12 mt-10 sm:mt-52  lg:mt-44">
+        <div className="relative container space-y-10 lg:space-y-12 mt-[150px]">
           {/* SECTION 1 */}
 
           {globalData.topAttractions?.length ? (

@@ -138,7 +138,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
             </h2>
             <div className="flex gap-5 text-gray-500 justify-center">
               <p className={`font-thin text-sm capitalize overflow-hidden`}>
-                {destination.name}, {category.categoryName}
+                {destination?.name}, {category?.categoryName}
               </p>
               <StartRating
                 reviewCount={totalReviews}

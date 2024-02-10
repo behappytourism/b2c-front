@@ -64,7 +64,7 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
                 }
               }}
               className={`flex-shrink-0 flex h-fit items-center px-4 py-3 cursor-pointer text-sm lg:text-base font-medium ${active
-                ? "text-white bg-orange-500 hover:bg-orange-700 rounded-xl"
+                ? "text-white bg-primary-300 hover:bg-primary-400 rounded-xl"
                 : "text-black bg-gray-200 hover:bg-gray-300 dark:hover:text-neutral-200 rounded-xl"
                 } `}
               key={tab}
@@ -114,7 +114,7 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
     <div className="w-full ">
       {renderTab()}
       </div>
-      <div className="pt-2">
+      <div className="mt-10">
         {renderForm()}
       </div>
 

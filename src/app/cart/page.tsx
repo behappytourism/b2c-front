@@ -27,6 +27,7 @@ import {
   ArrowRightIcon,
 } from "@heroicons/react/24/solid";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { handleRemoveFromTransferCart } from "@/redux/features/transferSlice";
 
 const Cart = () => {
   const thisPathname = usePathname();
@@ -62,15 +63,26 @@ const Cart = () => {
   );
   const { jwtToken } = useSelector((state: RootState) => state.users);
   const { cart } = useSelector((state: RootState) => state.attraction);
+  const { transfer, transferCart } = useSelector(
+    (state: RootState) => state.transfer
+  );
 
   const [briefPayments, setBriefPayments] = useState(cart.map(() => true));
-  const [briefTransfer, setBriefTransfer] = useState(true);
+  const [briefTransferStates, setBriefTransferStates] = useState<boolean[]>(
+    Array(transferCart.length).fill(true)
+  );
 
+  const toggleBriefTransfer = (index: number) => {
+    const newStates = [...briefTransferStates];
+    newStates[index] = !newStates[index];
+    setBriefTransferStates(newStates);
+  };
 
   const [finalPayment, setFinalPayment] = useState(true);
 
   console.log(cart, "cart");
-  
+
+  console.log(transferCart, "transferCart");
 
   const toggleBriefPayment = (index: number) => {
     const updatedBriefPayments = [...briefPayments];
@@ -193,6 +205,10 @@ const Cart = () => {
     dispatch(handleRemoveFromCart(id));
   };
 
+  const handleRemoveTransferFromCart = (id: string) => {
+    dispatch(handleRemoveFromTransferCart(id));
+  };
+
   // Handle change data of cart.
   const handleChangeData = (index: number, keyName: string, value: any) => {
     dispatch(
@@ -214,6 +230,13 @@ const Cart = () => {
       }
     }, 0);
   }, [cart]);
+
+  const totalTransferPrice: number = useMemo(() => {
+    return transferCart.reduce((total, item) => {
+      // Assuming item.vehicle.price is the property you want to sum
+      return total + (item.vehicle?.price || 0);
+    }, 0);
+  }, [transferCart]);
 
   const closeModal = () => {
     setError("");
@@ -388,94 +411,103 @@ const Cart = () => {
   const renderTransfer = () => {
     return (
       <div>
-        <h1 className={`text-3xl font-semibold pb-2 border-b w-fit`}>Transfer</h1>
-        <div className="border rounded-lg mt-5 p-3">
+        <h1 className={`text-3xl font-semibold pb-2 border-b w-fit`}>
+          Transfer
+        </h1>
 
-          <div className={`flex items-center justify-between ${briefTransfer === false ? "" : "border-b"} ${briefTransfer === false ? "" : "mb-3"}`}>
-          <div className="flex items-center space-x-3">
-            <p className="text-xl p-3 font-semibold">
-              Dubai International Airport
-            </p>
-            <ArrowRightIcon height={24} width={24} />
-            <p className="text-xl p-3 font-semibold">Business Bay</p>
-          </div>
-          
-          <div>
-          <div className="flex gap-3">
-                    <PencilSquareIcon height={20} width={20} />
-                    <i
-                      className="las la-times-circle text-xl text-red-600 cursor-pointer"
-                    ></i>
-                    {briefTransfer === false && (
-                      <p className="cursor-pointer">
-                        <ChevronDownIcon
-                          onClick={() => setBriefTransfer(!briefTransfer)}
-                          height={20}
-                          width={20}
-                        />
-                      </p>
+        {transferCart?.map((item, index) => (
+          <div className="border rounded-lg mt-5 p-3">
+            <div
+              className={`flex items-center justify-between ${
+                briefTransferStates[index] === false ? "" : "border-b"
+              } ${briefTransferStates[index] === false ? "" : "mb-3"}`}
+            >
+              <div className="flex items-center space-x-3">
+                <p className="text-xl p-3 font-semibold">
+                  {item?.pickupLocation}
+                </p>
+                <ArrowRightIcon height={24} width={24} />
+                <p className="text-xl p-3 font-semibold">
+                  {item?.dropOffLocation}
+                </p>
+              </div>
+
+              <div>
+                <div className="flex gap-3">
+                  <i
+                    onClick={() => handleRemoveTransferFromCart(item._id)}
+                    className="las la-times-circle text-xl text-red-600 cursor-pointer"
+                  ></i>
+                  {briefTransferStates[index] === false && (
+                    <p className="cursor-pointer">
+                      <ChevronDownIcon
+                        onClick={() => toggleBriefTransfer(index)}
+                        height={20}
+                        width={20}
+                      />
+                    </p>
+                  )}
+                  {briefTransferStates[index] === true && (
+                    <p className="cursor-pointer">
+                      <ChevronUpIcon
+                        onClick={() => toggleBriefTransfer(index)}
+                        height={20}
+                        width={20}
+                      />
+                    </p>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {briefTransferStates[index] === true && (
+              <div className="">
+                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                  <span>Date</span>
+                  <span className="capitalize">{item?.date}</span>
+                </div>
+
+                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                  <span>Time</span>
+                  <span className="capitalize">{item?.time}</span>
+                </div>
+
+                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300 mb-3">
+                  <span>Amount</span>
+                  <span className="capitalize">
+                    {priceConversion(
+                      item?.vehicle?.price,
+                      selectedCurrency,
+                      true
                     )}
-                    {briefTransfer === true && (
-                      <p className="cursor-pointer">
-                        <ChevronUpIcon
-                          onClick={() => setBriefTransfer(!briefTransfer)}
-                          height={20}
-                          width={20}
-                        />
-                      </p>
-                    )}
+                  </span>
+                </div>
+
+                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                  <p className="text-lg border-b font-semibold">Vehicle's</p>
+                </div>
+                <div className="border p-2 rounded-lg mt-3">
+                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                    <span>Name</span>
+                    <span className="capitalize">{item?.vehicle?.name}</span>
                   </div>
+                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                    <span>Count</span>
+                    <span className="capitalize">{item?.vehicle?.count}</span>
+                  </div>
+                  {item?.vehicle?.vehicleType && (
+                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                      <span>Vehicle Type</span>
+                      <span className="capitalize">
+                        {item?.vehicle?.vehicleType}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-          </div>
-
-
-          {briefTransfer === true && (
-          <div className="">
-            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-              <span>Date</span>
-              <span className="capitalize">2024-02-04</span>
-            </div>
-
-            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-              <span>Time</span>
-              <span className="capitalize">08:50</span>
-            </div>
-
-            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300 mb-3">
-              <span>Amount</span>
-              <span className="capitalize">400 AED</span>
-            </div>
-
-            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-              <p className="text-lg border-b font-semibold">Vehicle's</p>
-            </div>
-            <div className="border p-2 rounded-lg mt-3">
-            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-              <span>Seater</span>
-              <span className="capitalize">14 Seater</span>
-            </div>
-            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-              <span>Count</span>
-              <span className="capitalize">3</span>
-            </div>
-          </div>
-
-
-          <div className="border p-2 rounded-lg mt-3">
-            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-              <span>Seater</span>
-              <span className="capitalize">12 Seater</span>
-            </div>
-            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-              <span>Count</span>
-              <span className="capitalize">1</span>
-            </div>
-          </div>
-          </div>
-          )}
-
-
-        </div>
+        ))}
       </div>
     );
   };
@@ -484,7 +516,7 @@ const Cart = () => {
     return (
       <div className="flex flex-col gap-5 w-full">
         <h1 className="text-3xl font-semibold pb-2 border-b w-fit">Tours</h1>
-        {cart.length ? (
+        {cart.length && transferCart.length ? (
           cart.map((item, i) => (
             <div key={item._id} className="rounded-lg border w-full p-3">
               <div className="flex flex-col gap-2 text-sm">
@@ -678,8 +710,8 @@ const Cart = () => {
 
         {finalPayment === true && (
           <div>
-            <div className="flex justify-between py-3">
-              <p>Total Amount Incl. VAT</p>
+            <div className="flex justify-between pt-3 pb-1">
+              <p>Tours Total Amount Incl. VAT</p>
               <p>
                 {" "}
                 {grandTotal > 0
@@ -688,11 +720,27 @@ const Cart = () => {
               </p>
             </div>
 
+            <div className="flex justify-between pt-1 mb-5">
+              <p>Transfer Total Amount Incl. VAT</p>
+              <p>
+                {" "}
+                {grandTotal > 0
+                  ? "" +
+                    priceConversion(totalTransferPrice, selectedCurrency, true)
+                  : ""}
+              </p>
+            </div>
+
             <div className="flex justify-between font-bold text-xl bg-gray-200 p-3 rounded-lg">
               <p>Final Amount</p>
               <p>
                 {grandTotal > 0
-                  ? "" + priceConversion(grandTotal, selectedCurrency, true)
+                  ? "" +
+                    priceConversion(
+                      grandTotal + totalTransferPrice,
+                      selectedCurrency,
+                      true
+                    )
                   : ""}
               </p>
             </div>
@@ -711,7 +759,7 @@ const Cart = () => {
           <div className="w-8/12 space-y-10">
             {renderSidebar()}
             {renderTransfer()}
-            {cart.length ? renderPaymentSection() : ""}
+            {cart.length && transferCart.length ? renderPaymentSection() : ""}
           </div>
 
           {/* SIDEBAR */}

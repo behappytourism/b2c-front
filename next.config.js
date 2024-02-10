@@ -51,6 +51,12 @@ const nextConfig = {
         port: "8189",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "api-server-i.behappytourism.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

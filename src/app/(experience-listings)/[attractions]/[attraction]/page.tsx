@@ -443,12 +443,12 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     return (
       <div className="border-b pb-5">
         <h2 className="text-2xl md:text-3xl w-fit pb-3 font-semibold">Select Tour Options</h2>
-        {attractionData?.highlights && (
-          <div
-            dangerouslySetInnerHTML={{ __html: attractionData?.highlights }}
-            className="text-neutral-6000 text-sm mb-10 dark:text-neutral-300"
-          ></div>
-        )}
+        {typeof attractionData?.highlights === 'string' && attractionData?.highlights.length > 50 && (
+  <div
+    dangerouslySetInnerHTML={{ __html: attractionData?.highlights }}
+    className="text-neutral-6000 text-sm mb-10 dark:text-neutral-300"
+  ></div>
+)}
 
         {activities?.map((activity, index) => {
           return (
@@ -752,12 +752,25 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   
 
   useEffect(() => {
-    handleAddToCart(ATCIndex)
+    {addToCart === true && (
+      handleAddToCart(ATCIndex)
+    )}
+
+    {addToCart === true && (
+      setAddToCart(false)
+    )}
   },[addToCart])
 
 
   useEffect(() => {
-    handleCheckout(ATCIndex)
+  
+    {checkout === true && (
+      handleCheckout(ATCIndex)
+    )}
+
+    {checkout === true && (
+      setCheckout(false)
+    )}
   },[checkout])
 
   const GrandTotal: number = useMemo(() => {

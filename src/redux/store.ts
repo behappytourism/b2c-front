@@ -5,6 +5,7 @@ import visaReducer from "./features/visaSlice";
 import usersReducer from "./features/usersSlice";
 import affiliateUsers from "./features/affiliatesSlice";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
+import transferSlice from "./features/transferSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     visa: visaReducer,
     users: usersReducer,
     affiliateUsers: affiliateUsers,
+    transfer: transferSlice
   },
 });
 

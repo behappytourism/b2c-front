@@ -59,7 +59,7 @@ const SectionHero: FC<SectionHeroProps> = ({
           <Image className="w-full" width={700} height={700} src={bannerImg} alt="hero" priority />
           </div>
         </div>
-      <div className="hidden container md:flex justify-center lg:mb-0 lg:mt-10 w-full absolute left-44 right-0  top-[320px]">
+      <div className="hidden container md:flex justify-center lg:mb-0 lg:mt-10 w-full absolute left-44 right-0  top-[280px]">
         <HeroSearchForm currentPage={currentPage} currentTab={currentTab} />
       </div>
 
