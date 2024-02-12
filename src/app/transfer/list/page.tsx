@@ -9,7 +9,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Image from "next/image";
-import { handleAddtocart } from "@/redux/features/transferSlice";
+import { handleAddtocart, setAlertSuccess } from "@/redux/features/transferSlice";
 import { TransferExcursion } from "@/data/transfer/types";
 import priceConversion from "@/utils/priceConversion";
 
@@ -43,6 +43,8 @@ function TransferList() {
 
   // localStorage.removeItem("TransferCart");
 
+  console.log(transfer);
+
   const handleAddToCart = (
     vehicle: any,
     trip: any,
@@ -56,18 +58,36 @@ function TransferList() {
       noOfAdults: transfer?.noOfAdults,
       noOfChildrens: transfer?.noOfChildrens,
       pickupSuggestionType: transfer?.pickupSuggestionType,
-      pickupLocation: trip?.transferFrom?.airportName,
+      pickupLocation:
+        trip?.transferFrom?.airportName ||
+        trip?.transferFrom?.name ||
+        trip?.transferFrom?.areaName,
+      pickupLocationId: transfer?.pickupLocation || trip?.transferFrom?._id,
       dropOffSuggestionType: transfer?.dropOffSuggestionType,
-      dropOffLocation: trip?.transferTo?.name,
+      dropOffLocation:
+        trip?.transferTo?.name ||
+        trip?.transferTo?.airportName ||
+        trip?.transferTo?.areaName,
+      dropOffLocationId: transfer?.dropOffLocation || trip?.transferTo?._id,
+      returnDate: transfer?.returnDate || "",
+      returnTime: transfer?.returnTime || "",
 
       vehicle: {
         count: count,
         name: vehicle?.vehicle?.name,
         price: vehicle?.price,
+        vehicleId: vehicle?.vehicle?._id,
         vehicleType: vehicle?.vehicle?.vehicleType,
       },
     };
     dispatch(handleAddtocart([selectedTransferItem]));
+    dispatch(
+      setAlertSuccess({
+        status: true,
+        title: "Success",
+        text: "The item is added to the cart",
+      })
+    );
     // console.log(selectedTransferItem, 'selected transfer item');
   };
 
@@ -84,14 +104,25 @@ function TransferList() {
       noOfAdults: transfer?.noOfAdults,
       noOfChildrens: transfer?.noOfChildrens,
       pickupSuggestionType: transfer?.pickupSuggestionType,
-      pickupLocation: trip?.transferFrom?.airportName,
+      pickupLocation:
+        trip?.transferFrom?.airportName ||
+        trip?.transferFrom?.name ||
+        trip?.transferFrom?.areaName,
+      pickupLocationId: transfer?.pickupLocation || trip?.transferFrom?._id,
       dropOffSuggestionType: transfer?.dropOffSuggestionType,
-      dropOffLocation: trip?.transferTo?.name,
+      dropOffLocation:
+        trip?.transferTo?.name ||
+        trip?.transferTo?.airportName ||
+        trip?.transferTo?.areaName,
+      dropOffLocationId: transfer?.dropOffLocation || trip?.transferTo?._id,
+      returnDate: transfer?.returnDate || "",
+      returnTime: transfer?.returnTime || "",
 
       vehicle: {
         count: count,
         name: vehicle?.vehicle?.name,
         price: vehicle?.price,
+        vehicleId: vehicle?.vehicle?._id,
         vehicleType: vehicle?.vehicle?.vehicleType,
       },
     };
@@ -108,15 +139,22 @@ function TransferList() {
 
       {transfer?.map((transferItem: TransferExcursion, index: number) => (
         <div className="border rounded-lg p-5">
+          {transfer[0].error && (
+            <div className="flex gap-3">
+              <p className="text-red-500">Error:</p>
+              <p>{transferItem?.error}</p>
+            </div>
+          )}
           {transferItem.trips?.map((trip: any, tripIndex: number) => (
-            <div>
+            <div className="mb-10 border-b pb-10">
               <div className="border-b mb-3">
                 <div className="flex justify-between p-1">
                   <div className="">
                     <p className="text-gray-400 text-sm">Pickup Location</p>
                     <h1 className="text-xl font-semibold">
                       {trip?.transferFrom?.airportName ||
-                        trip?.transferFrom?.name}
+                        trip?.transferFrom?.name ||
+                        trip?.transferFrom?.areaName}
                     </h1>
                   </div>
 
@@ -126,7 +164,8 @@ function TransferList() {
                     </p>
                     <h1 className="text-xl font-semibold">
                       {trip?.transferTo?.name ||
-                        trip?.transferFrom?.airportName}
+                        trip?.transferTo?.airportName ||
+                        trip?.transferTo?.areaName}
                     </h1>
                   </div>
                 </div>

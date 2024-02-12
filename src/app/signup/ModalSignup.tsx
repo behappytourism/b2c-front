@@ -142,7 +142,7 @@ const ModalSignUp: FC<PageSignUpProps> = ({ }) => {
 
 
   return (
-    <div className={`nc-PageSignUp`}>
+    <div className={`nc-PageSignUp z-50`}>
       <div className="container">
         {/* <h2 className="my-3 flex items-center text-3xl leading-[115%] md:text-3xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
           Signup to Continue

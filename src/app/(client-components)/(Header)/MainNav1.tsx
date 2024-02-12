@@ -37,8 +37,8 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
 
   return (
     <>
-      {enableLogin === true && (
-        <div className="absolute w-full mt-20 flex justify-center backdrop-blur-xl bg-opacity-30 bg-black">
+      {/* {enableLogin === true && (
+        <div className="fixed z-50 w-full mt-20 flex justify-center backdrop-blur-xl bg-opacity-30 bg-black">
           <div
             onClick={() => setEnableLogin(false)}
             className="absolute mt-6 right-[300px] bg-white rounded-full cursor-pointer"
@@ -55,7 +55,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
             {login === "signup" && <ModalSignUp />}
           </div>
         </div>
-      )}
+      )} */}
 
       <div className={`nc-MainNav1 relative z-10 ${className}`}>
         <div className="px-4 lg:container h-20 relative flex justify-between">
@@ -103,7 +103,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
               <SwitchDarkMode />
               <div className="px-1" />
               {!user?.name && (
-                // <Link className="self-center"  href={"/login" as Route}>
+                <Link className="self-center"  href={"/login" as Route}>
                 <div
                   onClick={() => setEnableLogin(true)}
                   className="flex gap-1 items-center cursor-pointer"
@@ -111,7 +111,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
                   <UserIcon className="w-4 h-4" />
                   <p>Login</p>
                 </div>
-                // </Link>
+                 </Link>
               )}
 
               {user?.name && jwtToken && (

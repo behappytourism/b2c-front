@@ -35,7 +35,7 @@ const Orders = () => {
 
   return (
     <div className={`nc-AuthorPage `}>
-      <div className="w-full  space-y-8 lg:space-y-10 flex-shrink-0">
+      {/* <div className="w-full  space-y-8 lg:space-y-10 flex-shrink-0">
         <h2 className="text-3xl font-semibold">Orders</h2>
         <div className="flex flex-col md:flex-row">
           <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
@@ -83,7 +83,8 @@ const Orders = () => {
           {ordersCategory === "attraction" && <AttractionOrders />}
           {ordersCategory === "visa" && <VisaOrders />}
         </div>
-      </div>
+      </div> */}
+       <AttractionOrders />
     </div>
   );
 };

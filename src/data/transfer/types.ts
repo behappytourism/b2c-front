@@ -1,20 +1,26 @@
 
 export interface TransferExcursion {
     _id: string;
+    error: string;
     transferType: string;
     noOfAdults: number;
     noOfChildrens: number;
     pickupSuggestionType: string;
     pickupLocation: string;
+    pickupLocationId: string;
     dropOffSuggestionType: string;
     dropOffLocation: string;
+    dropOffLocationId: string;
     time: string;
     date: string;
+    returnDate: string;
+    returnTime: string;
     vehicle: {
         price: number;
         name: string;
         count: number;
         vehicleType: string;
+        vehicleId: string;
     }
     trips: [
         {

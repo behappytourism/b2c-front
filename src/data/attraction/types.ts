@@ -217,7 +217,7 @@ export interface ActivityExcursion {
   _id: UUID | string;
   attraction: UUID | string;
   name: string;
-  images: string[]
+  images: string[];
   facilities: string;
   slug: string;
   destination: {
@@ -430,6 +430,130 @@ export interface OrderExcursion {
       privateTransfers: PrivateTransferExcursion[];
     }
   ];
+  transferOrder: {
+    _id: string;
+    paymentState: string;
+    journey: [
+      {
+        netPrice: number;
+        noOfAdults: number;
+        noOfChildrens: number;
+        transferType: string;
+        trips: [
+          {
+              date: string;
+              time: string;
+              transfer: string;
+              suggestionType: string;
+              transferFrom: {
+                  _id: string;
+                  airportName: string;
+                  place: string;
+              },
+              transferTo: {
+                 _id: string;
+                  areaCode: string;
+                  areaName: string;
+                  city: string;
+                  state: string;
+                  country: string;
+                  isDeleted: boolean;
+                  createdAt: string;
+                  updatedAt: string;
+                  __v: number,
+                  name: string;
+              },
+              vehicles: [
+                  {
+                      price: number;
+                      vehicle: {
+                          _id: string;
+                          name: string;
+                          image: string;
+                          airportOccupancy: number;
+                          normalOccupancy: number;
+                          isDeleted: boolean;
+                          createdAt: string;
+                          updatedAt: string;
+                          __v: number;
+                          vehicleType: string;
+                          vehicleCategoryId: {
+                              _id: string;
+                              categoryName: string;
+                              createdAt:  string;
+                              updatedAt: string;
+                              __v: number;
+                          }
+                      },
+                      _id: string;
+                  }, 
+              ]
+          }
+      ]
+      }
+    ];
+  };
+  attractionOrder: {
+    activities: [
+      {
+        attraction: {
+          _id: UUID | string;
+          title: string;
+          isOffer: boolean;
+          offerAmountType: OfferTypeEnum;
+          offerAmount: null | number;
+          images: string[];
+          logo: string;
+        };
+        bookingType: BookingTypeEnum;
+        activity: ActivityExcursion;
+        activityType: ActivityTypeEnum;
+        date: Date | string;
+        adultsCount: number;
+        childrenCount: number;
+        infantCount: number;
+        childActivityPrice: number;
+        adultActivityPrice: number;
+        infantActivityPrice: number;
+        adultActivityTotalPrice: number;
+        childActivityTotalPrice: number;
+        infantActivityTotalPrice: number;
+        adultActivityCost: number;
+        childActivityCost: number;
+        infantActivityCost: number;
+        adultActivityTotalCost: number;
+        childActivityTotalCost: number;
+        infantActivityTotalCost: number;
+        activityTotalPrice: number;
+        activityTotalCost: number;
+        transferType: TransferTypeEmun;
+        sharedTransferPrice: number;
+        sharedTransferCost: number;
+        sharedTransferTotalPrice: number;
+        sharedTransferTotalCost: number;
+        drivers: any[];
+        privateTransfersTotalPrice: string;
+        privateTransfersTotalCost: string;
+        adultTickets: any[];
+        childTickets: any[];
+        infantTickets: any[];
+        status: OrderStatusExcEnum;
+        isvat: false;
+        vatPercentage: number;
+        totalVat: number;
+        totalCost: number;
+        profit: number;
+        offerAmount: number;
+        totalWithoutOffer: number;
+        promoDiscount: number;
+        grandTotal: number;
+        isRefundAvailable: boolean;
+        isRefunded: boolean;
+        _id: UUID | string;
+        privateTransfers: PrivateTransferExcursion[];
+      }
+    ];
+  };
   totalOfferAmount: number;
   totalAmount: number;
   orderStatus: OrderStatusExcEnum;

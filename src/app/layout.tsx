@@ -13,6 +13,7 @@ import FetchInitialData from "./FetchInitialData";
 import { SessionProvider } from "next-auth/react"
 import FetchUserData from "./fetchUserData";
 import SectionDowloadApp from "./(home)/SectionDowloadApp";
+import SuccessAlert from "@/components/alerts/AlertSuccess";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -75,6 +76,7 @@ export default function RootLayout({
             <FetchUserData />
             <SiteHeader />
             {children}
+            <SuccessAlert />
             {/* <SectionDowloadApp /> */}
             <FooterNav />
             <Footer />

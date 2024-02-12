@@ -22,7 +22,7 @@ function OrderAttraction<OrderPageProps>({
   const findOrderDetails = async () => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/orders/single/${params.orderId}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/orders/single/${params.orderId}`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -56,7 +56,7 @@ function OrderAttraction<OrderPageProps>({
     <div className="relative z-10 mt-11 flex flex-col gap-10 ">
       <div className="flex flex-col lg:flex-row gap-10">
         <div className="w-full  ">
-          <AttractionOrderDetail data={orderDetails} />
+          <AttractionOrderDetail data={orderDetails} orderId={params?.orderId} />
         </div>
       </div>
     </div>

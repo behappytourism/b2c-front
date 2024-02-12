@@ -7,14 +7,15 @@ import { useSelector } from "react-redux";
 import priceConversion from "@/utils/priceConversion";
 import { OrderExcursion } from "@/data/attraction/types";
 import ButtonPrimary from "@/shared/ButtonPrimary";
+import Image from "next/image";
 
 export interface OrderTemplateProps {
   data?: OrderExcursion;
+  orderId?: string;
 }
 
-const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data }) => {
-  const [attractionOrderInvoice, setAttractionOrderInvoice] =
-    useState<null | Blob>(null);
+const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
+  const [orderInvoice, setOrderInvoice] = useState<null | Blob>(null);
   const [attractionOrderAllTickets, setAttractionOrderAllTickets] =
     useState<null | Blob>(null);
   const [attractionOrderSingleTicket, setAttractionOrderSingleTicket] =
@@ -25,7 +26,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data }) => {
 
   const { jwtToken } = useSelector((state: RootState) => state.users);
 
-  console.log(data);
+  //console.log(data?.transferOrder, "data");
 
   function formatDate(updatedAt: Date | string) {
     const options = {
@@ -37,10 +38,10 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data }) => {
     return date.toLocaleDateString("en-US", options);
   }
 
-  const fetchAttractionInvoice = async (attractionOrderId: string) => {
+  const fetchAttractionInvoice = async (orderId: string) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/orders/invoice/${attractionOrderId}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/orders/invoice/${orderId}`,
         {
           headers: {
             "Content-Type": "arraybuffer",
@@ -54,12 +55,12 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data }) => {
     }
   };
 
-  async function getAttractionInvoice(attractionOrderId: string) {
+  async function getOrderInvoice(orderId: string) {
     try {
-      const response = await fetchAttractionInvoice(attractionOrderId);
+      const response = await fetchAttractionInvoice(orderId);
 
       if (response) {
-        setAttractionOrderInvoice(response);
+        setOrderInvoice(response);
       } else {
         // Handle the case when response is undefined
         // For example, set an appropriate error message or handle it accordingly
@@ -71,19 +72,19 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data }) => {
 
   useEffect(() => {
     {
-      data?._id && getAttractionInvoice(data?._id);
+      orderId && getOrderInvoice(orderId);
     }
-  }, [data?._id]);
+  }, []);
 
   const handleDownload = () => {
-    if (attractionOrderInvoice) {
-      const pdfBlob = new Blob([attractionOrderInvoice], {
+    if (orderInvoice) {
+      const pdfBlob = new Blob([orderInvoice], {
         type: "application/pdf",
       });
       const url = URL.createObjectURL(pdfBlob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "attractioninvoice.pdf";
+      a.download = "orderInvoice.pdf";
       a.click();
     }
   };
@@ -243,146 +244,196 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data }) => {
 
       {data && (
         <div className="text text-center">
-          <h1 className="text-3xl">Attraction Details</h1>
-          {data?.activities?.map((activity, index) => (
-            <div className="mt-10 md:flex md:justify-between p-2 md:p-0">
-              <div className="bg-primary-6000 md:w-7/12 text-white font-semibold md:p-4 p-2 mb-5 md:mb-0 rounded-xl">
-                <div className="md:flex md:justify-between text-left">
-                  <div>
-                    <p className="text-lg">{activity?.attraction?.title}</p>
+          <h1 className="text-3xl">Order Details</h1>
 
-                    <p>
-                      {activity?.bookingType.charAt(0).toUpperCase()}
-                      {activity?.bookingType?.slice(1)}
+          {data?.attractionOrder?.activities?.map(
+            (activity: any, index: number) => (
+              <div className="mt-10 md:flex md:justify-between p-2 md:p-0">
+                <div className="bg-primary-200 w-full flex gap-10 text-white font-semibold md:p-4 p-2 mb-5 md:mb-0 rounded-xl">
+                  <div className="max-w-[300px]">
+                    <Image
+                      className="rounded-lg cursor-pointer"
+                      width={1000}
+                      height={1000}
+                      alt="picture 1"
+                      src={`${process.env.NEXT_PUBLIC_CDN_URL}${activity?.activity?.attraction?.images[0]}`}
+                    />
+                  </div>
+
+                  <div className="text-black w-full">
+                    <p className="text-2xl underline">
+                      {activity?.activity?.attraction?.title}
                     </p>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-7 md:gap-3 md:mt-8 mt-4">
-                      <div className="text-center w-fit">
-                        <p>Status</p>
-                        <p className="ttnc-ButtonSecondary px-2 rounded-xl font-medium border bg-white border-neutral-200 text-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800">
-                          {activity?.status.charAt(0).toLocaleUpperCase() +
-                            activity?.status?.slice(1)}
+                    <div className="flex justify-between mb-10">
+                      <div className="flex gap-2">
+                        <p>Country:</p>
+                        <p className="capitalize">
+                          {activity?.activity?.attraction?.destination?.name}
                         </p>
                       </div>
-                      <div className="text-center w-fit">
-                        <p>Adults</p>
-                        <p className="ttnc-ButtonSecondary px-2 rounded-xl font-medium border bg-white border-neutral-200 text-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800">
-                          {activity?.adultsCount} Adults
+
+                      <div className="flex gap-2">
+                        <p>Transfer Type:</p>
+                        <p className="capitalize">{activity?.transferType}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between mb-10">
+                      <div className="flex gap-2">
+                        <p>Adult Count:</p>
+                        <p className="capitalize">{activity?.adultsCount}</p>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <p>Children Count:</p>
+                        <p className="capitalize">{activity?.childrenCount}</p>
+                      </div>
+
+                      <div className="flex gap-2">
+                        <p>Infant Count:</p>
+                        <p className="capitalize">{activity?.infantCount}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between">
+                      <div className="flex gap-2">
+                        <p>Grand Total:</p>
+                        <p className="capitalize">
+                          {priceConversion(
+                            activity?.grandTotal,
+                            selectedCurrency,
+                            true
+                          )}
                         </p>
                       </div>
-                      <div className="text-center w-fit">
-                        <p>Childrens</p>
-                        <p className="ttnc-ButtonSecondary px-2 rounded-xl font-medium border bg-white border-neutral-200 text-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800">
-                          {activity?.childrenCount} Childrens
-                        </p>
+
+                      <div className="flex gap-2">
+                        <p>Status:</p>
+                        <p className="capitalize">{activity?.status}</p>
                       </div>
-                      <div className="text-center w-fit">
-                        <p>Infants</p>
-                        <p className="ttnc-ButtonSecondary px-2 rounded-xl font-medium border bg-white border-neutral-200 text-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:border-neutral-700 hover:bg-neutral-100 dark:hover:bg-neutral-800">
-                          {activity?.infantCount} Infants
+
+                      <div className="flex gap-2">
+                        <p>Date:</p>
+                        <p>
+                          {new Date(activity?.date).toLocaleDateString("en-GB")}
                         </p>
                       </div>
                     </div>
                   </div>
-                  <div className="md:text-right md:mt-0 mt-4">
-                    <div className="flex justify-between md:block md:justify-normal">
-                    <p>{activity?.transferType} transfer</p>
-                    <p>{formatDate(data?.updatedAt)}</p>
-                    </div>
-
-                    <div className="md:mt-8 mt-4 flex justify-between md:block md:justify-normal">
-                      <p>Grand Total</p>
-                      <p>
-                        {priceConversion(
-                          data?.totalAmount,
-                          selectedCurrency,
-                          true
-                        )}
-                      </p>
-                    </div>
-                  </div>
                 </div>
-                <div className="md:grid md:grid-cols-2 mt-3">
-                  {activity?.adultTickets?.map((adt, i) => (
-                    <>
-                      <div className="md:flex items-center md:gap-5 mt-3">
-                        <p>Adult {i + 1}</p>
-                        <ButtonSecondary
-                          className="w-full md:w-fit"
-                          onClick={() =>
-                            getAttractionSingleTicket(
-                              data?._id,
-                              activity?._id,
-                              adt?.ticketNo
-                            )
-                          }
-                        >
-                          Download Ticket
-                        </ButtonSecondary>
-                      </div>
-                    </>
-                  ))}
-                </div>
+              </div>
+            )
+          )}
 
-                {activity?.childTickets?.length > 0 && (
-                  <div className="md:grid md:grid-cols-2 mt-3">
-                    {activity?.childTickets?.map((chd, i) => (
-                      <>
-                        <div className="md:flex items-center md:gap-5 mt-3">
-                          <p>Child {i + 1}</p>
-                          <ButtonSecondary
-                            className="w-full md:w-fit"
-                            onClick={() =>
-                              getAttractionSingleTicket(
-                                data?._id,
-                                activity?._id,
-                                chd?.ticketNo
-                              )
-                            }
-                          >
-                            Download Ticket
-                          </ButtonSecondary>
+          {data?.transferOrder?.journey?.map(
+            (journeyItem: any, index: number) => (
+              <>
+                {journeyItem?.trips?.map((trip: any, index: number) => (
+                  <div className="mt-10 md:flex md:justify-between p-2 md:p-0">
+                    <div className="bg-primary-200 w-full text-white font-semibold md:p-4 p-2 mb-5 md:mb-0 rounded-xl">
+                      <div className="text-black flex justify-between w-full mb-5">
+                        <div className="text-left">
+                          <p className="text-2xl">
+                            {" "}
+                            {trip?.transferFrom?.airportName ||
+                              trip?.transferFrom?.name ||
+                              trip?.transferFrom?.areaName}
+                          </p>
+                          <p className="text-gray-400">Pickup Location</p>
                         </div>
-                      </>
-                    ))}
-                  </div>
-                )}
-              </div>
 
-              <div className="bg-primary-6000 md:w-3/12 text-white font-semibold p-4 rounded-xl">
-                <div
-                  className={`flex flex-col md:block ${
-                    data?.activities[0]?.bookingType === "ticket"
-                      ? "md:mt-7"
-                      : "md:mt-5"
-                  }`}
-                >
-                  <p className="text-lg">{activity?.attraction?.title}</p>
-                  <div className="">
-                    <ButtonSecondary
-                      onClick={handleDownload}
-                      className="md:mt-2 mt-4 w-full md:w-fit"
-                    >
-                      Download Invoice
-                    </ButtonSecondary>
-                  </div>
+                        <div className="text-right">
+                          <p className="text-2xl">
+                            {trip?.transferTo?.name ||
+                              trip?.transferTo?.airportName ||
+                              trip?.transferTo?.areaName}
+                          </p>
+                          <p className="text-gray-400">Drop Location</p>
+                        </div>
+                      </div>
 
-                  {activity?.bookingType === "ticket" && (
-                    <div className="">
-                      <ButtonSecondary
-                        onClick={() =>
-                          getAttractionAllTickets(data?._id, activity?._id)
-                        }
-                        className="md:mt-2 mt-4 w-full md:w-fit"
-                      >
-                        Download All Tickets
-                      </ButtonSecondary>
+                      <div className="text-black mb-5 border-b pb-5 border-black flex justify-between w-full">
+                        <div className="text-left">
+                          <p className="text-xl">
+                            {new Date(trip?.pickupDate).toLocaleDateString(
+                              "en-GB"
+                            )}
+                          </p>
+                          <p className="text-gray-400">Pickup Date</p>
+                        </div>
+
+                        <div className="text-right">
+                          <p className="text-xl">{trip?.pickupTime}</p>
+                          <p className="text-gray-400">Pickup Time</p>
+                        </div>
+                      </div>
+
+                      <div className="text-black">
+                        <p className="text-2xl underline mb-10">Vehicles</p>
+                        <div className="grid grid-cols-2 justify-between">
+                          {trip?.vehicleTypes?.map((vehicle: any) => (
+                            <div className="flex border-black shadow-2xl rounded border gap-10 p-2 w-fit items-center text-center">
+                              <div className="max-w-[300px]">
+                                <Image
+                                  className="rounded-lg cursor-pointer"
+                                  width={150}
+                                  height={100}
+                                  alt="picture 1"
+                                  src={`${process.env.NEXT_PUBLIC_CDN_URL}${vehicle?.vehicleId?.image}`}
+                                />
+                              </div>
+
+                              <div>
+                                <div className="flex gap-2">
+                                  <p>Name:</p>
+                                  <p className="capitalize">{vehicle?.name}</p>
+                                </div>
+
+                                <div className="flex gap-2">
+                                  <p>Price:</p>
+                                  <p className="capitalize">
+                                    {priceConversion(
+                                      trip?.tripPrice,
+                                      selectedCurrency,
+                                      true
+                                    )}
+                                  </p>
+                                </div>
+
+                                <div className="flex gap-2">
+                                  <p>Airport Occupancy:</p>
+                                  <p className="capitalize">
+                                    {vehicle?.vehicleId?.airportOccupancy}
+                                  </p>
+                                </div>
+
+                                <div className="flex gap-2">
+                                  <p>Normal Occupancy:</p>
+                                  <p className="capitalize">
+                                    {vehicle?.vehicleId?.normalOccupancy}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
+                  </div>
+                ))}
+              </>
+            )
+          )}
+
+          <div className="w-full flex justify-center">
+            <button
+              onClick={() => handleDownload()}
+              className="p-2 mt-5 bg-primary-200 hover:bg-primary-400 cursor-pointer rounded font-semibold text-black"
+            >
+              Download Invoice
+            </button>
+          </div>
         </div>
       )}
     </div>

@@ -41,22 +41,21 @@ const SectionHero: FC<SectionHeroProps> = ({
       {/* <div className="absolute inset-0 bg-primary-300/40" /> */}
 
       {/* want old desing comment this */}
-      <div className="absolute inset-0" />
 
       {/* Other Desing */}
-      <div className="flex flex-col lg:flex-row lg:items-center ">
-        <div className="flex-shrink-0 lg:w-1/2 flex flex-col items-start space-y-8 sm:space-y-10 xl:pr-14 lg:mr-10 xl:mr-0">
-        <h2 className="font-medium text-4xl md:text-5xl xl:text-5xl !leading-[10%] px-10">
-        Attractions & Visa
+      <div className="flex flex-col z-0 lg:flex-row lg:items-center ">
+        <div className="flex-shrink-0 z-0 lg:w-1/2 flex flex-col items-start space-y-8 sm:space-y-10 xl:pr-14 lg:mr-10 xl:mr-0">
+        <h2 className="font-medium text-4xl z-0 md:text-5xl xl:text-5xl !leading-[10%] px-10">
+        Attractions & Transfer
         </h2>
-        <span className="text-base md:text-lg text-neutral-500 dark:text-neutral-400 px-10">
+        <span className="text-base z-0 md:text-lg text-neutral-500 dark:text-neutral-400 px-10">
         Accompanying us, you have a trip full of experiences. With Chisfis,
         booking accommodation, resort villas, hotels
         </span>
         
         </div>
-        <div className="flex-grow px-2 py-3">
-          <Image className="w-full" width={700} height={700} src={bannerImg} alt="hero" priority />
+        <div className="flex-grow px-2 z-0 py-3">
+          <Image className="w-full z-0" width={700} height={700} src={bannerImg} alt="hero" />
           </div>
         </div>
       <div className="hidden container md:flex justify-center lg:mb-0 lg:mt-10 w-full absolute left-44 right-0  top-[280px]">

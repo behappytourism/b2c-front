@@ -13,6 +13,11 @@ import { TransferExcursion } from "@/data/transfer/types";
   type InitialState = {
     transfer: TransferExcursion[];
     transferCart: TransferExcursion[];
+    alertSuccess: {
+      status: boolean;
+      title: string;
+      text: string;
+    }
   };
   
   var cartItems =
@@ -22,6 +27,11 @@ import { TransferExcursion } from "@/data/transfer/types";
   const initialState = {
     transfer: [],
     transferCart: cartItems ? JSON.parse(cartItems) : [],
+    alertSuccess: {
+      status: false,
+      title: "",
+      text: "",
+    },
   } as InitialState;
   
   export const attraction = createSlice({
@@ -84,6 +94,13 @@ import { TransferExcursion } from "@/data/transfer/types";
           [keyName]: value,
         };
       },
+      setAlertSuccess: (state, action) => {
+        state.alertSuccess = {
+          status: action.payload?.status,
+          title: action.payload?.title,
+          text: action.payload?.text,
+        };
+      },
       // Handling date to all activity below.
     //   handleDateChange: (state, action) => {
     //     for (let i = 0; i < state.transfer.length; i++) {
@@ -126,11 +143,12 @@ import { TransferExcursion } from "@/data/transfer/types";
         localStorage.setItem("TransferCart", JSON.stringify(cart));
       },
       // Emptying the full cart.
-      handleEmptyCart: (state, action) => {
+      handleEmptyTransferCart: (state, action) => {
         const cart: TransferExcursion[] = [];
         state.transferCart = cart;
         typeof window !== "undefined";
         localStorage.setItem("TransferCart", JSON.stringify(cart));
+        localStorage.removeItem("TransferCart");
       },
       // handle change data of cart.
       handleChangeCart: (state, action) => {
@@ -171,8 +189,9 @@ import { TransferExcursion } from "@/data/transfer/types";
     // handleDateChange,
     handleAddtocart,
     handleRemoveFromTransferCart,
-    handleEmptyCart,
+    handleEmptyTransferCart,
     handleChangeCart,
+    setAlertSuccess,
     handleSetFavourites,
    // setAttractionDestination,
   } = attraction.actions;

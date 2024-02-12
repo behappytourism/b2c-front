@@ -136,7 +136,7 @@ const ModalLogin: FC<PageLoginProps> = ({}) => {
 
   
   return (
-    <div className={`nc-PageLogin`}>
+    <div className={`nc-PageLogin z-50`}>
       <div className="container">
         {/* <h2 className="my-2 flex items-center text-2xl leading-[115%] md:text-2xl md:leading-[115%] font-semibold text-neutral-900 dark:text-neutral-100 justify-center">
           Login to Continue

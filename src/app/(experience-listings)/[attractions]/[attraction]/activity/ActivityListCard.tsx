@@ -30,6 +30,7 @@ import GallerySlider from "@/components/GallerySlider";
 import Link from "next/link";
 import { Route } from "next";
 import SlideCalender from "@/shared/Calender/SlideCalender";
+import { setAlertSuccess } from "@/redux/features/transferSlice";
 
 interface ActivityDetailPageProps {
   findSlotsAvailable: ({
@@ -114,6 +115,13 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
   const handleAddToCart = () => {
     setAddToCart(!addToCart);
     setATCIndex(index);
+    dispatch(
+      setAlertSuccess({
+        status: true,
+        title: "Success",
+        text: "The item is added to the cart",
+      })
+    );
   };
 
   const handleCheckout = () => {
@@ -906,13 +914,15 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 galleryImgs={data?.images || []}
                 galleryClass="rounded-none cursor-pointer"
               /> */}
-              <Image
-                className="rounded-none cursor-pointer"
-                width={1000}
-                height={1000}
-                alt="picture 1"
-                src={`${process.env.NEXT_PUBLIC_CDN_URL}${data?.images[0]}`}
-              />
+              {data && data.images && data.images[0] && (
+                <Image
+                  className="rounded-none cursor-pointer"
+                  width={1000}
+                  height={1000}
+                  alt="picture 1"
+                  src={`${process.env.NEXT_PUBLIC_CDN_URL}${data.images[0]}`}
+                />
+              )}
             </div>
           </div>
 
@@ -958,14 +968,14 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
             <div className="flex gap-5 mt-3">
               <button
                 onClick={handleAddToCart}
-                className="mt-3 p-2 border border-orange-400 hover:border-orange-700 text-orange-500 hover:text-orange-700"
+                className="mt-3 p-2  bg-primary-300 rounded hover:bg-primary-400 text-white font-semibold"
               >
                 Add to cart
               </button>
               <Link href={"/cart" as Route}>
                 <button
                   onClick={handleAddToCart}
-                  className="mt-3 p-2 ml-3 border border-red-400 hover:border-red-700 text-red-500 hover:text-red-700"
+                  className="mt-3 p-2 ml-3 bg-orange-400 rounded hover:bg-orange-700 text-white font-semibold"
                 >
                   Checkout
                 </button>
@@ -1012,7 +1022,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white mt-[10px] min-w-[400px] max-w-[700px] max-h-[600px] text-center overflow-x-auto rounded-xl shadow-2xl">
+                  <div className="bg-white mt-[10px] min-w-[400px] max-w-[720px] max-h-[600px] text-center overflow-x-auto rounded-xl shadow-2xl">
                     <Image
                       width={1000}
                       height={300}
@@ -1020,7 +1030,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                       src={`${process.env.NEXT_PUBLIC_CDN_URL}${data?.images[defaultImage]}`}
                     />
 
-                    <div className="grid grid-cols-6 gap-2">
+                    <div className="grid grid-cols-6 max-w-[700px] gap-2">
                       {data?.images?.map((image, index) => (
                         <div className="-mt-[80px] ml-4">
                           <Image

@@ -27,7 +27,7 @@ import {
   ArrowRightIcon,
 } from "@heroicons/react/24/solid";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
-import { handleRemoveFromTransferCart } from "@/redux/features/transferSlice";
+import { handleEmptyTransferCart, handleRemoveFromTransferCart } from "@/redux/features/transferSlice";
 
 const Cart = () => {
   const thisPathname = usePathname();
@@ -41,10 +41,13 @@ const Cart = () => {
     lastname: "",
     email: "",
     country: "",
+    referenceNumber: "",
     phone: "",
     special_request_text: "",
   });
   const [paxphoneCode, setPaxPhoneCode] = useState<string>("");
+  const [paxCountryCode, setPaxCountryCode] = useState<string>("");
+
 
   // Making breadcrums data.
   const parts = thisPathname?.split("/").filter((part) => part !== "");
@@ -61,6 +64,8 @@ const Cart = () => {
   const { countries, selectedCurrency } = useSelector(
     (state: RootState) => state.initials
   );
+
+  
   const { jwtToken } = useSelector((state: RootState) => state.users);
   const { cart } = useSelector((state: RootState) => state.attraction);
   const { transfer, transferCart } = useSelector(
@@ -93,9 +98,11 @@ const Cart = () => {
 
     // Extract phonecode from the filtered countries
     const filteredPaxPhoneCode = filteredCountries[0]?.phonecode;
+    const filteredCountryCode = filteredCountries[0]?.isocode
 
     // Set the flattened phonecode array to paxphoneCode
     setPaxPhoneCode(filteredPaxPhoneCode || "");
+    setPaxCountryCode(filteredCountryCode || "");
   }, [countries, pax]);
 
   // Setting value of data to states.
@@ -114,11 +121,33 @@ const Cart = () => {
       adultsCount: item?.adultCount,
       childrenCount: item?.childCount,
       infantCount: item?.infantCount,
-      hoursCount:
-        item?.base === BaseTypeEnum.hourly ? item?.hourCount : undefined,
+      hoursCount: item?.base === BaseTypeEnum.hourly ? item?.hourCount : undefined || "",
       transferType: item?.transferType,
       slot: item?.slot,
       isPromoAdded: item?.isPromoAdded,
+    };
+  });
+
+  
+  const transferArray = transferCart.map((item) => {
+    return {
+      dropOffLocation: item?.dropOffLocationId,
+      dropOffSuggestionType: item?.dropOffSuggestionType,
+      pickupDate: item?.date,
+      noOfAdults: item?.noOfAdults,
+      noOfChildrens: item?.noOfChildrens,
+      pickupLocation: item?.pickupLocationId,
+      pickupSuggestionType: item?.pickupSuggestionType,
+      pickupTime: item?.time,
+      returnDate: item?.returnDate || "",
+      returnTime: item?.returnTime || "",
+      transferType: item?.transferType,
+      selectedVehicleTypes: [
+        {
+          count: item?.vehicle?.count.toString(),
+          vehicle: item?.vehicle?.vehicleId,
+        },
+      ],
     };
   });
 
@@ -130,17 +159,16 @@ const Cart = () => {
 
       setIsLoading(true);
 
-      if (cart.length === 0) {
-        setError("Your cart is empty.");
-        setIsLoading(false);
-        return;
-      }
+      // if (cart.length || transfer.length === 0) {
+      //   setError("Your cart is empty.");
+      //   setIsLoading(false);
+      //   return;
+      // }
 
       let headers = {};
       if (jwtToken?.length && jwtToken !== null && jwtToken !== undefined) {
         headers = {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
         };
       } else {
         headers = {
@@ -149,16 +177,19 @@ const Cart = () => {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/orders/create`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/orders/create`,
         {
           method: "POST",
           body: JSON.stringify({
             selectedActivities: activity,
+            selectedJourneys: transferArray,
             country: pax.country,
             name: pax.firstname + " " + pax.lastname,
             email: pax.email,
             phoneNumber: pax.phone,
-            paymentProcessor: "ccavenue",
+            paymentMethod: "ccavenue",
+            countryCode: paxCountryCode,
+            referenceNumber: pax.referenceNumber,
           }),
           headers: headers,
         }
@@ -186,6 +217,8 @@ const Cart = () => {
       }
 
       dispatch(handleEmptyCart(""));
+      dispatch(handleEmptyTransferCart(""));
+
 
       setIsLoading(false);
     } catch (error: any) {
@@ -258,6 +291,19 @@ const Cart = () => {
           </span>
         )}
         {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
+        <div className="md:col-span-2 lg:col-span-3 mb-3">
+            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
+              Special Request
+            </p> */}
+              <Input
+              type="text"
+              name="referenceNumber"
+              placeholder="Reference Number"
+              value={pax.referenceNumber}
+              onChange={onChangeHandler}
+              required
+            />
+          </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div className="">
             {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">Mr/Mrs</p> */}
@@ -512,7 +558,7 @@ const Cart = () => {
     return (
       <div className="flex flex-col gap-5 w-full">
         <h1 className="text-3xl font-semibold pb-2 border-b w-fit">Tours</h1>
-        {cart.length && transferCart.length ? (
+        {cart.length || transferCart.length ? (
           cart.map((item, i) => (
             <div key={item._id} className="rounded-lg border w-full p-3">
               <div className="flex flex-col gap-2 text-sm">
@@ -753,9 +799,9 @@ const Cart = () => {
       <form onSubmit={submitHandler}>
         <div className="flex lg:flex-row gap-10 w-full">
           <div className="w-8/12 space-y-10">
-            {renderSidebar()}
-            {renderTransfer()}
-            {cart.length && transferCart.length ? renderPaymentSection() : ""}
+            {cart.length ? renderSidebar() : ""}
+            {transferCart.length ? renderTransfer() : ""}
+            {cart.length || transferCart.length ? renderPaymentSection() : ""}
           </div>
 
           {/* SIDEBAR */}
