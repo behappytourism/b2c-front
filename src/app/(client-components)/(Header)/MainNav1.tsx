@@ -99,7 +99,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
               </Link>
 
 
-              <CurrencySelector className="flex items-center" />
+              {/* <CurrencySelector className="flex items-center" /> */}
               <SwitchDarkMode />
               <div className="px-1" />
               {!user?.name && (

@@ -104,7 +104,7 @@ const PageHome = () => {
       {/* GLASSMOPHIN */}
       <BgGlassmorphism />
 
-      <div className="relative md:mb-16 mb-16 lg:mb-16">
+      <div className="relative container md:mb-16 mb-16 lg:mb-16">
         {/* SECTION HERO */}
         <SectionHero
           currentPage="Experiences"
