@@ -896,12 +896,12 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
         } mb-5`}
     >
       <div
-        className={`bg-white border  dark:border-neutral-700 dark:bg-neutral-800 rounded-xl shadow-sm p-4 ${data.isChecked ? " ring-2 ring-green-400/20 " : " "
+        className={`bg-white border  dark:border-neutral-700 dark:bg-neutral-800 rounded-xl shadow-sm md:p-4 ${data.isChecked ? " ring-2 ring-green-400/20 " : " "
           }`}
       >
         <div className="md:flex">
           <div className="md:w-3/12">
-            <div onClick={() => setTab("image")} className="pt-3 pr-3">
+            <div onClick={() => setTab("image")} className="md:pt-3 md:pr-3">
               {/* <GallerySlider
                 uniqueID={`ExperiencesCard_${"id"}`}
                 ratioClass={"aspect-w-6 aspect-h-5"}
@@ -910,7 +910,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
               /> */}
               {data && data.images && data.images[0] && (
                 <Image
-                  className="rounded-none cursor-pointer"
+                  className="rounded-t-xl cursor-pointer"
                   width={1000}
                   height={1000}
                   alt="picture 1"
@@ -921,7 +921,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
           </div>
 
           <div className="md:w-4/12 p-2">
-            <h1 className="font-semibold mb-3">{data?.name}</h1>
+            <h1 className="font-semibold mt-3 md:mt-0 text-lg mb-3">{data?.name}</h1>
             <p className="text-sm">
               <div
                 dangerouslySetInnerHTML={{
@@ -1129,7 +1129,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
             )}
           </>
 
-          <div className="md:w-5/12">
+          <div className="md:w-5/12 p-2">
             <div className="md:flex md:justify-between">
               <div className="py-2">
                 <p className=" text-xs text-gray-400 py-1">
