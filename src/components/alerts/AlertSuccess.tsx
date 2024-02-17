@@ -24,7 +24,7 @@ function SuccessAlert() {
 
   return (
     <div
-      className={`fixed  bottom-20 p-4 z-50 max-w-[55%] lg:max-w-[35%] transition-all duration-500   ${
+      className={`fixed  bottom-20 p-4 z-50 max-w-full md:max-w-[55%] lg:max-w-[35%] transition-all duration-500   ${
         alertSuccess?.status === true ? " right-0 " : " right-[-100vw] "
       }`}
     >

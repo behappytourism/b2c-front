@@ -65,7 +65,7 @@ const Cart = () => {
     (state: RootState) => state.initials
   );
 
-  
+
   const { jwtToken } = useSelector((state: RootState) => state.users);
   const { cart } = useSelector((state: RootState) => state.attraction);
   const { transfer, transferCart } = useSelector(
@@ -128,7 +128,7 @@ const Cart = () => {
     };
   });
 
-  
+
   const transferArray = transferCart.map((item) => {
     return {
       dropOffLocation: item?.dropOffLocationId,
@@ -292,18 +292,18 @@ const Cart = () => {
         )}
         {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
         <div className="md:col-span-2 lg:col-span-3 mb-3">
-            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
+          {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Special Request
             </p> */}
-              <Input
-              type="text"
-              name="referenceNumber"
-              placeholder="Reference Number"
-              value={pax.referenceNumber}
-              onChange={onChangeHandler}
-              required
-            />
-          </div>
+          <Input
+            type="text"
+            name="referenceNumber"
+            placeholder="Reference Number"
+            value={pax.referenceNumber}
+            onChange={onChangeHandler}
+            required
+          />
+        </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div className="">
             {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">Mr/Mrs</p> */}
@@ -460,9 +460,8 @@ const Cart = () => {
         {transferCart?.map((item, index) => (
           <div className="border rounded-lg mt-5 p-3">
             <div
-              className={`flex items-center justify-between ${
-                briefTransferStates[index] === false ? "" : "border-b"
-              } ${briefTransferStates[index] === false ? "" : "mb-3"}`}
+              className={`flex items-center justify-between ${briefTransferStates[index] === false ? "" : "border-b"
+                } ${briefTransferStates[index] === false ? "" : "mb-3"}`}
             >
               <div className="flex items-center space-x-3">
                 <p className="text-xl p-3 font-semibold">
@@ -563,9 +562,8 @@ const Cart = () => {
             <div key={item._id} className="rounded-lg border w-full p-3">
               <div className="flex flex-col gap-2 text-sm">
                 <div
-                  className={`flex justify-between items-center gap-2 ${
-                    briefPayments[i] === false ? "" : "border-b"
-                  }`}
+                  className={`flex justify-between items-center gap-2 ${briefPayments[i] === false ? "" : "border-b"
+                    }`}
                 >
                   <p className="text-xl p-3 font-semibold">{item.name}</p>
                   <div className="flex gap-3">
@@ -687,15 +685,15 @@ const Cart = () => {
                       <span>
                         {item.isPromoAdded
                           ? priceConversion(
-                              item.priceWithoutPromoGrandTotal,
-                              selectedCurrency,
-                              true
-                            )
+                            item.priceWithoutPromoGrandTotal,
+                            selectedCurrency,
+                            true
+                          )
                           : priceConversion(
-                              item.grandTotal,
-                              selectedCurrency,
-                              true
-                            )}
+                            item.grandTotal,
+                            selectedCurrency,
+                            true
+                          )}
                       </span>
                     </div>
                   </div>
@@ -725,9 +723,8 @@ const Cart = () => {
         className="rounded-lg border p-3 cursor-pointer mt-5"
       >
         <div
-          className={`flex justify-between items-center gap-2 ${
-            finalPayment === false ? "" : "border-b"
-          }`}
+          className={`flex justify-between items-center gap-2 ${finalPayment === false ? "" : "border-b"
+            }`}
         >
           <p className="font-medium text-lg p-3">Final Payment</p>
           {finalPayment === false && (
@@ -768,7 +765,7 @@ const Cart = () => {
                 {" "}
                 {grandTotal > 0
                   ? "" +
-                    priceConversion(totalTransferPrice, selectedCurrency, true)
+                  priceConversion(totalTransferPrice, selectedCurrency, true)
                   : ""}
               </p>
             </div>
@@ -778,11 +775,11 @@ const Cart = () => {
               <p>
                 {grandTotal > 0
                   ? "" +
-                    priceConversion(
-                      grandTotal + totalTransferPrice,
-                      selectedCurrency,
-                      true
-                    )
+                  priceConversion(
+                    grandTotal + totalTransferPrice,
+                    selectedCurrency,
+                    true
+                  )
                   : ""}
               </p>
             </div>
@@ -798,7 +795,7 @@ const Cart = () => {
       <Breadcrumb breadCrumbs={breadcrum} />
       <form onSubmit={submitHandler}>
         <div className="flex lg:flex-row gap-10 w-full">
-          <div className="w-8/12 space-y-10">
+          <div className="md:w-8/12 space-y-10">
             {cart.length ? renderSidebar() : ""}
             {transferCart.length ? renderTransfer() : ""}
             {cart.length || transferCart.length ? renderPaymentSection() : ""}

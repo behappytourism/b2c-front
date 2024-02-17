@@ -346,7 +346,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
     return (
       <>
         {data.vehicles.length &&
-        data.transferType === TransferTypeEmun.private ? (
+          data.transferType === TransferTypeEmun.private ? (
           <div className=" py-3">
             <p className="text-xs text-gray-400 ">Private Vehicles</p>
 
@@ -380,7 +380,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
     return (
       <>
         {data.isSharedTransferAvailable &&
-        data.transferType === TransferTypeEmun.shared ? (
+          data.transferType === TransferTypeEmun.shared ? (
           <div className=" py-3">
             <p className="text-xs text-gray-400">Shared Transfer</p>
 
@@ -513,35 +513,35 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
             <table className="w-full text-sm">
               <tbody>
                 {data.activityType === ActivityTypeEnum.normal &&
-                data.base !== BaseTypeEnum.hourly ? (
+                  data.base !== BaseTypeEnum.hourly ? (
                   <>
                     {BreakdownComponentMaker({
                       name: "Adult Price",
                       count: `${data.adultCount}`,
                       price: data.promoAmountAdult
                         ? priceConversion(
-                            data.adultPrice + data.promoAmountAdult,
-                            selectedCurrency,
-                            true
-                          )
+                          data.adultPrice + data.promoAmountAdult,
+                          selectedCurrency,
+                          true
+                        )
                         : priceConversion(
-                            data.adultPrice,
-                            selectedCurrency,
-                            true
-                          ),
+                          data.adultPrice,
+                          selectedCurrency,
+                          true
+                        ),
                       sign: "X",
                       total: data.promoAmountAdult
                         ? priceConversion(
-                            data.adultPrice * data.adultCount +
-                              data.promoAmountAdult,
-                            selectedCurrency,
-                            true
-                          )
+                          data.adultPrice * data.adultCount +
+                          data.promoAmountAdult,
+                          selectedCurrency,
+                          true
+                        )
                         : priceConversion(
-                            data.adultPrice * data.adultCount,
-                            selectedCurrency,
-                            true
-                          ),
+                          data.adultPrice * data.adultCount,
+                          selectedCurrency,
+                          true
+                        ),
                     })}
 
                     {data?.childCount !== 0 && (
@@ -551,28 +551,28 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                           count: `${data.childCount}`,
                           price: data.promoAmountChild
                             ? priceConversion(
-                                data.childPrice + data.promoAmountChild,
-                                selectedCurrency,
-                                true
-                              )
+                              data.childPrice + data.promoAmountChild,
+                              selectedCurrency,
+                              true
+                            )
                             : priceConversion(
-                                data.childPrice,
-                                selectedCurrency,
-                                true
-                              ),
+                              data.childPrice,
+                              selectedCurrency,
+                              true
+                            ),
                           sign: "X",
                           total: data.promoAmountChild
                             ? priceConversion(
-                                data.childPrice * data.childCount +
-                                  data.promoAmountChild,
-                                selectedCurrency,
-                                true
-                              )
+                              data.childPrice * data.childCount +
+                              data.promoAmountChild,
+                              selectedCurrency,
+                              true
+                            )
                             : priceConversion(
-                                data.childPrice * data.childCount,
-                                selectedCurrency,
-                                true
-                              ),
+                              data.childPrice * data.childCount,
+                              selectedCurrency,
+                              true
+                            ),
                         })}
                       </>
                     )}
@@ -606,9 +606,8 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                           count: ``,
                           price: "",
                           sign: "",
-                          total: `${
-                            data.adultCount + data.childCount
-                          } travellers`,
+                          total: `${data.adultCount + data.childCount
+                            } travellers`,
                         })}
                       </>
                     ) : (
@@ -625,7 +624,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   </>
                 )}
                 {data.base === BaseTypeEnum.hourly &&
-                data.activityType === ActivityTypeEnum.normal ? (
+                  data.activityType === ActivityTypeEnum.normal ? (
                   <>
                     {BreakdownComponentMaker({
                       name: "Hourly Price",
@@ -643,30 +642,30 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   ""
                 )}
                 {vehicleArray.length &&
-                data.transferType === TransferTypeEmun.private
+                  data.transferType === TransferTypeEmun.private
                   ? vehicleArray.map((vehicle) => (
-                      <>
-                        {BreakdownComponentMaker({
-                          key: vehicle._id,
-                          name: vehicle.name,
-                          count: `${vehicle.count || 1}`,
-                          price: priceConversion(
-                            vehicle.price,
-                            selectedCurrency,
-                            true
-                          ),
-                          sign: "X",
-                          total: priceConversion(
-                            vehicle.price * (vehicle.count || 1),
-                            selectedCurrency,
-                            true
-                          ),
-                        })}
-                      </>
-                    ))
+                    <>
+                      {BreakdownComponentMaker({
+                        key: vehicle._id,
+                        name: vehicle.name,
+                        count: `${vehicle.count || 1}`,
+                        price: priceConversion(
+                          vehicle.price,
+                          selectedCurrency,
+                          true
+                        ),
+                        sign: "X",
+                        total: priceConversion(
+                          vehicle.price * (vehicle.count || 1),
+                          selectedCurrency,
+                          true
+                        ),
+                      })}
+                    </>
+                  ))
                   : ""}
                 {data.transferType === TransferTypeEmun.shared &&
-                isSharedTransferAvail ? (
+                  isSharedTransferAvail ? (
                   <>
                     {BreakdownComponentMaker({
                       name: "Shared Transfer",
@@ -679,7 +678,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                       sign: "X",
                       total: priceConversion(
                         (data.adultCount + data.childCount) *
-                          data.sharedTransferPrice,
+                        data.sharedTransferPrice,
                         selectedCurrency,
                         true
                       ),
@@ -785,18 +784,16 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
           ""
         )}
         <div
-          className={`${
-            data?.slot?.EventID?.length ? " flex justify-end " : " w-full "
-          } py-2  `}
+          className={`${data?.slot?.EventID?.length ? " flex justify-end " : " w-full "
+            } py-2  `}
         >
           <TimeSlot
             data={data}
             handleChangeData={handleChangeData}
-            className={`${
-              data?.slot?.EventID?.length
+            className={`${data?.slot?.EventID?.length
                 ? " border text-neutral-600 dark:text-neutral-300 "
                 : " w-full bg-blue-600 text-neutral-100 dark:text-neutral-300 "
-            } p-2  rounded-lg `}
+              } p-2  rounded-lg `}
           />
         </div>
       </div>
@@ -816,13 +813,12 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                     handleChangeData("slot", slot);
                   }
                 }}
-                className={` ${
-                  Number(slot?.Available) < data?.adultCount
+                className={` ${Number(slot?.Available) < data?.adultCount
                     ? " border-red-500/20 text-stone-500  "
                     : slot?.EventID === data.slot?.EventID
-                    ? " border-green-500/20 bg-green-100/50 "
-                    : " border-green-500/20 "
-                } relative border-4 rounded-full  w-full pt-2 shadow-md flex flex-col items-center justify-center cursor-pointer`}
+                      ? " border-green-500/20 bg-green-100/50 "
+                      : " border-green-500/20 "
+                  } relative border-4 rounded-full  w-full pt-2 shadow-md flex flex-col items-center justify-center cursor-pointer`}
               >
                 {slot?.EventID === data.slot?.EventID ? (
                   <p className="text-sm text-green-600 font-mono pb-2">
@@ -892,21 +888,19 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
   return (
     <div
       key={data?._id}
-      className={`${
-        data.isChecked
+      className={`${data.isChecked
           ? data.transferType === TransferTypeEmun.private
             ? " md:col-span-2  "
             : " md:col-span-2  "
           : ""
-      } mb-5`}
+        } mb-5`}
     >
       <div
-        className={`bg-white border  dark:border-neutral-700 dark:bg-neutral-800 rounded-xl shadow-sm p-4 ${
-          data.isChecked ? " ring-2 ring-green-400/20 " : " "
-        }`}
+        className={`bg-white border  dark:border-neutral-700 dark:bg-neutral-800 rounded-xl shadow-sm p-4 ${data.isChecked ? " ring-2 ring-green-400/20 " : " "
+          }`}
       >
-        <div className="flex">
-          <div className="w-3/12">
+        <div className="md:flex">
+          <div className="md:w-3/12">
             <div onClick={() => setTab("image")} className="pt-3 pr-3">
               {/* <GallerySlider
                 uniqueID={`ExperiencesCard_${"id"}`}
@@ -926,7 +920,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
             </div>
           </div>
 
-          <div className="w-4/12 p-2">
+          <div className="md:w-4/12 p-2">
             <h1 className="font-semibold mb-3">{data?.name}</h1>
             <p className="text-sm">
               <div
@@ -936,7 +930,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
               />
               <button
                 onClick={() => setTab("readmore")}
-                className="text-sm text-orange-500 cursor-pointer"
+                className="md:text-sm text-xs text-orange-500 cursor-pointer"
               >
                 read more
               </button>
@@ -965,17 +959,17 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
               )}
             </div>
 
-            <div className="flex gap-5 mt-3">
+            <div className="flex flex-col md:flex-row md:gap-5 gap-3 mt-3">
               <button
                 onClick={handleAddToCart}
-                className="mt-3 p-2  bg-primary-300 rounded hover:bg-primary-400 text-white font-semibold"
+                className="mt-3 p-2 w-full md:w-fit  bg-primary-300 rounded hover:bg-primary-400 text-white font-semibold"
               >
                 Add to cart
               </button>
               <Link href={"/cart" as Route}>
                 <button
                   onClick={handleAddToCart}
-                  className="mt-3 p-2 ml-3 bg-orange-400 rounded hover:bg-orange-700 text-white font-semibold"
+                  className="mt-3 w-full md:w-fit p-2 md:ml-3 bg-orange-400 rounded hover:bg-orange-700 text-white font-semibold"
                 >
                   Checkout
                 </button>
@@ -989,11 +983,11 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute top-[110px] right-[260px] bg-white rounded-full cursor-pointer"
+                    className="absolute md:top-[110px] top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white mt-[120px] min-w-[400px]  max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">
+                  <div className="bg-white md:mt-[120px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">
                     <p className="text-lg font-semibold underline pb-2">
                       Description
                     </p>
@@ -1018,11 +1012,11 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute top-[110px] right-[200px] bg-white rounded-full cursor-pointer"
+                    className="absolute md:top-[110px] top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white mt-[10px] min-w-[400px] max-w-[720px] max-h-[600px] text-center overflow-x-auto rounded-xl shadow-2xl">
+                  <div className="bg-white md:mt-[10px] m-3 md:m-0 mt-[150px] md:min-w-[400px] md:max-w-[720px] md:max-h-[600px] text-center overflow-x-auto rounded-xl shadow-2xl">
                     <Image
                       width={1000}
                       height={300}
@@ -1032,7 +1026,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
 
                     <div className="grid grid-cols-6 max-w-[700px] gap-2">
                       {data?.images?.map((image, index) => (
-                        <div className="-mt-[80px] ml-4">
+                        <div className="md:-mt-[80px] -mt-[30px] ml-4 border h-fit">
                           <Image
                             width={100}
                             onClick={() => setDefaultImage(index)}
@@ -1056,14 +1050,13 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute top-[110px] right-[300px] bg-white rounded-full cursor-pointer"
+                    className="absolute md:top-[110px] top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white mt-[120px] min-w-[400px] max-w-[450px] p-2 text-center max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">
-                    <p className="text-lg font-semibold underline pb-2">
-                      Overview
-                    </p>
+                  <div className="bg-white md:mt-[120px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
+                    Overview
+                  </p>
                     <div>
                       <p className="text-sm text-left">
                         <div
@@ -1085,14 +1078,13 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute top-[110px] right-[300px] bg-white rounded-full cursor-pointer"
+                    className="absolute md:top-[110px] top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white mt-[120px] min-w-[400px] max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">
-                    <p className="text-lg font-semibold underline pb-2">
-                      Inclusion & Exclusion
-                    </p>
+                  <div className="bg-white md:mt-[120px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
+                    Inclusion & Exclusion
+                  </p>
                     <div>
                       <p className="text-sm text-left">
                         <div
@@ -1114,15 +1106,14 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute top-[110px] right-[300px] bg-white rounded-full cursor-pointer"
+                    className="absolute md:top-[110px] top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
 
-                  <div className="bg-white mt-[120px] min-w-[400px] max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">
-                    <p className="text-lg font-semibold underline pb-2">
-                      Terms & Conditions
-                    </p>
+                  <div className="bg-white md:mt-[120px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
+                    Terms & Conditions
+                  </p>
                     <div>
                       <p className="text-sm text-left">
                         <div
@@ -1138,8 +1129,8 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
             )}
           </>
 
-          <div className="w-5/12">
-            <div className="flex justify-between">
+          <div className="md:w-5/12">
+            <div className="md:flex md:justify-between">
               <div className="py-2">
                 <p className=" text-xs text-gray-400 py-1">
                   Choose transfer type?
@@ -1166,7 +1157,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
               {renderTransferDetails()}
             </div>
 
-            <div className="flex justify-between">
+            <div className="md:flex md:justify-between">
               {/* On Person */}
               {data.base !== BaseTypeEnum.hourly ? (
                 <div className="py-2">
@@ -1205,10 +1196,10 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
         </div>
 
         {attraction?.isApiConnected &&
-        attraction?.connectedApi === "63f0a47b479d4a0376fe12f4" &&
-        data?.isChecked &&
-        data?.date &&
-        data?.adultCount > 0 ? (
+          attraction?.connectedApi === "63f0a47b479d4a0376fe12f4" &&
+          data?.isChecked &&
+          data?.date &&
+          data?.adultCount > 0 ? (
           <div className="mt-2">
             {/* render time slot component */}
             {/* {renderTimeSlot()} */}

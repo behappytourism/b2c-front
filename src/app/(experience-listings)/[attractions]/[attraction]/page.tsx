@@ -891,7 +891,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
           {attractionData && attractionData?.images?.length && (
             <div
               onClick={() => setIsVideoModal(!isVideoModal)}
-              className=" col-span-4 row-span-4 md:col-span-3 md:row-span-3 relative min-h-[100vh] rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
+              className=" col-span-4 row-span-4 md:col-span-3 md:row-span-3 relative min-h-[30vh] md:min-h-[100vh] rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
             >
               {isVideoModal ? (
                 <ReactPlayer

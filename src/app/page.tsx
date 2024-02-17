@@ -112,7 +112,7 @@ const PageHome = () => {
           className="hidden lg:block pt-10 lg:pt-16 lg:pb-16 "
         />
 
-        <div className="relative container space-y-10 lg:space-y-12 mt-[150px]">
+        <div className="relative container space-y-10 lg:space-y-12 md:mt-[150px]">
           {/* SECTION 1 */}
 
           {globalData.topAttractions?.length ? (

@@ -43,7 +43,7 @@ const SectionHero: FC<SectionHeroProps> = ({
       {/* want old desing comment this */}
 
       {/* Other Desing */}
-      <div className="flex flex-col z-0 lg:flex-row lg:items-center ">
+      <div className="hidden md:flex flex-col  z-0 lg:flex-row lg:items-center ">
         <div className="flex-shrink-0 z-0 lg:w-1/2 flex flex-col items-start space-y-8 sm:space-y-10 xl:pr-14 lg:mr-10 xl:mr-0">
         <h2 className="font-medium text-3xl z-0 !leading-[10%] px-10">
         Attractions & Transfer
