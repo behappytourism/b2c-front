@@ -125,7 +125,7 @@ const HeroSearchForm2Mobile = () => {
                       </div>
 
                       <Tab.List className="pt-12 flex w-full justify-center font-semibold text-sm sm:text-base text-neutral-500 dark:text-neutral-400 space-x-6 sm:space-x-8">
-                        {["Attractions", "Visa"].map((item, index) => (
+                        {["Attractions", "Transfer"].map((item, index) => (
                           <Tab
 
                             key={index}
@@ -153,8 +153,8 @@ const HeroSearchForm2Mobile = () => {
 
                       {currentTab === "visa" && (
                         <>
-                          <form className="w-full relative mt-8 md:rounded-full rounded-3xl md:shadow-xl dark:shadow-2xl md:bg-white dark:bg-neutral-800">
-                            {/* {renderRadioBtn()} */}
+                          {/* <form className="w-full relative mt-8 md:rounded-full rounded-3xl md:shadow-xl dark:shadow-2xl md:bg-white dark:bg-neutral-800">
+                           
                             <div
                               className={`relative md:flex md:flex-row p-4 md:p-0`}
                             >
@@ -175,7 +175,7 @@ const HeroSearchForm2Mobile = () => {
                                 setIsNationality={setIsNationality}
                               />
                               <div className="self-center  border-slate-200 dark:border-slate-700 h-8"></div>
-                              {/* <RentalCarDatesRangeInput className="flex-1" /> */}
+                            
                               <div
                                 onClick={() =>
                                   handleDispatchNationality(isNationality)
@@ -183,8 +183,8 @@ const HeroSearchForm2Mobile = () => {
                                 className="pr-2 xl:pr-4 pt-4 hidden md:block"
                               ></div>
                             </div>
-                          </form>
-                          <div className="p-4 -mt-10">
+                          </form> */}
+                          {/* <div className="p-4 -mt-10">
                             <ButtonPrimary
                               type="button"
                               onClick={() => handleVisaSearch(Nationality)}
@@ -206,7 +206,7 @@ const HeroSearchForm2Mobile = () => {
                                 />
                               </svg>
                             </ButtonPrimary>
-                          </div>
+                          </div> */}
                         </>
                       )}
                     </Tab.Group>
