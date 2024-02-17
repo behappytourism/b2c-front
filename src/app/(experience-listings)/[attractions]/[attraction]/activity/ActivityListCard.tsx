@@ -910,7 +910,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
               /> */}
               {data && data.images && data.images[0] && (
                 <Image
-                  className="rounded-t-xl cursor-pointer"
+                  className="rounded-t-xl md:rounded-t-none md:rounded-none cursor-pointer"
                   width={1000}
                   height={1000}
                   alt="picture 1"
