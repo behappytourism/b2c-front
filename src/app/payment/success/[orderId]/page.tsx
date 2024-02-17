@@ -210,8 +210,8 @@ const PayPage: FC<PayPageProps> = () => {
       return (
         <div className="flex flex-col gap-5 w-full">
           <h1 className="text-xl font-semibold pb-2 border-b w-fit">Tours</h1>
-          {orderlist ? (
-            orderlist?.attractionOrder?.activities.map((item: any, i: number) => (
+      
+            {orderlist?.attractionOrder?.activities.map((item: any, i: number) => (
               <div key={item._id} className="rounded-lg border w-full p-3">
                 <div className="flex gap-5 text-sm">
                   <div>
@@ -290,18 +290,8 @@ const PayPage: FC<PayPageProps> = () => {
 
                 </div>
               </div>
-            ))
-          ) : (
-            <div>
-              <div className="listingSectionSidebar__wrap shadow max-w-sm">
-                <div className="flex flex-wrap gap-2 items-center justify-center text-neutral-600 dark:text-neutral-400">
-                  <i className="las la-cart-plus text-3xl "></i>
-                  <p className="">Your cart is empty.</p>
-                </div>
-                <ButtonPrimary href="/">Continue Shopping</ButtonPrimary>
-              </div>
-            </div>
-          )}
+            ))}
+         
         </div>
       );
     };
