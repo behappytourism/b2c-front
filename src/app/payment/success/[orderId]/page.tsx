@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { BaseTypeEnum } from "@/data/attraction/types";
-import { ArrowRightIcon, ChevronDownIcon, ChevronUpIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+import { ArrowDownIcon, ArrowRightIcon, ChevronDownIcon, ChevronUpIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import { format } from "date-fns";
 import priceConversion from "@/utils/priceConversion";
 import Toggle from "@/shared/Toggle";
@@ -132,12 +132,18 @@ const PayPage: FC<PayPageProps> = () => {
                     className={`flex items-center justify-between ${briefTransfer === false ? "" : "border-b"
                       } ${briefTransfer === false ? "" : "mb-3"}`}
                   >
-                    <div className="flex items-center space-x-3">
+                    <div className="md:flex items-center space-x-3 mb-3 md:mb-0">
                       <p className="text-xl p-3 font-semibold">
                         {trip?.transferFrom?.airportName}
                       </p>
+                      <div className="hidden md:block">
                       <ArrowRightIcon height={24} width={24} />
-                      <p className="text-xl p-3 font-semibold">{trip?.transferTo?.areaName}</p>
+                      </div>
+
+                      <div className="md:hidden flex justify-center">
+                      <ArrowDownIcon height={24} width={24} />
+                      </div>
+                      <p className="text-xl md:p-3 font-semibold">{trip?.transferTo?.areaName}</p>
                     </div>
 
                   </div>
@@ -149,7 +155,7 @@ const PayPage: FC<PayPageProps> = () => {
                       <span className="capitalize font-semibold">{format(new Date(trip?.pickupDate), "d MMM, yyyy")}</span>
                     </div>
 
-                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300 mb-3 md:mb-0">
                       <span>Time</span>
                       <span className="capitalize font-semibold">{trip?.pickupTime}</span>
                     </div>
@@ -158,13 +164,13 @@ const PayPage: FC<PayPageProps> = () => {
                       <p className="text-lg border-b font-semibold">Vehicle's</p>
                     </div>
                     {trip?.vehicleTypes?.map((vehicleType: any, vehicleIn: number) => (
-                      <div className="border p-2 rounded-lg mt-3 flex gap-5 items-center">
+                      <div className="border p-2 rounded-lg mt-3 md:flex md:gap-5 items-center">
 
                         <div>
                           {vehicleType && vehicleType?.vehicleId?.image && vehicleType?.vehicleId?.image && (
                             <Image
-                              className="rounded-none cursor-pointer ml-2 absolute -mt-[90px]"
-                              width={180}
+                              className="rounded-none cursor-pointer md:max-w-[200px] md:ml-2 md:absolute md:-mt-[90px]"
+                              width={300}
                               height={100}
                               alt="picture 1"
                               src={`${process.env.NEXT_PUBLIC_CDN_URL}${vehicleType?.vehicleId?.image}`}
@@ -174,7 +180,7 @@ const PayPage: FC<PayPageProps> = () => {
 
 
 
-                        <div className="pl-[200px] w-full text-lg">
+                        <div className="md:pl-[200px] w-full text-lg">
                           <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
                             <span>Name</span>
                             <span className="capitalize font-semibold">{vehicleType?.name}</span>
@@ -212,13 +218,13 @@ const PayPage: FC<PayPageProps> = () => {
           <h1 className="text-xl font-semibold pb-2 border-b w-fit">Tours</h1>
       
             {orderlist?.attractionOrder?.activities.map((item: any, i: number) => (
-              <div key={item._id} className="rounded-lg border w-full p-3">
-                <div className="flex gap-5 text-sm">
+              <div key={item._id} className="rounded-lg border w-full md:p-3">
+                <div className="md:flex md:gap-5 text-sm">
                   <div>
                     {item && item?.activity?.attraction?.images && item?.activity?.attraction?.images[0] && (
                       <Image
-                        className="rounded-none cursor-pointer"
-                        width={220}
+                        className="rounded-none w-full rounded-t-lg md:rounded-t-none md:mb-0 mb-3 cursor-pointer"
+                        width={300}
                         height={100}
                         alt="picture 1"
                         src={`${process.env.NEXT_PUBLIC_CDN_URL}${item?.activity?.attraction?.images[0]}`}
@@ -226,7 +232,7 @@ const PayPage: FC<PayPageProps> = () => {
                     )}
                   </div>
 
-                  <div className="w-full text-lg">
+                  <div className="w-full text-lg p-3 md:p-0">
                     <div className="flex justify-between w-full text-neutral-6000 dark:text-neutral-300">
                       <p>Name</p>
                       <p className="capitalize font-semibold">

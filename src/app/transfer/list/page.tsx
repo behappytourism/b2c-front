@@ -148,8 +148,8 @@ function TransferList() {
           {transferItem.trips?.map((trip: any, tripIndex: number) => (
             <div className="mb-10 border-b pb-10">
               <div className="border-b mb-3">
-                <div className="flex justify-between p-1">
-                  <div className="">
+                <div className="md:flex md:justify-between p-1">
+                  <div className="mb-3 md:mb-0">
                     <p className="text-gray-400 text-sm">Pickup Location</p>
                     <h1 className="text-xl font-semibold">
                       {trip?.transferFrom?.airportName ||
@@ -158,8 +158,8 @@ function TransferList() {
                     </h1>
                   </div>
 
-                  <div className="">
-                    <p className="text-gray-400 text-sm flex justify-end">
+                  <div className="mb-3 md:mb-0">
+                    <p className="text-gray-400 text-sm flex md:justify-end">
                       Drop Location
                     </p>
                     <h1 className="text-xl font-semibold">
@@ -170,8 +170,8 @@ function TransferList() {
                   </div>
                 </div>
 
-                <div className="flex justify-between p-1">
-                  <div className="text-sm flex gap-3">
+                <div className="md:flex md:justify-between p-1">
+                  <div className="text-sm flex gap-3 mb-1 md:mb-0">
                     <p className="text-gray-400 text-sm">
                       Estimate Time Arrival (ETA)
                     </p>
@@ -188,17 +188,16 @@ function TransferList() {
               <h1 className="text-2xl font-semibold mt-5 mb-3 border-b w-fit">
                 Vehicles
               </h1>
-              <div className="grid grid-cols-4 gap-5">
+              <div className="grid md:grid-cols-4 gap-5">
                 {trip?.vehicles?.map((vehicle: any, index: number) => (
-                  <div className="border w-fit cursor-pointer  bg-slate-100 transform hover:scale-110 transition-transform duration-300">
+                  <div className="border w-fit cursor-pointer  bg-slate-100 transform md:hover:scale-110 transition-transform duration-300">
                     <div className="object-cover border-b px-10 items-center flex justify-center">
                       <Image
                         alt="photos"
                         className="min-h-[100px]"
                         src={
-                          `${
-                            process.env.NEXT_PUBLIC_SERVER_URL +
-                            vehicle?.vehicle?.image
+                          `${process.env.NEXT_PUBLIC_SERVER_URL +
+                          vehicle?.vehicle?.image
                           }` || ""
                         }
                         width={200}

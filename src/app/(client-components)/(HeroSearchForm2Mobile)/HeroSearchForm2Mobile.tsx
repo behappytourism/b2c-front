@@ -20,6 +20,7 @@ import { setInitialData } from "@/redux/features/initialsSlice";
 import { useRouter } from "next/navigation";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import { Route } from "next";
+import TransferSearchForm from "@/app/transfer/TransferSearchForm";
 
 const HeroSearchForm2Mobile = () => {
   const dispatch = useDispatch();
@@ -151,62 +152,9 @@ const HeroSearchForm2Mobile = () => {
                         <ExperiencesSearchForm closeModal={closeModal} />
                       )}
 
-                      {currentTab === "visa" && (
+                      {currentTab === "transfer" && (
                         <>
-                          {/* <form className="w-full relative mt-8 md:rounded-full rounded-3xl md:shadow-xl dark:shadow-2xl md:bg-white dark:bg-neutral-800">
-                           
-                            <div
-                              className={`relative md:flex md:flex-row p-4 md:p-0`}
-                            >
-                              <VisaDestination
-                                placeHolder="Destination"
-                                desc="Pick up location"
-                                className="flex-1"
-                                setVisaDestination={setVisaDestination}
-                              />
-                              <div className="self-center hidden md:block border-r border-slate-200 dark:border-slate-700 h-8"></div>
-                              <VisaNationality
-                                placeHolder="Nationality"
-                                desc="Pick your nationality"
-                                className="flex-1"
-                                divHideVerticalLineClass="-inset-x-0.5"
-                                setVisaNationality={setVisaNationality}
-                                Nationality={Nationality}
-                                setIsNationality={setIsNationality}
-                              />
-                              <div className="self-center  border-slate-200 dark:border-slate-700 h-8"></div>
-                            
-                              <div
-                                onClick={() =>
-                                  handleDispatchNationality(isNationality)
-                                }
-                                className="pr-2 xl:pr-4 pt-4 hidden md:block"
-                              ></div>
-                            </div>
-                          </form> */}
-                          {/* <div className="p-4 -mt-10">
-                            <ButtonPrimary
-                              type="button"
-                              onClick={() => handleVisaSearch(Nationality)}
-                              className="h-14 md:h-16 w-full md:w-16 rounded-full bg-primary-6000 hover:bg-primary-700 flex items-center justify-center text-neutral-50 focus:outline-none"
-                            >
-                              <span className="mr-3 md:hidden">Search</span>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={1.5}
-                                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                />
-                              </svg>
-                            </ButtonPrimary>
-                          </div> */}
+                         <TransferSearchForm closeModal={closeModal} />
                         </>
                       )}
                     </Tab.Group>

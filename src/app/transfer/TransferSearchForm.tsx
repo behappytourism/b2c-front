@@ -1,9 +1,16 @@
 import Input from "@/shared/Input";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useDispatch } from "react-redux";
 import { storeTransferResults } from "@/redux/features/transferSlice";
 import { useRouter } from "next/navigation";
+import ButtonPrimary from "@/shared/ButtonPrimary";
+
+
+export interface ExperiencesSearchFormProps {
+  closeModal?: () => void
+}
+
 
 interface Transfer {
   airports?: {
@@ -24,7 +31,7 @@ interface Transfer {
   }[];
 }
 
-function TransferSearchForm() {
+const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({closeModal}) => {
   const dispatch = useDispatch();
   const route = useRouter();
   const [selectedHour, setSelectedHour] = useState<number>();
@@ -58,6 +65,8 @@ function TransferSearchForm() {
   const [returnDate, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("");
   const [transferType, setTransferType] = useState("oneway");
+  const [search, setSearch] = useState(false);
+
 
   const fetchTransferSuggestion = async (searchQuery: string) => {
     try {
@@ -96,6 +105,7 @@ function TransferSearchForm() {
   }, [toSearchQuery]);
 
   const transferSearch = async () => {
+    setSearch(true);
     const body = {
       dropOffLocation: dropoffLocation,
       dropOffSuggestionType: dropoffSuggestionType,
@@ -142,6 +152,14 @@ function TransferSearchForm() {
       {
         response && route.push("/transfer/list");
       }
+
+      {
+       response && closeModal && closeModal()
+      }
+
+      {
+        response && setSearch(false)
+       }
     } catch (error) {
       console.error(error);
     }
@@ -226,7 +244,8 @@ function TransferSearchForm() {
   }, [selectedHour, selectedMinute, selectedReturnHour, selectedReturnMinute]);
 
   return (
-    <div className="-ml-[200px] py-10 px-12 backdrop-blur-xl rounded bg-opacity-30 bg-secondary-900">
+    <>
+    <div className="md:-ml-[200px] max-h-[600px] md:overflow-visible overflow-x-auto py-10 px-12 backdrop-blur-xl rounded bg-opacity-30 bg-secondary-900">
       <div className="flex gap-5 mb-3">
         <div className="flex gap-1 items-center">
           <input
@@ -255,8 +274,8 @@ function TransferSearchForm() {
         </div>
       </div>
 
-      <div className="flex gap-10 w-full mb-10">
-        <div className="w-full">
+      <div className="md:flex md:gap-10 w-full md:mb-10 mb-5">
+        <div className="w-full mb-5 md:mb-0">
           <label className="block mb-2 text-sm font-medium text-gray-200 dark:text-white">
             From
           </label>
@@ -283,7 +302,7 @@ function TransferSearchForm() {
           </div>
         </div>
         {showFrom === true && (
-          <div className="absolute mt-20 bg-white min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
+          <div className="absolute md:mt-20 bg-white mr-3 md:mr-0 md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
             {searchQuery.length < 2 && <p>please type atleast 3 letters</p>}
 
             {searchQuery.length > 2 && (
@@ -343,7 +362,7 @@ function TransferSearchForm() {
           </div>
         )}
 
-        <div className="w-full pr-28">
+        <div className="w-full md:pr-28">
           <label className="block mb-2 text-sm font-medium text-gray-200 dark:text-white">
             To
           </label>
@@ -371,7 +390,7 @@ function TransferSearchForm() {
         </div>
 
         {showTo === true && (
-          <div className="absolute mt-20 ml-[620px] bg-white min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
+          <div className="absolute md:mt-20 md:ml-[620px] mr-3 md:mr-0 bg-white md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
             {toSearchQuery.length < 2 && <p>please type atleast 3 letters</p>}
 
             {toSearchQuery.length > 2 && (
@@ -432,21 +451,21 @@ function TransferSearchForm() {
         )}
       </div>
 
-      <div className="flex gap-10">
-        <div className="flex gap-5">
-          <div>
+      <div className="md:flex md:gap-10">
+        <div className="md:flex md:gap-5 mb-5 md:mb-0">
+          <div className="mb-5 md:mb-0">
             <label className="block mb-2 text-sm font-medium text-gray-200 dark:text-white">
               Date and time of arrival
             </label>
-            <div className="flex">
+            <div className="md:flex">
               <input
                 onChange={(e) => setPickupDate(`${e.target.value}`)}
-                className="border-none rounded-l-lg cursor-pointer"
+                className="border-none w-full md:w-fit mb-3 md:mb-0 rounded-lg md:rounded-none md:rounded-l-lg cursor-pointer"
                 type="date"
               />
 
               <div
-                className="p-3 flex min-w-[100px] border-l border-gray-300 rounded-r-lg justify-between bg-white cursor-pointer"
+                className="p-3 flex min-w-[100px] border-l border-gray-300 rounded-lg md:rounded-none md:rounded-r-lg justify-between bg-white cursor-pointer"
                 onClick={() => {
                   setShowArraiDate(!showArraiDate);
                 }}
@@ -457,13 +476,11 @@ function TransferSearchForm() {
                   </h1>
                 </div>
 
-                {/* <h1 className="text-black text-sm pt-1  ">
-            <SlArrowDown />
-          </h1> */}
+  
               </div>
 
               {showArraiDate && (
-                <div className="items-center space-x-2 absolute bg-white p-2 rounded-lg flex left-[230px] mt-14">
+                <div className="items-center space-x-2 absolute bg-white p-2 rounded-lg flex md:left-[230px] md:mt-14">
                   {/* Hour Selector */}
                   <div className="flex gap-5">
                     <select
@@ -507,17 +524,17 @@ function TransferSearchForm() {
             <label className="block mb-2 text-sm font-medium text-gray-200 dark:text-white">
               Date and time of departure
             </label>
-            <div className="flex">
+            <div className="md:flex">
               <input
                 onChange={(e) => setReturnDate(`${e.target.value}`)}
-                className={`border-none rounded-l-lg ${transferType === "return" ? "cursor-pointer" : ""} ${transferType === "oneway" ? "text-gray-400" : "text-black"}`}
+                className={`border-none rounded-lg md:rounded-none w-full mb-3 md:mb-0 md:w-fit md:rounded-l-lg ${transferType === "return" ? "cursor-pointer" : ""} ${transferType === "oneway" ? "text-gray-400" : "text-black"}`}
                 disabled={transferType === "oneway"}
                 type="date"
               />
 
               {transferType === "return" && (
               <div
-                className="p-3 flex justify-between min-w-[100px]  border-l border-gray-300 rounded-r-lg bg-white cursor-pointer"
+                className="p-3 flex justify-between min-w-[100px]  md:border-l border-gray-300 rounded-lg md:rounded-none md:rounded-r-lg bg-white cursor-pointer"
                 onClick={() => {
                   setShowReturnDate(!showReturnDate);
                 }}
@@ -536,7 +553,7 @@ function TransferSearchForm() {
 
 {transferType === "oneway" && (
               <div
-                className="p-3 flex justify-between min-w-[100px]  border-l border-gray-300 rounded-r-lg bg-white"
+                className="p-3 flex justify-between min-w-[100px]  md:border-l border-gray-300 rounded-lg md:rounded-none md:rounded-r-lg bg-white"
                
               >
                 <div className="flex">
@@ -553,7 +570,7 @@ function TransferSearchForm() {
 
 
               {showReturnDate && (
-                <div className="items-center space-x-2 absolute bg-white p-2 rounded-lg flex left-[520px] mt-14">
+                <div className="items-center space-x-2 absolute bg-white p-2 rounded-lg flex md:left-[520px] md:mt-14">
                   {/* Hour Selector */}
                   <div className="flex gap-5">
                     <select
@@ -594,7 +611,7 @@ function TransferSearchForm() {
           </div>
         </div>
 
-        <div className="flex gap-5 justify-center items-center">
+        <div className="md:flex md:gap-5 justify-center items-center">
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-200 dark:text-white">
               Passengers
@@ -617,7 +634,7 @@ function TransferSearchForm() {
             </div>
 
             {showPax && (
-              <div className="items-center space-x-2 absolute bg-white p-2 rounded-lg flex left-[670px] mt-2">
+              <div className="items-center space-x-2 absolute bg-white p-2 rounded-lg flex md:left-[670px] md:mt-2">
                 <div className="flex gap-5">
                   <select
                     className="border p-2 rounded min-w-[60px]"
@@ -661,18 +678,31 @@ function TransferSearchForm() {
               </div>
             )}
           </div>
-
+         
           <div>
+            {search === false && (
             <button
               onClick={() => transferResults()}
-              className="p-2 mt-6 bg-primary-300 hover:bg-primary-400 rounded min-w-[200px] self-center min-h-[50px] text-white"
+              className="p-2 mt-6 bg-primary-300 w-full md:w-fit hover:bg-primary-400 rounded min-w-[200px] self-center min-h-[50px] text-white"
             >
               Search
             </button>
+            )}
+
+{search === true && (
+           <button  type="button" className="p-2 mt-6 min-w-[200px] w-full md:w-fit bg-primary-300  text-sm font-medium text-white self-center min-h-[50px] rounded  dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600  flex justify-center items-center">
+           <svg aria-hidden="true" role="status" className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+           <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"></path>
+           <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"></path>
+           </svg>
+           Searching...
+       </button>
+            )}
           </div>
         </div>
       </div>
     </div>
+    </>
   );
 }
 

@@ -25,6 +25,7 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
   ArrowRightIcon,
+  ArrowDownIcon,
 } from "@heroicons/react/24/solid";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { handleEmptyTransferCart, handleRemoveFromTransferCart } from "@/redux/features/transferSlice";
@@ -460,20 +461,51 @@ const Cart = () => {
         {transferCart?.map((item, index) => (
           <div className="border rounded-lg mt-5 p-3">
             <div
-              className={`flex items-center justify-between ${briefTransferStates[index] === false ? "" : "border-b"
+              className={`md:flex items-center md:justify-between ${briefTransferStates[index] === false ? "" : "border-b"
                 } ${briefTransferStates[index] === false ? "" : "mb-3"}`}
             >
-              <div className="flex items-center space-x-3">
+              <div className="md:hidden block">
+                <div className="flex justify-end gap-3">
+                  <i
+                    onClick={() => handleRemoveTransferFromCart(item._id)}
+                    className="las la-times-circle text-xl text-red-600 cursor-pointer"
+                  ></i>
+                  {briefTransferStates[index] === false && (
+                    <p className="cursor-pointer">
+                      <ChevronDownIcon
+                        onClick={() => toggleBriefTransfer(index)}
+                        height={20}
+                        width={20}
+                      />
+                    </p>
+                  )}
+                  {briefTransferStates[index] === true && (
+                    <p className="cursor-pointer">
+                      <ChevronUpIcon
+                        onClick={() => toggleBriefTransfer(index)}
+                        height={20}
+                        width={20}
+                      />
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="md:flex items-center space-x-3 mb-3 md:mb-0">
                 <p className="text-xl p-3 font-semibold">
                   {item?.pickupLocation}
                 </p>
-                <ArrowRightIcon height={24} width={24} />
-                <p className="text-xl p-3 font-semibold">
+                <div className="hidden md:block">
+                  <ArrowRightIcon height={24} width={24} />
+                </div>
+                <div className="md:hidden flex justify-center">
+                  <ArrowDownIcon height={24} width={24} />
+                </div>
+                <p className="text-xl md:p-3 font-semibold">
                   {item?.dropOffLocation}
                 </p>
               </div>
 
-              <div>
+              <div className="hidden md:block">
                 <div className="flex gap-3">
                   <i
                     onClick={() => handleRemoveTransferFromCart(item._id)}
@@ -562,11 +594,36 @@ const Cart = () => {
             <div key={item._id} className="rounded-lg border w-full p-3">
               <div className="flex flex-col gap-2 text-sm">
                 <div
-                  className={`flex justify-between items-center gap-2 ${briefPayments[i] === false ? "" : "border-b"
+                  className={`md:flex md:justify-between items-center gap-2 ${briefPayments[i] === false ? "" : "border-b"
                     }`}
                 >
+                  <div className="gap-3 md:hidden flex justify-end">
+                    {/* <PencilSquareIcon height={20} width={20} /> */}
+                    <i
+                      onClick={() => handleRemoveActivityFromCart(item._id)}
+                      className="las la-times-circle text-xl text-red-600 cursor-pointer"
+                    ></i>
+                    {briefPayments[i] === false && (
+                      <p className="cursor-pointer">
+                        <ChevronDownIcon
+                          onClick={() => toggleBriefPayment(i)}
+                          height={20}
+                          width={20}
+                        />
+                      </p>
+                    )}
+                    {briefPayments[i] === true && (
+                      <p className="cursor-pointer">
+                        <ChevronUpIcon
+                          onClick={() => toggleBriefPayment(i)}
+                          height={20}
+                          width={20}
+                        />
+                      </p>
+                    )}
+                  </div>
                   <p className="text-xl p-3 font-semibold">{item.name}</p>
-                  <div className="flex gap-3">
+                  <div className="gap-3 hidden md:flex">
                     <PencilSquareIcon height={20} width={20} />
                     <i
                       onClick={() => handleRemoveActivityFromCart(item._id)}
@@ -798,7 +855,11 @@ const Cart = () => {
           <div className="md:w-8/12 space-y-10">
             {cart.length ? renderSidebar() : ""}
             {transferCart.length ? renderTransfer() : ""}
+            <div className="md:hidden block">
+              {renderDetailsCollection()}
+            </div>
             {cart.length || transferCart.length ? renderPaymentSection() : ""}
+
           </div>
 
           {/* SIDEBAR */}
