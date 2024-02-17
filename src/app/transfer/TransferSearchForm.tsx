@@ -291,7 +291,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({closeModal}) => {
             />
 
             {fromDestination !== "" && (
-              <div className="cursor-pointer absolute mr-[3px]">
+              <div className="cursor-pointer hidden md:block absolute mr-[3px]">
                 <XMarkIcon
                   onClick={() => setFromDestination("")}
                   height={25}
@@ -302,7 +302,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({closeModal}) => {
           </div>
         </div>
         {showFrom === true && (
-          <div className="absolute md:mt-20 bg-white mr-3 md:mr-0 md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
+          <div className="absolute border border-black md:mt-20 -mt-5 bg-white mr-3 md:mr-0 md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
             {searchQuery.length < 2 && <p>please type atleast 3 letters</p>}
 
             {searchQuery.length > 2 && (
@@ -378,7 +378,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({closeModal}) => {
             />
 
             {toDestination !== "" && (
-              <div className="cursor-pointer absolute mr-[3px]">
+              <div className="cursor-pointer hidden md:block absolute mr-[3px]">
                 <XMarkIcon
                   onClick={() => setToDestination("")}
                   height={25}
@@ -390,7 +390,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({closeModal}) => {
         </div>
 
         {showTo === true && (
-          <div className="absolute md:mt-20 md:ml-[620px] mr-3 md:mr-0 bg-white md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
+          <div className="absolute border border-black md:mt-20 md:ml-[620px] mr-3 md:mr-0 bg-white md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
             {toSearchQuery.length < 2 && <p>please type atleast 3 letters</p>}
 
             {toSearchQuery.length > 2 && (
@@ -460,7 +460,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({closeModal}) => {
             <div className="md:flex">
               <input
                 onChange={(e) => setPickupDate(`${e.target.value}`)}
-                className="border-none w-full md:w-fit mb-3 md:mb-0 rounded-lg md:rounded-none md:rounded-l-lg cursor-pointer"
+                className="border-none w-full text-black md:w-fit mb-3 md:mb-0 rounded-lg md:rounded-none md:rounded-l-lg cursor-pointer"
                 type="date"
               />
 
@@ -527,7 +527,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({closeModal}) => {
             <div className="md:flex">
               <input
                 onChange={(e) => setReturnDate(`${e.target.value}`)}
-                className={`border-none rounded-lg md:rounded-none w-full mb-3 md:mb-0 md:w-fit md:rounded-l-lg ${transferType === "return" ? "cursor-pointer" : ""} ${transferType === "oneway" ? "text-gray-400" : "text-black"}`}
+                className={`border-none text-black rounded-lg md:rounded-none w-full mb-3 md:mb-0 md:w-fit md:rounded-l-lg ${transferType === "return" ? "cursor-pointer" : ""} ${transferType === "oneway" ? "text-gray-400" : "text-black"}`}
                 disabled={transferType === "oneway"}
                 type="date"
               />
