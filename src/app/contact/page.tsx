@@ -24,10 +24,6 @@ const PageContact: FC<PageContactProps> = ({ }) => {
       desc: process.env.NEXT_PUBLIC_COMPANYADDRESS1 || "",
     },
     {
-      title: "🗺 INDIA ADDRESS",
-      desc: process.env.NEXT_PUBLIC_COMPANYADDRESS2 || "",
-    },
-    {
       title: "💌 EMAIL",
       desc: globalData?.home?.email || "",
     },

@@ -51,22 +51,6 @@ export default function RootLayout({
       }}></script>
       {/* End Google Tag Manager */}
 
-      {/* Tawk.to Script */}
-      <script type="text/javascript" dangerouslySetInnerHTML={{
-        __html: `
-            var Tawk_API = Tawk_API || {};
-            Tawk_LoadStart = new Date();
-            (function () {
-              var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-              s1.async = true;
-              s1.src = 'https://embed.tawk.to/64a7dfde94cf5d49dc6219cb/1h4ns505j';
-              s1.charset = 'UTF-8';
-              s1.setAttribute('crossorigin', '*');
-              s0.parentNode.insertBefore(s1, s0);
-            })();
-          `,
-      }} />
-      {/* End of Tawk.to Script */}
 
       <body className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
         <SessionProvider>
