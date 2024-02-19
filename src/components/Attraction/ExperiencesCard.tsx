@@ -170,8 +170,8 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
     <div
       className={`nc-ExperiencesCard border group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
     >
+       <Link href={`/${data?.destination?.name}/${data?.slug}` as Route}>
       {renderSliderGallery()}
-      <Link href={`/${data?.destination?.name}/${data?.slug}` as Route}>
         {renderContent()}
       </Link>
     </div>

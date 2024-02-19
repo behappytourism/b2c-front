@@ -36,8 +36,8 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({closeModal}) => {
   const route = useRouter();
   const [selectedHour, setSelectedHour] = useState<number>();
   const [selectedReturnHour, setSelectedReturnHour] = useState<number>();
-  const [selectedMinute, setSelectedMinute] = useState<number>();
-  const [selectedReturnMinute, setSelectedReturnMinute] = useState<number>();
+  const [selectedMinute, setSelectedMinute] = useState<number>(0);
+  const [selectedReturnMinute, setSelectedReturnMinute] = useState<number>(0);
   const [selectedAdult, setSelectedAdult] = useState<number>(1);
   const [selectedChildren, setSelectedChildren] = useState<number>(0);
   const [showArraiDate, setShowArraiDate] = useState(false);
@@ -234,12 +234,12 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({closeModal}) => {
   };
 
   useEffect(() => {
-    if (selectedHour && selectedMinute) {
-      setPickupTime(`${selectedHour}:${selectedMinute}`);
+    if (selectedHour) {
+      setPickupTime(`${selectedHour}:${selectedMinute || "00"}`);
     }
 
-    if (selectedReturnHour && selectedReturnMinute) {
-      setReturnTime(`${selectedReturnHour}:${selectedReturnMinute}`);
+    if (selectedReturnHour) {
+      setReturnTime(`${selectedReturnHour}:${selectedReturnMinute || "00"}`);
     }
   }, [selectedHour, selectedMinute, selectedReturnHour, selectedReturnMinute]);
 
@@ -472,7 +472,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({closeModal}) => {
               >
                 <div className="flex">
                   <h1 className="text-sm">
-                    {pickupTime ? pickupTime : "Select Time"}
+                    {selectedHour ? `${selectedHour}:${selectedMinute || "00"}` : "Select Time"}
                   </h1>
                 </div>
 
