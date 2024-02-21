@@ -40,6 +40,8 @@ export const Pagination: FC<PaginationProps> = ({
           length: total <= 10 ? 1 : Math.ceil(total / limit),
         }).map((_, index) => {
           const numberOfButtons = Math.ceil(total / limit);
+          const isCurrentPage = index === skip;
+
           if (
             index === skip ||
             index === skip + 1 ||
@@ -52,7 +54,7 @@ export const Pagination: FC<PaginationProps> = ({
             return (
               <Button
                 className={
-                  `inline-flex w-11 h-11 items-center justify-center rounded-full border  ${twFocusClass(skip === index)}`
+                  `inline-flex w-11 h-11 items-center justify-center rounded-full ${isCurrentPage ? 'dark:bg-primary-500' : ''} ${isCurrentPage ? 'bg-primary-200' : ''} border  ${twFocusClass(skip === index)}`
                 }
                 key={index}
                 onClick={() => updateSkip(index)}
