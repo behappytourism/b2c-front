@@ -32,6 +32,11 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
     onClickTab(item);
     setTabActiveState(item);
   };
+
+  useEffect(() => {
+    onClickTab("dubai");
+    setTabActiveState("dubai");
+  },[])
   
 
   return (
