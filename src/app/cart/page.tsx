@@ -42,7 +42,6 @@ const Cart = () => {
     lastname: "",
     email: "",
     country: "",
-    referenceNumber: "",
     phone: "",
     special_request_text: "",
   });
@@ -73,7 +72,7 @@ const Cart = () => {
     (state: RootState) => state.transfer
   );
 
-  console.log(transferCart, "transfer");
+  //console.log(transferCart, "transfer");
   
 
   const [briefPayments, setBriefPayments] = useState(cart.map(() => true));
@@ -193,7 +192,6 @@ const Cart = () => {
             phoneNumber: pax.phone,
             paymentMethod: "ccavenue",
             countryCode: paxCountryCode,
-            referenceNumber: pax.referenceNumber,
           }),
           headers: headers,
         }
@@ -295,19 +293,7 @@ const Cart = () => {
           </span>
         )}
         {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
-        <div className="md:col-span-2 lg:col-span-3 mb-3">
-          {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
-              Special Request
-            </p> */}
-          <Input
-            type="text"
-            name="referenceNumber"
-            placeholder="Reference Number"
-            value={pax.referenceNumber}
-            onChange={onChangeHandler}
-            required
-          />
-        </div>
+      
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div className="">
             {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">Mr/Mrs</p> */}

@@ -22,7 +22,10 @@ function TransferList() {
   const { transfer, transferCart } = useSelector(
     (state: RootState) => state.transfer
   );
+
   console.log(transfer, "transfer list");
+
+  
   
   const { countries, selectedCurrency } = useSelector(
     (state: RootState) => state.initials
