@@ -1,5 +1,5 @@
 import Input from "@/shared/Input";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useDispatch } from "react-redux";
 import { storeTransferResults } from "@/redux/features/transferSlice";
@@ -34,6 +34,8 @@ interface Transfer {
 const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
   const dispatch = useDispatch();
   const route = useRouter();
+  const fromInputRef = useRef<HTMLInputElement>(null);
+  const toInputRef = useRef<HTMLInputElement>(null);
   const [selectedHour, setSelectedHour] = useState<number>();
   const [selectedReturnHour, setSelectedReturnHour] = useState<number>();
   const [selectedMinute, setSelectedMinute] = useState<number>(0);
@@ -66,6 +68,49 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
   const [returnTime, setReturnTime] = useState("");
   const [transferType, setTransferType] = useState("oneway");
   const [search, setSearch] = useState(false);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleToInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setToSearchQuery(e.target.value);
+  };
+
+  const handleClickOutside = (e: MouseEvent) => {
+    if (fromInputRef.current && !fromInputRef.current.contains(e.target as Node)) {
+   
+      setShowFrom(false);
+    }
+  };
+
+  const handleToClickOutside = (e: MouseEvent) => {
+    if (toInputRef.current && !toInputRef.current.contains(e.target as Node)) {
+   
+      setShowTo(false);
+    }
+  };
+
+  useEffect(() => {
+    // Attach click event listener when component mounts
+    document.addEventListener('click', handleClickOutside);
+
+    // Clean up the event listener when component unmounts
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []); // Empty dependency array ensures the effect runs only once on mount
+
+  useEffect(() => {
+    // Attach click event listener when component mounts
+    document.addEventListener('click', handleToClickOutside);
+
+    // Clean up the event listener when component unmounts
+    return () => {
+      document.removeEventListener('click', handleToClickOutside);
+    };
+  }, []);
+
 
 
   const fetchTransferSuggestion = async (searchQuery: string) => {
@@ -207,6 +252,16 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
     setSearchQuery("");
   };
 
+  const fromInput = () => {
+    setShowFrom(true);
+    setShowTo(false);
+  }
+
+  const toInput = () => {
+    setShowFrom(false);
+    setShowTo(true);
+  }
+
   const handleFromHotelDestination = (e: any) => {
     setFromDestination(`${e?.hotelName}, ${e?.areaName}, ${e?.countryName}`);
     setShowFrom(false);
@@ -280,11 +335,10 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
             </label>
             <div className="flex items-center justify-end">
               <Input
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setSearchQuery(e.target.value)
-                }
-                onClick={() => setShowFrom(!showFrom)}
+                onChange={handleInputChange}
+                onClick={fromInput}
                 value={searchQuery}
+                ref={fromInputRef}
                 className=" placeholder:text-black placeholder:mr-2"
                 placeholder={fromDestination || "Pickup (Airport, Train, Hotel)"}
               />
@@ -374,10 +428,9 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
             </label>
             <div className="flex items-center justify-end">
               <Input
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setToSearchQuery(e.target.value)
-                }
-                onClick={() => setShowTo(!showTo)}
+                onChange={handleToInputChange}
+                onClick={toInput}
+                ref={toInputRef}
                 value={toSearchQuery}
                 className=" placeholder:text-black placeholder:mr-2"
                 placeholder={toDestination || "Drop (Airport, Train, Hotel)"}
