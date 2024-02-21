@@ -987,7 +987,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white md:mt-[120px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">
+                  <div className="bg-white md:mt-[80px] mt-[120px] m-5 md:m-0 md:min-w-[400px] md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">
                     <p className="text-lg font-semibold underline pb-2">
                       Description
                     </p>
@@ -1054,7 +1054,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white md:mt-[120px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
+                  <div className="bg-white md:mt-[80px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
                     Overview
                   </p>
                     <div>
@@ -1082,7 +1082,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white md:mt-[120px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
+                  <div className="bg-white md:mt-[80px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
                     Inclusion & Exclusion
                   </p>
                     <div>
@@ -1106,12 +1106,13 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute md:top-[110px] top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
+                    className="absolute md:top-[110px] top-[10px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
 
-                  <div className="bg-white md:mt-[120px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[450px] p-2 text-center  max-h-[450px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
+                  <div className="bg-white md:mt-[80px] mt-[60px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    
+                  <p className="text-lg font-semibold underline pb-2">
                     Terms & Conditions
                   </p>
                     <div>

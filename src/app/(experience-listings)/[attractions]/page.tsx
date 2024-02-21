@@ -21,7 +21,7 @@ const ListingExperiencesPage: FC<ListingExperiencesPageProps> = ({
     category: [],
     rating: [],
     duration: [],
-    priceFrom: 100,
+    priceFrom: 0,
     priceTo: 9000
   });
 

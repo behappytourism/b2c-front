@@ -919,11 +919,11 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
                     }`}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                   />
-                  <div className="block absolute top-0 bottom-0 left-0 right-0">
+                  {/* <div className="block absolute top-0 bottom-0 left-0 right-0">
                     <div className="cursor-pointer flex justify-center items-center h-full z-10">
                       <PlayCircleIcon color="white" width={100} height={100} />
                     </div>
-                  </div>
+                  </div> */}
                 </>
               )}
 

@@ -32,6 +32,7 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
     onClickTab(item);
     setTabActiveState(item);
   };
+  
 
   return (
     <div className="flex flex-col mb-8 relative">
@@ -51,14 +52,6 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
             </NavItem>
           ))}
         </Nav>
-        {/* <span className="hidden sm:block flex-shrink-0">
-          <ButtonSecondary href="/listing-stay" className="!leading-none">
-            <div className="flex items-center justify-center">
-              <span>View all</span>
-              <ArrowRightIcon className="w-5 h-5 ml-3" />
-            </div>
-          </ButtonSecondary>
-        </span> */}
       </div>
     </div>
   );

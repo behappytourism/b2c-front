@@ -91,27 +91,27 @@ const SiteHeader = () => {
     return classes.filter(Boolean).join(" ");
   }
 
-  const renderLang = (close: () => void) => {
-    return (
-      <div className="grid gap-8 lg:grid-cols-2">
-        {headerLanguage.map((item, index) => (
-          <a
-            key={index}
-            onClick={() => close()}
-            className={`flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${item.active ? "bg-gray-100 dark:bg-gray-700" : "opacity-80"
-              }`}
-          >
-            <div className="">
-              <p className="text-sm font-medium ">{item.name}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {item.description}
-              </p>
-            </div>
-          </a>
-        ))}
-      </div>
-    );
-  };
+  // const renderLang = (close: () => void) => {
+  //   return (
+  //     <div className="grid gap-8 lg:grid-cols-2">
+  //       {headerLanguage.map((item, index) => (
+  //         <a
+  //           key={index}
+  //           onClick={() => close()}
+  //           className={`flex items-center p-2 -m-3 transition duration-150 ease-in-out rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus-visible:ring focus-visible:ring-orange-500 focus-visible:ring-opacity-50 ${item.active ? "bg-gray-100 dark:bg-gray-700" : "opacity-80"
+  //             }`}
+  //         >
+  //           <div className="">
+  //             <p className="text-sm font-medium ">{item.name}</p>
+  //             <p className="text-xs text-gray-500 dark:text-gray-400">
+  //               {item.description}
+  //             </p>
+  //           </div>
+  //         </a>
+  //       ))}
+  //     </div>
+  //   );
+  // };
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -181,7 +181,7 @@ const SiteHeader = () => {
                     <div className="p-3 sm:p-6 rounded-2xl bg-white dark:bg-neutral-800 shadow-lg ring-1 ring-black ring-opacity-5">
                       <Tab.Group>
                         <Tab.List className="flex space-x-1 rounded-full bg-gray-100 dark:bg-slate-700 p-1">
-                          {["Language", "Currency"].map((category) => (
+                          {["Currency"].map((category) => (
                             <Tab
                               key={category}
                               className={({ selected }) =>
@@ -199,14 +199,14 @@ const SiteHeader = () => {
                           ))}
                         </Tab.List>
                         <Tab.Panels className="mt-5">
-                          <Tab.Panel
+                          {/* <Tab.Panel
                             className={classNames(
                               "rounded-xl p-3",
                               "focus:outline-none focus:ring-0"
                             )}
                           >
                             {renderLang(close)}
-                          </Tab.Panel>
+                          </Tab.Panel> */}
                           <Tab.Panel
                             className={classNames(
                               "rounded-xl p-3",

@@ -15,13 +15,15 @@ import priceConversion from "@/utils/priceConversion";
 
 function TransferList() {
   const thisPathname = usePathname();
-  const [count, setCount] = useState(1);
+  const [count, setCount] = useState(0);
 
   const dispatch = useDispatch();
   const route = useRouter();
   const { transfer, transferCart } = useSelector(
     (state: RootState) => state.transfer
   );
+  console.log(transfer, "transfer list");
+  
   const { countries, selectedCurrency } = useSelector(
     (state: RootState) => state.initials
   );
@@ -37,19 +39,13 @@ function TransferList() {
     };
   });
 
-  const handleCountChange = (e: any) => {
-    setCount(e.target.value);
-  };
-
-  // localStorage.removeItem("TransferCart");
-
-  console.log(transfer);
-
-  const handleAddToCart = (
+  const handleCountChange = (
+    e: any,
     vehicle: any,
     trip: any,
     transfer: TransferExcursion
-  ) => {
+    ) => {
+    setCount(e);
     const selectedTransferItem = {
       _id: vehicle?._id,
       date: trip?.date,
@@ -73,7 +69,7 @@ function TransferList() {
       returnTime: transfer?.returnTime || "",
 
       vehicle: {
-        count: count,
+        count: e,
         name: vehicle?.vehicle?.name,
         price: vehicle?.price,
         vehicleId: vehicle?.vehicle?._id,
@@ -88,48 +84,97 @@ function TransferList() {
         text: "The item is added to the cart",
       })
     );
-    // console.log(selectedTransferItem, 'selected transfer item');
   };
 
-  const handleCheckout = (
-    vehicle: any,
-    trip: any,
-    transfer: TransferExcursion
-  ) => {
-    const selectedTransferItem = {
-      _id: vehicle?._id,
-      date: trip?.date,
-      time: trip?.time,
-      transferType: transfer?.transferType,
-      noOfAdults: transfer?.noOfAdults,
-      noOfChildrens: transfer?.noOfChildrens,
-      pickupSuggestionType: transfer?.pickupSuggestionType,
-      pickupLocation:
-        trip?.transferFrom?.airportName ||
-        trip?.transferFrom?.name ||
-        trip?.transferFrom?.areaName,
-      pickupLocationId: transfer?.pickupLocation || trip?.transferFrom?._id,
-      dropOffSuggestionType: transfer?.dropOffSuggestionType,
-      dropOffLocation:
-        trip?.transferTo?.name ||
-        trip?.transferTo?.airportName ||
-        trip?.transferTo?.areaName,
-      dropOffLocationId: transfer?.dropOffLocation || trip?.transferTo?._id,
-      returnDate: transfer?.returnDate || "",
-      returnTime: transfer?.returnTime || "",
+  // localStorage.removeItem("TransferCart");
 
-      vehicle: {
-        count: count,
-        name: vehicle?.vehicle?.name,
-        price: vehicle?.price,
-        vehicleId: vehicle?.vehicle?._id,
-        vehicleType: vehicle?.vehicle?.vehicleType,
-      },
-    };
-    dispatch(handleAddtocart([selectedTransferItem]));
-    route.push("/cart");
-    // console.log(selectedTransferItem, 'selected transfer item');
-  };
+ // console.log(count, "count");
+
+  // const handleAddToCart = (
+  //   vehicle: any,
+  //   trip: any,
+  //   transfer: TransferExcursion
+  // ) => {
+  //   const selectedTransferItem = {
+  //     _id: vehicle?._id,
+  //     date: trip?.date,
+  //     time: trip?.time,
+  //     transferType: transfer?.transferType,
+  //     noOfAdults: transfer?.noOfAdults,
+  //     noOfChildrens: transfer?.noOfChildrens,
+  //     pickupSuggestionType: transfer?.pickupSuggestionType,
+  //     pickupLocation:
+  //       trip?.transferFrom?.airportName ||
+  //       trip?.transferFrom?.name ||
+  //       trip?.transferFrom?.areaName,
+  //     pickupLocationId: transfer?.pickupLocation || trip?.transferFrom?._id,
+  //     dropOffSuggestionType: transfer?.dropOffSuggestionType,
+  //     dropOffLocation:
+  //       trip?.transferTo?.name ||
+  //       trip?.transferTo?.airportName ||
+  //       trip?.transferTo?.areaName,
+  //     dropOffLocationId: transfer?.dropOffLocation || trip?.transferTo?._id,
+  //     returnDate: transfer?.returnDate || "",
+  //     returnTime: transfer?.returnTime || "",
+
+  //     vehicle: {
+  //       count: count,
+  //       name: vehicle?.vehicle?.name,
+  //       price: vehicle?.price,
+  //       vehicleId: vehicle?.vehicle?._id,
+  //       vehicleType: vehicle?.vehicle?.vehicleType,
+  //     },
+  //   };
+  //   dispatch(handleAddtocart([selectedTransferItem]));
+  //   dispatch(
+  //     setAlertSuccess({
+  //       status: true,
+  //       title: "Success",
+  //       text: "The item is added to the cart",
+  //     })
+  //   );
+  //   // console.log(selectedTransferItem, 'selected transfer item');
+  // };
+
+  // const handleCheckout = (
+  //   vehicle: any,
+  //   trip: any,
+  //   transfer: TransferExcursion
+  // ) => {
+  //   const selectedTransferItem = {
+  //     _id: vehicle?._id,
+  //     date: trip?.date,
+  //     time: trip?.time,
+  //     transferType: transfer?.transferType,
+  //     noOfAdults: transfer?.noOfAdults,
+  //     noOfChildrens: transfer?.noOfChildrens,
+  //     pickupSuggestionType: transfer?.pickupSuggestionType,
+  //     pickupLocation:
+  //       trip?.transferFrom?.airportName ||
+  //       trip?.transferFrom?.name ||
+  //       trip?.transferFrom?.areaName,
+  //     pickupLocationId: transfer?.pickupLocation || trip?.transferFrom?._id,
+  //     dropOffSuggestionType: transfer?.dropOffSuggestionType,
+  //     dropOffLocation:
+  //       trip?.transferTo?.name ||
+  //       trip?.transferTo?.airportName ||
+  //       trip?.transferTo?.areaName,
+  //     dropOffLocationId: transfer?.dropOffLocation || trip?.transferTo?._id,
+  //     returnDate: transfer?.returnDate || "",
+  //     returnTime: transfer?.returnTime || "",
+
+  //     vehicle: {
+  //       count: count,
+  //       name: vehicle?.vehicle?.name,
+  //       price: vehicle?.price,
+  //       vehicleId: vehicle?.vehicle?._id,
+  //       vehicleType: vehicle?.vehicle?.vehicleType,
+  //     },
+  //   };
+  //   dispatch(handleAddtocart([selectedTransferItem]));
+  //   route.push("/cart");
+  //   // console.log(selectedTransferItem, 'selected transfer item');
+  // };
 
   return (
     <div className="container p-5 my-20">
@@ -240,16 +285,16 @@ function TransferList() {
                           Select Quantity:
                         </p>
                         <select
-                          onChange={(e) => setCount(parseInt(e.target.value))}
+                          onChange={(e) => handleCountChange(e.target.value, vehicle, trip, transferItem)}
                           className="border p-2 w-full max-h-[50px] border-gray-300"
                         >
                           {Array.from({ length: 5 }).map((val, ind) => (
-                            <option value={ind + 1}>{ind + 1}</option>
+                            <option value={ind}>{ind}</option>
                           ))}
                         </select>
                       </div>
 
-                      <div className="flex flex-col mt-3 gap-3 font-semibold">
+                      {/* <div className="flex flex-col mt-3 gap-3 font-semibold">
                         <button
                           onClick={() =>
                             handleAddToCart(vehicle, trip, transferItem)
@@ -266,7 +311,8 @@ function TransferList() {
                         >
                           Checkout
                         </button>
-                      </div>
+                      </div> */}
+
                     </div>
                   </div>
                 ))}

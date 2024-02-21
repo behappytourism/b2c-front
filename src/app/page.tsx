@@ -4,7 +4,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import SectionHero from "@/app/(server-components)/SectionHero";
 import BgGlassmorphism from "@/components/BgGlassmorphism";
 import SectionSliderNewCategories from "@/components/SectionSliderNewCategories";
-
 import SectionGridFilterAttractionCard from "@/components/Attraction/SectionGridFilterAttractionCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
@@ -14,11 +13,15 @@ import { fetchAffiliateUser } from "@/redux/features/affiliatesSlice";
 import ComponentLoader from "@/components/loader/ComponentLoader";
 import SliderCards from "@/components/Attraction/SliderCards";
 
+interface responseTS {
+  destinations: []
+}
 const PageHome = () => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const [attractionData, setAttractionData] = useState();
-  const [dest, setDest] = useState("dubai");
+  const [dest, setDest] = useState("");
+  const [response, setResponse] = useState<responseTS>()
 
   const { attractionDestinations, globalData } = useSelector(
     (state: RootState) => state.initials
@@ -26,7 +29,6 @@ const PageHome = () => {
 
   const findAttraction = async () => {
     try {
-      // const attraction = await fetch('https://jsonplaceholder.typicode.com/todos/1')
       const attraction = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/all?limit=8&skip=0&destination=${dest}`,
         { next: { revalidate: 1 } }
@@ -45,6 +47,24 @@ const PageHome = () => {
       console.error(error);
     }
   }
+
+
+
+  useEffect(() => {
+    const findAttractionQuery = async () => {
+      try {
+        const query = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/search/list?search=${""}`, { cache: 'no-store' })
+        setResponse(await query.json())
+  
+      } catch (error) {
+        console.log(error);
+ 
+      }
+    }
+
+    findAttractionQuery()
+
+  }, [])
 
   useEffect(() => {
     attractionFound();
@@ -79,9 +99,6 @@ const PageHome = () => {
       const response = await googleSignIn();
       dispatch(setUser(response));
       dispatch(fetchAffiliateUser() as any);
-      // {response?.jwtToken && (
-      //   router.push("/")
-      // )}
     } catch (error) {
       console.error(error);
     }
@@ -93,11 +110,17 @@ const PageHome = () => {
     }
   }, [session]);
 
+  
+
   const tabs = useMemo(() => {
-    return attractionDestinations.map((destination) => {
+    return response?.destinations?.map((destination: any) => {
       return destination.name || "";
     });
-  }, []);
+  }, [response]);
+  
+  
+
+  //const tabs = ["dubai", "sharjah", "fujairah", "ras al khaimah", "ajman", "abu dhabi", "oman", "hatta"]
 
   return (
     <main className="nc-PageHome flex justify-center relative overflow-hidden">
@@ -112,7 +135,7 @@ const PageHome = () => {
           className="hidden lg:block pt-10 lg:pt-16 lg:pb-16 "
         />
 
-        <div className="relative container space-y-10 lg:space-y-12 md:mt-[150px]">
+        <div className="relative container space-y-10 lg:space-y-12 md:mt-[180px]">
           {/* SECTION 1 */}
 
           {globalData.topAttractions?.length ? (
@@ -139,16 +162,6 @@ const PageHome = () => {
             ""
           )}
 
-          
-          {attractionDestinations.length === 0 && (
-            <>
-              <ComponentLoader />
-              <ComponentLoader />
-              <ComponentLoader />
-              <ComponentLoader />
-            </>
-          )}
-
           {/* <SectionOurFeatures /> */}
           {attractionData && (
             <SectionGridFilterAttractionCard
@@ -157,6 +170,15 @@ const PageHome = () => {
               setDest={setDest}
               className="md:pb-24 lg:pb-28"
             />
+          )}
+
+          {attractionDestinations.length === 0 && (
+            <>
+              <ComponentLoader />
+              <ComponentLoader />
+              <ComponentLoader />
+              <ComponentLoader />
+            </>
           )}
         </div>
       </div>

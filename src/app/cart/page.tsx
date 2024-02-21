@@ -73,6 +73,9 @@ const Cart = () => {
     (state: RootState) => state.transfer
   );
 
+  console.log(transferCart, "transfer");
+  
+
   const [briefPayments, setBriefPayments] = useState(cart.map(() => true));
   const [briefTransferStates, setBriefTransferStates] = useState<boolean[]>(
     Array(transferCart.length).fill(true)
