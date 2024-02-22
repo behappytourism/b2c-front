@@ -23,8 +23,6 @@ function TransferList() {
     (state: RootState) => state.transfer
   );
 
-  console.log(transfer, "transfer list");
-
   
   
   const { countries, selectedCurrency } = useSelector(
@@ -50,7 +48,7 @@ function TransferList() {
     ) => {
     setCount(e);
     const selectedTransferItem = {
-      _id: vehicle?._id,
+    
       date: trip?.date,
       time: trip?.time,
       transferType: transfer?.transferType,
@@ -68,14 +66,16 @@ function TransferList() {
         trip?.transferTo?.airportName ||
         trip?.transferTo?.areaName,
       dropOffLocationId: transfer?.dropOffLocation || trip?.transferTo?._id,
+      pickupDate: transfer?.pickupDate,
+      pickupTime: transfer?.pickupTime,
       returnDate: transfer?.returnDate || "",
       returnTime: transfer?.returnTime || "",
 
       vehicle: {
         count: e,
         name: vehicle?.vehicle?.name,
-        price: vehicle?.price,
-        vehicleId: vehicle?.vehicle?._id,
+        price: vehicle?.price * e,
+        vehicle: vehicle?.vehicle?._id,
         vehicleType: vehicle?.vehicle?.vehicleType,
       },
     };
@@ -91,94 +91,7 @@ function TransferList() {
 
   // localStorage.removeItem("TransferCart");
 
- // console.log(count, "count");
-
-  // const handleAddToCart = (
-  //   vehicle: any,
-  //   trip: any,
-  //   transfer: TransferExcursion
-  // ) => {
-  //   const selectedTransferItem = {
-  //     _id: vehicle?._id,
-  //     date: trip?.date,
-  //     time: trip?.time,
-  //     transferType: transfer?.transferType,
-  //     noOfAdults: transfer?.noOfAdults,
-  //     noOfChildrens: transfer?.noOfChildrens,
-  //     pickupSuggestionType: transfer?.pickupSuggestionType,
-  //     pickupLocation:
-  //       trip?.transferFrom?.airportName ||
-  //       trip?.transferFrom?.name ||
-  //       trip?.transferFrom?.areaName,
-  //     pickupLocationId: transfer?.pickupLocation || trip?.transferFrom?._id,
-  //     dropOffSuggestionType: transfer?.dropOffSuggestionType,
-  //     dropOffLocation:
-  //       trip?.transferTo?.name ||
-  //       trip?.transferTo?.airportName ||
-  //       trip?.transferTo?.areaName,
-  //     dropOffLocationId: transfer?.dropOffLocation || trip?.transferTo?._id,
-  //     returnDate: transfer?.returnDate || "",
-  //     returnTime: transfer?.returnTime || "",
-
-  //     vehicle: {
-  //       count: count,
-  //       name: vehicle?.vehicle?.name,
-  //       price: vehicle?.price,
-  //       vehicleId: vehicle?.vehicle?._id,
-  //       vehicleType: vehicle?.vehicle?.vehicleType,
-  //     },
-  //   };
-  //   dispatch(handleAddtocart([selectedTransferItem]));
-  //   dispatch(
-  //     setAlertSuccess({
-  //       status: true,
-  //       title: "Success",
-  //       text: "The item is added to the cart",
-  //     })
-  //   );
-  //   // console.log(selectedTransferItem, 'selected transfer item');
-  // };
-
-  // const handleCheckout = (
-  //   vehicle: any,
-  //   trip: any,
-  //   transfer: TransferExcursion
-  // ) => {
-  //   const selectedTransferItem = {
-  //     _id: vehicle?._id,
-  //     date: trip?.date,
-  //     time: trip?.time,
-  //     transferType: transfer?.transferType,
-  //     noOfAdults: transfer?.noOfAdults,
-  //     noOfChildrens: transfer?.noOfChildrens,
-  //     pickupSuggestionType: transfer?.pickupSuggestionType,
-  //     pickupLocation:
-  //       trip?.transferFrom?.airportName ||
-  //       trip?.transferFrom?.name ||
-  //       trip?.transferFrom?.areaName,
-  //     pickupLocationId: transfer?.pickupLocation || trip?.transferFrom?._id,
-  //     dropOffSuggestionType: transfer?.dropOffSuggestionType,
-  //     dropOffLocation:
-  //       trip?.transferTo?.name ||
-  //       trip?.transferTo?.airportName ||
-  //       trip?.transferTo?.areaName,
-  //     dropOffLocationId: transfer?.dropOffLocation || trip?.transferTo?._id,
-  //     returnDate: transfer?.returnDate || "",
-  //     returnTime: transfer?.returnTime || "",
-
-  //     vehicle: {
-  //       count: count,
-  //       name: vehicle?.vehicle?.name,
-  //       price: vehicle?.price,
-  //       vehicleId: vehicle?.vehicle?._id,
-  //       vehicleType: vehicle?.vehicle?.vehicleType,
-  //     },
-  //   };
-  //   dispatch(handleAddtocart([selectedTransferItem]));
-  //   route.push("/cart");
-  //   // console.log(selectedTransferItem, 'selected transfer item');
-  // };
-
+ 
   return (
     <div className="container p-5 my-20">
       <div className="mb-3">

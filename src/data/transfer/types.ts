@@ -5,6 +5,8 @@ export interface TransferExcursion {
     transferType: string;
     noOfAdults: number;
     noOfChildrens: number;
+    pickupDate: string;
+    pickupTime: string;
     pickupSuggestionType: string;
     pickupLocation: string;
     pickupLocationId: string;
@@ -71,6 +73,47 @@ export interface TransferExcursion {
                     _id: string;
                 }, 
             ]
+        }
+    ]
+  }
+
+
+
+  
+export interface TransferCart {
+    trips: [
+        {
+            _id: string;
+            date: string;
+            time: string;
+            noOfAdults: number;
+            returnTime: string;
+            returnDate: string;
+            noOfChildrens: number;
+            transferType: string;
+            suggestionType: string;
+            transferFrom: {
+                _id: string;
+                airportName: string;
+                place: string;
+                pickupSuggestionType: string
+            },
+            transferTo: {
+               _id: string;
+                areaCode: string;
+                areaName: string;
+                city: string;
+                state: string;
+                country: string;
+                isDeleted: boolean;
+                createdAt: string;
+                updatedAt: string;
+                __v: number,
+                name: string;
+                dropOffSuggestionType: string;
+            },
+            returnVehicle: any[]
+            vehicles: any[]
         }
     ]
   }

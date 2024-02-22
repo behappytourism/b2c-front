@@ -79,14 +79,14 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
 
   const handleClickOutside = (e: MouseEvent) => {
     if (fromInputRef.current && !fromInputRef.current.contains(e.target as Node)) {
-   
+
       setShowFrom(false);
     }
   };
 
   const handleToClickOutside = (e: MouseEvent) => {
     if (toInputRef.current && !toInputRef.current.contains(e.target as Node)) {
-   
+
       setShowTo(false);
     }
   };
@@ -355,14 +355,14 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
             </div>
           </div>
           {showFrom === true && (
-            <div className="absolute border border-black md:mt-20 -mt-5 bg-white mr-3 md:mr-0 md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
+            <div className="absolute border border-black md:mt-20 -mt-5 dark:bg-neutral-900 bg-white dark:bg- mr-3 md:mr-0 md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
               {searchQuery.length < 2 && <p>please type atleast 3 letters</p>}
 
               {searchQuery.length > 2 && (
                 <div>
                   {transferSuggestion && transferSuggestion.airports && transferSuggestion?.airports.length > 0 && (
                     <div className="mb-3">
-                      <p className="font-bold border-b w-fit mb-2">Airports</p>
+                      <p className="font-bold text-primary-300  border-b w-fit mb-2">Airports</p>
                       {transferSuggestion?.airports?.map(
                         (airport: any, index: number) => (
                           <div
@@ -382,7 +382,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
 
                   {transferSuggestion && transferSuggestion.areas && transferSuggestion?.areas.length > 0 && (
                     <div className="mb-3">
-                      <p className="font-bold border-b w-fit mb-2">Areas</p>
+                      <p className="font-bold border-b text-primary-300 w-fit mb-2">Areas</p>
                       {transferSuggestion?.areas?.map(
                         (area: any, index: number) => (
                           <div
@@ -401,7 +401,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
 
                   {transferSuggestion && transferSuggestion.hotels && transferSuggestion?.hotels.length > 0 && (
                     <div className="mb-3">
-                      <p className="font-bold border-b w-fit mb-2">Hotels</p>
+                      <p className="font-bold border-b text-primary-300 w-fit mb-2">Hotels</p>
                       {transferSuggestion?.hotels?.map(
                         (hotel: any, index: number) => (
                           <div
@@ -449,7 +449,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
           </div>
 
           {showTo === true && (
-            <div className="absolute border border-black md:mt-20 md:ml-[620px] mr-3 md:mr-0 bg-white md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
+            <div className="absolute border border-black md:mt-20 md:ml-[620px] mr-3 md:mr-0 dark:bg-neutral-900 bg-white md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
               {toSearchQuery.length < 2 && <p>please type atleast 3 letters</p>}
 
               {toSearchQuery.length > 2 && (
@@ -457,7 +457,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
 
                   {transferSuggestion && transferSuggestion.airports && transferSuggestion?.airports?.length > 0 && (
                     <div className="mb-3">
-                      <p className="font-bold border-b w-fit mb-2">Airports</p>
+                      <p className="font-bold border-b text-primary-300 w-fit mb-2">Airports</p>
                       {transferSuggestion?.airports?.map(
                         (airport: any, index: number) => (
                           <div
@@ -477,7 +477,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
 
                   {transferSuggestion && transferSuggestion.areas && transferSuggestion?.areas.length > 0 && (
                     <div className="mb-3">
-                      <p className="font-bold border-b w-fit mb-2">Areas</p>
+                      <p className="font-bold border-b text-primary-300 w-fit mb-2">Areas</p>
                       {transferSuggestion?.areas?.map(
                         (area: any, index: number) => (
                           <div
@@ -496,7 +496,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
 
                   {transferSuggestion && transferSuggestion.hotels && transferSuggestion?.hotels.length > 0 && (
                     <div className="mb-3">
-                      <p className="font-bold border-b w-fit mb-2">Hotels</p>
+                      <p className="font-bold border-b text-primary-300  w-fit mb-2">Hotels</p>
                       {transferSuggestion?.hotels?.map(
                         (hotel: any, index: number) => (
                           <div

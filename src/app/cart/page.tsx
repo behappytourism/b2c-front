@@ -30,6 +30,14 @@ import {
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { handleEmptyTransferCart, handleRemoveFromTransferCart } from "@/redux/features/transferSlice";
 
+
+interface vehicleType {
+name: string;
+count: number;
+price: number;
+vehicleType: string;
+}
+
 const Cart = () => {
   const thisPathname = usePathname();
   const [leadPaxDes, setLeadPaxDes] = useState(false);
@@ -131,28 +139,34 @@ const Cart = () => {
     };
   });
 
+  console.log(transferCart, "transfer cart");
+  
 
-  const transferArray = transferCart.map((item) => {
-    return {
-      dropOffLocation: item?.dropOffLocationId,
-      dropOffSuggestionType: item?.dropOffSuggestionType,
-      pickupDate: item?.date,
-      noOfAdults: item?.noOfAdults,
-      noOfChildrens: item?.noOfChildrens,
-      pickupLocation: item?.pickupLocationId,
-      pickupSuggestionType: item?.pickupSuggestionType,
-      pickupTime: item?.time,
-      returnDate: item?.returnDate || "",
-      returnTime: item?.returnTime || "",
-      transferType: item?.transferType,
-      selectedVehicleTypes: [
-        {
-          count: item?.vehicle?.count.toString(),
-          vehicle: item?.vehicle?.vehicleId,
-        },
-      ],
-    };
-  });
+  const transferArray = transferCart.flatMap((item, index) => (
+    item.trips.map((trip, tripIndex) => ({
+      dropOffLocation: trip?.transferTo?._id,
+      dropOffSuggestionType: trip?.transferTo?.dropOffSuggestionType,
+      pickupDate: trip?.date,
+      noOfAdults: trip?.noOfAdults,
+      noOfChildrens: trip?.noOfChildrens,
+      pickupLocation: trip?.transferFrom?._id,
+      pickupSuggestionType: trip?.transferFrom?.pickupSuggestionType,
+      pickupTime: trip?.time,
+      returnDate: trip?.returnDate || "",
+      returnTime: trip?.returnTime || "",
+      transferType: trip?.transferType,
+      selectedVehicleTypes: trip?.vehicles?.map((vehicle: any) => ({
+        vehicle: vehicle?.vehicle,
+        count: vehicle?.count,
+      })) || [],
+      selectedReturnVehicleTypes: trip?.returnVehicle?.map((vehicle: any) => ({
+        vehicle: vehicle?.vehicle,
+        count: vehicle?.count,
+      })) || [],
+    }))
+  ));
+  
+  
 
   // Handling submit.
   const submitHandler = async (e: { preventDefault: () => void }) => {
@@ -236,8 +250,8 @@ const Cart = () => {
     dispatch(handleRemoveFromCart(id));
   };
 
-  const handleRemoveTransferFromCart = (id: string) => {
-    dispatch(handleRemoveFromTransferCart(id));
+  const handleRemoveTransferFromCart = (index: number) => {
+    dispatch(handleRemoveFromTransferCart(index));
   };
 
   // Handle change data of cart.
@@ -264,10 +278,27 @@ const Cart = () => {
 
   const totalTransferPrice: number = useMemo(() => {
     return transferCart.reduce((total, item) => {
-      // Assuming item.vehicle.price is the property you want to sum
-      return total + (item.vehicle?.price || 0);
+      // Calculate total price for vehicles in the 'vehicles' array
+      const vehiclesPrice = item.trips.reduce((tripSum, trip) => {
+        const vehicleTotal = trip.vehicles.reduce((vehicleSum, vehicle) => {
+          return vehicleSum + (vehicle.price || 0);
+        }, 0);
+        return tripSum + vehicleTotal;
+      }, 0);
+  
+      // Calculate total price for vehicles in the 'returnVehicle' array
+      const returnVehiclesPrice = item.trips.reduce((tripSum, trip) => {
+        const returnVehicleTotal = trip.returnVehicle.reduce((vehicleSum, vehicle) => {
+          return vehicleSum + (vehicle.price || 0);
+        }, 0);
+        return tripSum + returnVehicleTotal;
+      }, 0);
+  
+      return total + vehiclesPrice + returnVehiclesPrice;
     }, 0);
   }, [transferCart]);
+  
+  
 
   const closeModal = () => {
     setError("");
@@ -431,7 +462,7 @@ const Cart = () => {
       </div>
     );
   };
-
+  
   const renderTransfer = () => {
     return (
       <div>
@@ -440,6 +471,8 @@ const Cart = () => {
         </h1>
 
         {transferCart?.map((item, index) => (
+          <>
+          {item?.trips?.map((trip, tripIndex) => (
           <div className="border rounded-lg mt-5 p-3">
             <div
               className={`md:flex items-center md:justify-between ${briefTransferStates[index] === false ? "" : "border-b"
@@ -448,7 +481,7 @@ const Cart = () => {
               <div className="md:hidden block">
                 <div className="flex justify-end gap-3">
                   <i
-                    onClick={() => handleRemoveTransferFromCart(item._id)}
+                    onClick={() => handleRemoveTransferFromCart(index)}
                     className="las la-times-circle text-xl text-red-600 cursor-pointer"
                   ></i>
                   {briefTransferStates[index] === false && (
@@ -473,7 +506,7 @@ const Cart = () => {
               </div>
               <div className="md:flex items-center space-x-3 mb-3 md:mb-0">
                 <p className="text-xl p-3 font-semibold">
-                  {item?.pickupLocation}
+                  {trip?.transferFrom?.airportName}
                 </p>
                 <div className="hidden md:block">
                   <ArrowRightIcon height={24} width={24} />
@@ -482,14 +515,14 @@ const Cart = () => {
                   <ArrowDownIcon height={24} width={24} />
                 </div>
                 <p className="text-xl md:p-3 font-semibold">
-                  {item?.dropOffLocation}
+                {trip?.transferTo?.areaName}
                 </p>
               </div>
 
               <div className="hidden md:block">
                 <div className="flex gap-3">
                   <i
-                    onClick={() => handleRemoveTransferFromCart(item._id)}
+                    onClick={() => handleRemoveTransferFromCart(index)}
                     className="las la-times-circle text-xl text-red-600 cursor-pointer"
                   ></i>
                   {briefTransferStates[index] === false && (
@@ -518,49 +551,125 @@ const Cart = () => {
               <div className="">
                 <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
                   <span>Date</span>
-                  <span className="capitalize">{item?.date}</span>
+                  <span className="capitalize">{trip.date}</span>
                 </div>
 
                 <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
                   <span>Time</span>
-                  <span className="capitalize">{item?.time}</span>
+                  <span className="capitalize">{trip?.time}</span>
                 </div>
 
-                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300 mb-3">
-                  <span>Amount</span>
-                  <span className="capitalize">
-                    {priceConversion(
-                      item?.vehicle?.price,
-                      selectedCurrency,
-                      true
-                    )}
-                  </span>
-                </div>
+              
 
                 <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
                   <p className="text-lg border-b font-semibold">Vehicle's</p>
                 </div>
+                {trip?.vehicles?.map((vehicle: any, index) => (
                 <div className="border p-2 rounded-lg mt-3">
                   <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
                     <span>Name</span>
-                    <span className="capitalize">{item?.vehicle?.name}</span>
+                    <span className="capitalize">{vehicle?.name}</span>
                   </div>
                   <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
                     <span>Count</span>
-                    <span className="capitalize">{item?.vehicle?.count}</span>
+                    <span className="capitalize">{vehicle?.count}</span>
                   </div>
-                  {item?.vehicle?.vehicleType && (
+                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                    <span>Price</span>
+                    <span className="capitalize">
+                    {priceConversion(
+                      vehicle?.price,
+                      selectedCurrency,
+                      true
+                    )}
+                      </span>
+                  </div>
+                  {vehicle?.vehicleType && (
                     <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
                       <span>Vehicle Type</span>
                       <span className="capitalize">
-                        {item?.vehicle?.vehicleType}
+                        {vehicle?.vehicleType}
                       </span>
                     </div>
                   )}
                 </div>
+                ))}
+
+
+
+                 {trip?.transferType === "return" && (
+                  <div className="mt-10">
+
+
+                   <div className="md:flex border-b  items-center space-x-3 mb-3 md:mb-0">
+                   <p className="text-xl p-3 font-semibold">
+                   {trip?.transferTo?.areaName}
+                   </p>
+                   <div className="hidden md:block">
+                     <ArrowRightIcon height={24} width={24} />
+                   </div>
+                   <div className="md:hidden flex justify-center">
+                     <ArrowDownIcon height={24} width={24} />
+                   </div>
+                   <p className="text-xl md:p-3 font-semibold">
+                   {trip?.transferFrom?.airportName}
+                   </p>
+                 </div>
+
+                 <div className="flex justify-between mt-3 text-neutral-6000 dark:text-neutral-300">
+                  <span>Date</span>
+                  <span className="capitalize">{trip.returnDate}</span>
+                </div>
+
+                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                  <span>Time</span>
+                  <span className="capitalize">{trip?.returnTime}</span>
+                </div>
+
+
+
+                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                  <p className="text-lg border-b font-semibold">Vehicle's</p>
+                </div>
+                {trip?.returnVehicle?.map((returnVehicle: any, index) => (
+                <div className="border p-2 rounded-lg mt-3">
+                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                    <span>Name</span>
+                    <span className="capitalize">{returnVehicle?.name}</span>
+                  </div>
+                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                    <span>Count</span>
+                    <span className="capitalize">{returnVehicle?.count}</span>
+                  </div>
+                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                    <span>Price</span>
+                    <span className="capitalize">
+                    {priceConversion(
+                      returnVehicle?.price,
+                      selectedCurrency,
+                      true
+                    )}
+                      </span>
+                  </div>
+                  {returnVehicle?.vehicleType && (
+                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                      <span>Vehicle Type</span>
+                      <span className="capitalize">
+                        {returnVehicle?.vehicleType}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                ))}
+
+
+                 </div>
+                 )}
               </div>
             )}
           </div>
+          ))}
+          </>
         ))}
       </div>
     );
@@ -779,38 +888,36 @@ const Cart = () => {
 
         {finalPayment === true && (
           <div>
+            {grandTotal > 0 && (
             <div className="flex justify-between pt-3 pb-1">
               <p>Tours Total Amount Incl. VAT</p>
               <p>
                 {" "}
-                {grandTotal > 0
-                  ? "" + priceConversion(grandTotal, selectedCurrency, true)
-                  : ""}
+                {priceConversion(grandTotal, selectedCurrency, true)}
               </p>
             </div>
-
+            )}
+           
+           {totalTransferPrice > 0 && (
             <div className="flex justify-between pt-1 mb-5">
               <p>Transfer Total Amount Incl. VAT</p>
               <p>
                 {" "}
-                {grandTotal > 0
-                  ? "" +
-                  priceConversion(totalTransferPrice, selectedCurrency, true)
-                  : ""}
+                {priceConversion(totalTransferPrice, selectedCurrency, true)}
               </p>
             </div>
+           )}
 
             <div className="flex justify-between font-bold text-xl bg-gray-200 p-3 rounded-lg">
               <p>Final Amount</p>
               <p>
-                {grandTotal > 0
-                  ? "" +
-                  priceConversion(
+              
+                  {priceConversion(
                     grandTotal + totalTransferPrice,
                     selectedCurrency,
                     true
-                  )
-                  : ""}
+                  )}
+                
               </p>
             </div>
           </div>
