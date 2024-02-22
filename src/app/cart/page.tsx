@@ -73,7 +73,7 @@ const Cart = () => {
   );
 
   //console.log(transferCart, "transfer");
-  
+
 
   const [briefPayments, setBriefPayments] = useState(cart.map(() => true));
   const [briefTransferStates, setBriefTransferStates] = useState<boolean[]>(
@@ -293,7 +293,7 @@ const Cart = () => {
           </span>
         )}
         {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
-      
+
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
           <div className="">
             {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">Mr/Mrs</p> */}
@@ -418,15 +418,7 @@ const Cart = () => {
             Terms and Conditions.
           </span>
         </div>
-        {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
-        {/* <div className="mt-5">
-          <p className="">
-            {grandTotal > 0
-              ? "Final Payment " +
-                priceConversion(grandTotal, selectedCurrency, true)
-              : ""}
-          </p>
-        </div> */}
+
         <div className="">
           <button
             className="w-full mt-5 bg-orange-500 hover:bg-orange-700 text-white p-3 rounded-lg font-semibold"
@@ -578,186 +570,178 @@ const Cart = () => {
     return (
       <div className="flex flex-col gap-5 w-full">
         <h1 className="text-3xl font-semibold pb-2 border-b w-fit">Tours</h1>
-        {cart.length || transferCart.length ? (
-          cart.map((item, i) => (
-            <div key={item._id} className="rounded-lg border w-full p-3">
-              <div className="flex flex-col gap-2 text-sm">
-                <div
-                  className={`md:flex md:justify-between items-center gap-2 ${briefPayments[i] === false ? "" : "border-b"
-                    }`}
-                >
-                  <div className="gap-3 md:hidden flex justify-end">
-                    {/* <PencilSquareIcon height={20} width={20} /> */}
-                    <i
-                      onClick={() => handleRemoveActivityFromCart(item._id)}
-                      className="las la-times-circle text-xl text-red-600 cursor-pointer"
-                    ></i>
-                    {briefPayments[i] === false && (
-                      <p className="cursor-pointer">
-                        <ChevronDownIcon
-                          onClick={() => toggleBriefPayment(i)}
-                          height={20}
-                          width={20}
-                        />
-                      </p>
-                    )}
-                    {briefPayments[i] === true && (
-                      <p className="cursor-pointer">
-                        <ChevronUpIcon
-                          onClick={() => toggleBriefPayment(i)}
-                          height={20}
-                          width={20}
-                        />
-                      </p>
-                    )}
-                  </div>
-                  <p className="text-xl p-3 font-semibold">{item.name}</p>
-                  <div className="gap-3 hidden md:flex">
-                    <PencilSquareIcon height={20} width={20} />
-                    <i
-                      onClick={() => handleRemoveActivityFromCart(item._id)}
-                      className="las la-times-circle text-xl text-red-600 cursor-pointer"
-                    ></i>
-                    {briefPayments[i] === false && (
-                      <p className="cursor-pointer">
-                        <ChevronDownIcon
-                          onClick={() => toggleBriefPayment(i)}
-                          height={20}
-                          width={20}
-                        />
-                      </p>
-                    )}
-                    {briefPayments[i] === true && (
-                      <p className="cursor-pointer">
-                        <ChevronUpIcon
-                          onClick={() => toggleBriefPayment(i)}
-                          height={20}
-                          width={20}
-                        />
-                      </p>
-                    )}
-                  </div>
-                </div>
-                {briefPayments[i] === true && (
-                  <div className="">
-                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                      <span>Transfer Type</span>
-                      <span className="capitalize">
-                        {item.transferType + " Transfer"}
-                      </span>
-                    </div>
-                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                      <span>Date</span>
-                      <span>{format(new Date(item.date), "d MMM, yyyy")}</span>
-                    </div>
-                    {item.hasOwnProperty("slot") && item.slot ? (
-                      <>
-                        <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                          <span>Slot</span>
-                          <span>{item.slot.EventName}</span>
-                        </div>{" "}
-                        <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                          <span>Slot Date</span>
-                          <span>
-                            {format(
-                              new Date(item.slot?.StartDateTime),
-                              "d-M-yyyy"
-                            )}
-                          </span>
-                        </div>
-                      </>
-                    ) : (
-                      ""
-                    )}
 
-                    {item.base === BaseTypeEnum.hourly ? (
+        {cart.map((item, i) => (
+          <div key={item._id} className="rounded-lg border w-full p-3">
+            <div className="flex flex-col gap-2 text-sm">
+              <div
+                className={`md:flex md:justify-between items-center gap-2 ${briefPayments[i] === false ? "" : "border-b"
+                  }`}
+              >
+                <div className="gap-3 md:hidden flex justify-end">
+                  {/* <PencilSquareIcon height={20} width={20} /> */}
+                  <i
+                    onClick={() => handleRemoveActivityFromCart(item._id)}
+                    className="las la-times-circle text-xl text-red-600 cursor-pointer"
+                  ></i>
+                  {briefPayments[i] === false && (
+                    <p className="cursor-pointer">
+                      <ChevronDownIcon
+                        onClick={() => toggleBriefPayment(i)}
+                        height={20}
+                        width={20}
+                      />
+                    </p>
+                  )}
+                  {briefPayments[i] === true && (
+                    <p className="cursor-pointer">
+                      <ChevronUpIcon
+                        onClick={() => toggleBriefPayment(i)}
+                        height={20}
+                        width={20}
+                      />
+                    </p>
+                  )}
+                </div>
+                <p className="text-xl p-3 font-semibold">{item.name}</p>
+                <div className="gap-3 hidden md:flex">
+                  <PencilSquareIcon height={20} width={20} />
+                  <i
+                    onClick={() => handleRemoveActivityFromCart(item._id)}
+                    className="las la-times-circle text-xl text-red-600 cursor-pointer"
+                  ></i>
+                  {briefPayments[i] === false && (
+                    <p className="cursor-pointer">
+                      <ChevronDownIcon
+                        onClick={() => toggleBriefPayment(i)}
+                        height={20}
+                        width={20}
+                      />
+                    </p>
+                  )}
+                  {briefPayments[i] === true && (
+                    <p className="cursor-pointer">
+                      <ChevronUpIcon
+                        onClick={() => toggleBriefPayment(i)}
+                        height={20}
+                        width={20}
+                      />
+                    </p>
+                  )}
+                </div>
+              </div>
+              {briefPayments[i] === true && (
+                <div className="">
+                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                    <span>Transfer Type</span>
+                    <span className="capitalize">
+                      {item.transferType + " Transfer"}
+                    </span>
+                  </div>
+                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                    <span>Date</span>
+                    <span>{format(new Date(item.date), "d MMM, yyyy")}</span>
+                  </div>
+                  {item.hasOwnProperty("slot") && item.slot ? (
+                    <>
                       <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                        <span>Hours</span>
-                        <span>{item.hourCount + " Hour"}</span>
-                      </div>
-                    ) : (
+                        <span>Slot</span>
+                        <span>{item.slot.EventName}</span>
+                      </div>{" "}
                       <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                        <span>Pax</span>
-                        <span>{`${item.adultCount} Adult`}</span>
-                        {item.childCount > 0 ? (
-                          <span>{`${item.childCount} Child`}</span>
-                        ) : (
-                          ""
-                        )}
-                        {item.infantCount < 0 ? (
-                          <span>{`${item.infantCount} Infant`}</span>
-                        ) : (
-                          ""
-                        )}
+                        <span>Slot Date</span>
+                        <span>
+                          {format(
+                            new Date(item.slot?.StartDateTime),
+                            "d-M-yyyy"
+                          )}
+                        </span>
                       </div>
-                    )}
+                    </>
+                  ) : (
+                    ""
+                  )}
+
+                  {item.base === BaseTypeEnum.hourly ? (
                     <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                      <span>Amount Incl. VAT</span>
-                      <span>
-                        {priceConversion(
+                      <span>Hours</span>
+                      <span>{item.hourCount + " Hour"}</span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                      <span>Pax</span>
+                      <span>{`${item.adultCount} Adult`}</span>
+                      {item.childCount > 0 ? (
+                        <span>{`${item.childCount} Child`}</span>
+                      ) : (
+                        ""
+                      )}
+                      {item.infantCount < 0 ? (
+                        <span>{`${item.infantCount} Infant`}</span>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  )}
+                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                    <span>Amount Incl. VAT</span>
+                    <span>
+                      {priceConversion(
+                        item.grandTotal,
+                        selectedCurrency,
+                        true
+                      )}
+                    </span>
+                  </div>
+                  {item.promoCode !== "" && (
+                    <div className="p-1 rounded-xl flex justify-between  text-blue-700">
+                      <span className="flex gap-1 items-center">
+                        <span className="">
+                          <Toggle
+                            value={item.isPromoAdded}
+                            onChange={(e: { target: { checked: boolean } }) =>
+                              handleChangeData(
+                                i,
+                                "isPromoAdded",
+                                e.target.checked
+                              )
+                            }
+                          />
+                        </span>
+                        <span>
+                          {item?.isPromoAdded
+                            ? "Coupon applied"
+                            : "Apply coupon"}{" "}
+                        </span>
+                      </span>
+                      <span className="font-medium">{item.promoCode}</span>
+                    </div>
+                  )}
+
+                  <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                    <span>Grand Total</span>
+                    <span>
+                      {item.isPromoAdded
+                        ? priceConversion(
+                          item.priceWithoutPromoGrandTotal,
+                          selectedCurrency,
+                          true
+                        )
+                        : priceConversion(
                           item.grandTotal,
                           selectedCurrency,
                           true
                         )}
-                      </span>
-                    </div>
-                    {item.promoCode !== "" && (
-                      <div className="p-1 rounded-xl flex justify-between  text-blue-700">
-                        <span className="flex gap-1 items-center">
-                          <span className="">
-                            <Toggle
-                              value={item.isPromoAdded}
-                              onChange={(e: { target: { checked: boolean } }) =>
-                                handleChangeData(
-                                  i,
-                                  "isPromoAdded",
-                                  e.target.checked
-                                )
-                              }
-                            />
-                          </span>
-                          <span>
-                            {item?.isPromoAdded
-                              ? "Coupon applied"
-                              : "Apply coupon"}{" "}
-                          </span>
-                        </span>
-                        <span className="font-medium">{item.promoCode}</span>
-                      </div>
-                    )}
-
-                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                      <span>Grand Total</span>
-                      <span>
-                        {item.isPromoAdded
-                          ? priceConversion(
-                            item.priceWithoutPromoGrandTotal,
-                            selectedCurrency,
-                            true
-                          )
-                          : priceConversion(
-                            item.grandTotal,
-                            selectedCurrency,
-                            true
-                          )}
-                      </span>
-                    </div>
+                    </span>
                   </div>
-                )}
-              </div>
-            </div>
-          ))
-        ) : (
-          <div>
-            <div className="listingSectionSidebar__wrap shadow max-w-sm">
-              <div className="flex flex-wrap gap-2 items-center justify-center text-neutral-600 dark:text-neutral-400">
-                <i className="las la-cart-plus text-3xl "></i>
-                <p className="">Your cart is empty.</p>
-              </div>
-              <ButtonPrimary href="/">Continue Shopping</ButtonPrimary>
+                </div>
+              )}
             </div>
           </div>
-        )}
+        ))}
+
+
+
       </div>
     );
   };
@@ -839,25 +823,36 @@ const Cart = () => {
     <div className="container relative z-10 mt-11 flex flex-col gap-10">
       {/* BREADCRUMBS */}
       <Breadcrumb breadCrumbs={breadcrum} />
-      <form onSubmit={submitHandler}>
-        <div className="flex lg:flex-row gap-10 w-full">
-          <div className="md:w-8/12 space-y-10">
-            {cart.length ? renderSidebar() : ""}
-            {transferCart.length ? renderTransfer() : ""}
-            <div className="md:hidden block">
-              {renderDetailsCollection()}
+
+      {cart.length || transferCart.length ?
+        <form onSubmit={submitHandler}>
+          <div className="flex lg:flex-row gap-10 w-full">
+            <div className="md:w-8/12 space-y-10">
+              {cart.length ? renderSidebar() : ""}
+              {transferCart.length ? renderTransfer() : ""}
+              <div className="md:hidden block">
+                {renderDetailsCollection()}
+              </div>
+              {cart.length || transferCart.length ? renderPaymentSection() : ""}
+
             </div>
-            {cart.length || transferCart.length ? renderPaymentSection() : ""}
 
+            {/* SIDEBAR */}
+            <div className="hidden lg:block w-4/12 flex-grow mt-14 lg:mt-0">
+              {renderDetailsCollection()}
+              {PriceSidebar()}
+            </div>
           </div>
-
-          {/* SIDEBAR */}
-          <div className="hidden lg:block w-4/12 flex-grow mt-14 lg:mt-0">
-            {renderDetailsCollection()}
-            {PriceSidebar()}
+        </form>
+        : <div>
+          <div className="listingSectionSidebar__wrap shadow max-w-sm mb-20">
+            <div className="flex flex-wrap gap-2 items-center justify-center text-neutral-600 dark:text-neutral-400">
+              <i className="las la-cart-plus text-3xl "></i>
+              <p className="">Your cart is empty.</p>
+            </div>
+            <ButtonPrimary href="/">Continue Shopping</ButtonPrimary>
           </div>
-        </div>
-      </form>
+        </div>}
     </div>
   );
 };
