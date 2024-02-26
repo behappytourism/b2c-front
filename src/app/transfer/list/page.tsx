@@ -151,7 +151,7 @@ function TransferList() {
               </h1>
               <div className="grid md:grid-cols-4 gap-5">
                 {trip?.vehicles?.map((vehicle: any, index: number) => (
-                  <div className="border w-fit cursor-pointer  bg-slate-100 transform md:hover:scale-110 transition-transform duration-300">
+                  <div className="border w-fit cursor-pointer dark:bg-neutral-800  bg-slate-100 transform md:hover:scale-110 transition-transform duration-300">
                     <div className="object-cover border-b px-10 items-center flex justify-center">
                       <Image
                         alt="photos"
@@ -166,7 +166,7 @@ function TransferList() {
                       />
                     </div>
                     <div className="p-5">
-                      <p className="font-semibold text-lg flex justify-center">
+                      <p className="font-semibold text-lg  flex justify-center">
                         {vehicle?.vehicle?.name}
                       </p>
                       <div className="flex gap-2">
@@ -202,7 +202,7 @@ function TransferList() {
                         </p>
                         <select
                           onChange={(e) => handleCountChange(e.target.value, vehicle, trip, transferItem)}
-                          className="border p-2 w-full max-h-[50px] border-gray-300"
+                          className="border dark:bg-neutral-800 p-2 w-full max-h-[50px] border-gray-300"
                         >
                           {Array.from({ length: 5 }).map((val, ind) => (
                             <option value={ind}>{ind}</option>

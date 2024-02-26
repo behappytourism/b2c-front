@@ -548,11 +548,11 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
                 </div>
 
                 {showArraiDate && (
-                  <div className="items-center space-x-2 absolute bg-white p-2 rounded-lg flex md:left-[230px] md:mt-14">
+                  <div className="items-center  dark:bg-neutral-900 dark:text-neutral-100 space-x-2 absolute bg-white p-2 rounded-lg flex md:left-[230px] md:mt-14">
                     {/* Hour Selector */}
                     <div className="flex gap-5">
                       <select
-                        className="border p-2 rounded min-w-[60px]"
+                        className="border p-2 rounded min-w-[60px] dark:bg-neutral-800"
                         onChange={handleHourChange}
                         value={selectedHour}
                       >
@@ -561,7 +561,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
 
                       {/* Minute Selector */}
                       <select
-                        className="border p-2 rounded min-w-[60px]"
+                        className="border p-2 rounded min-w-[60px] dark:bg-neutral-800"
                         onChange={handleMinuteChange}
                         value={selectedMinute}
                       >
@@ -576,7 +576,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
                     </div>
 
                     <button
-                      className="p-2 bg-primary-300 hover:bg-primary-400 rounded min-w-[80px] self-center min-h-[20px] text-white"
+                      className="p-2 bg-primary-300 dark:bg-neutral-800 hover:bg-primary-400 rounded min-w-[80px] self-center min-h-[20px] text-white"
                       onClick={() => {
                         setShowArraiDate(!showArraiDate);
                       }}
@@ -638,12 +638,12 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
                 )}
 
 
-                {showReturnDate && (
-                  <div className="items-center space-x-2 absolute bg-white p-2 rounded-lg flex md:left-[520px] md:mt-14">
+                {showReturnDate && transferType === "return" && (
+                  <div className="items-center dark:bg-neutral-900 space-x-2 absolute bg-white p-2 rounded-lg flex md:left-[520px] md:mt-14">
                     {/* Hour Selector */}
                     <div className="flex gap-5">
                       <select
-                        className="border p-2 rounded min-w-[60px]"
+                        className="border p-2 rounded min-w-[60px] dark:bg-neutral-800"
                         onChange={handleReturnHourChange}
                         value={selectedReturnHour}
                       >
@@ -652,7 +652,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
 
                       {/* Minute Selector */}
                       <select
-                        className="border p-2 rounded min-w-[60px]"
+                        className="border p-2 rounded min-w-[60px] dark:bg-neutral-800"
                         onChange={handleReturnMinuteChange}
                         value={selectedReturnMinute}
                       >
@@ -667,7 +667,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
                     </div>
 
                     <button
-                      className="p-2 bg-primary-300 hover:bg-primary-400 rounded min-w-[80px] self-center min-h-[20px] text-white"
+                      className="p-2 bg-primary-300 dark:bg-neutral-800 hover:bg-primary-400 rounded min-w-[80px] self-center min-h-[20px] text-white"
                       onClick={() => {
                         setShowReturnDate(!showReturnDate);
                       }}
@@ -703,10 +703,10 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
               </div>
 
               {showPax && (
-                <div className="items-center space-x-2 absolute bg-white p-2 rounded-lg flex md:left-[670px] md:mt-2">
+                <div className="items-center  dark:bg-neutral-900 dark:text-neutral-100 space-x-2 absolute bg-white p-2 rounded-lg flex md:left-[670px] md:mt-2">
                   <div className="flex gap-5">
                     <select
-                      className="border p-2 rounded min-w-[60px]"
+                      className="border p-2 rounded min-w-[60px] dark:bg-neutral-800"
                       onChange={handleAdultChange}
                       value={selectedAdult}
                     >
@@ -721,7 +721,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
                     </select>
 
                     <select
-                      className="border p-2 rounded min-w-[60px]"
+                      className="border p-2 rounded min-w-[60px] dark:bg-neutral-800"
                       onChange={handleChildrenChange}
                       value={selectedChildren}
                     >
@@ -737,7 +737,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
                   </div>
 
                   <button
-                    className="p-2 bg-primary-300 hover:bg-primary-400 rounded min-w-[80px] self-center min-h-[20px] text-white"
+                    className="p-2 bg-primary-300 dark:bg-neutral-800 hover:bg-primary-400 rounded min-w-[80px] self-center min-h-[20px] text-white"
                     onClick={() => {
                       setShowPax(!showPax);
                     }}
