@@ -62,7 +62,7 @@ const TermsnConditions: FC<TermsnConditionProps> = () => {
                         <h1 className="font-bold text-2xl border-b w-fit pb-1">Terms and Conditions</h1>
                         <div
                             dangerouslySetInnerHTML={{ __html: tc?.termsAndConditions || "" }}
-                            className="text-neutral-6000 text-sm dark:text-neutral-300"
+                            className="text-neutral-6000 dark:text-neutral-100"
                         ></div>
                     </>
                 )}
