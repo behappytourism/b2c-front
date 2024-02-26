@@ -5,7 +5,7 @@ import Avatar from "@/shared/Avatar";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import {
   PhoneIcon,
   EnvelopeIcon,

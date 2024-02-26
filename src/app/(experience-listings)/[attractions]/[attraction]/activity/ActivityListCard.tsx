@@ -939,20 +939,20 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
             <div className="flex gap-2 mt-3">
               <button
                 onClick={() => setTab("overview")}
-                className="bg-primary-200 text-xs rounded px-2"
+                className="bg-primary-200 dark:bg-primary-700 text-xs rounded px-2"
               >
                 Overview
               </button>
               <button
                 onClick={() => setTab("inclusion")}
-                className="bg-primary-200 text-xs rounded px-2"
+                className="bg-primary-200 dark:bg-primary-700 text-xs rounded px-2"
               >
                 Inclusion & Exclusion
               </button>
               {data?.termsAndConditions && (
                 <button
                   onClick={() => setTab("tc")}
-                  className="bg-primary-200 text-xs rounded px-2"
+                  className="bg-primary-200 dark:bg-primary-700 text-xs rounded px-2"
                 >
                   Terms & Conditions
                 </button>
@@ -962,7 +962,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
             <div className="flex flex-col md:flex-row md:gap-5 gap-3 mt-3">
               <button
                 onClick={handleAddToCart}
-                className="mt-3 p-2 w-full md:w-fit  bg-primary-300 rounded hover:bg-primary-400 text-white font-semibold"
+                className="mt-3 p-2 w-full md:w-fit bg-primary-300 rounded hover:bg-primary-400 text-white font-semibold"
               >
                 Add to cart
               </button>
@@ -983,11 +983,11 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute md:top-[110px] top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
+                    className="absolute md:top-[110px] dark:bg-neutral-900 top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white md:mt-[80px] mt-[120px] m-5 md:m-0 md:min-w-[400px] md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">
+                  <div className="bg-white dark:bg-neutral-900 md:mt-[80px] mt-[120px] m-5 md:m-0 md:min-w-[400px] md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">
                     <p className="text-lg font-semibold underline pb-2">
                       Description
                     </p>
@@ -1012,7 +1012,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute md:top-[110px] top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
+                    className="absolute dark:bg-neutral-900 md:top-[110px] top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
@@ -1050,11 +1050,11 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute md:top-[110px] top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
+                    className="absolute md:top-[110px] top-[60px]  dark:bg-neutral-900 md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white md:mt-[80px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
+                  <div className="bg-white dark:bg-neutral-900 md:mt-[80px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
                     Overview
                   </p>
                     <div>
@@ -1078,11 +1078,11 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute md:top-[110px] top-[60px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
+                    className="absolute md:top-[110px] top-[60px] md:right-[260px] right-[20px] dark:bg-neutral-900 bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
-                  <div className="bg-white md:mt-[80px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
+                  <div className="bg-white dark:bg-neutral-900 md:mt-[80px] mt-[120px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    <p className="text-lg font-semibold underline pb-2">
                     Inclusion & Exclusion
                   </p>
                     <div>
@@ -1106,12 +1106,12 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 <div className="flex w-full justify-center">
                   <div
                     onClick={() => setTab("")}
-                    className="absolute md:top-[110px] top-[10px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
+                    className="absolute md:top-[110px] dark:bg-neutral-900 top-[10px] md:right-[260px] right-[20px] bg-white rounded-full cursor-pointer"
                   >
                     <XMarkIcon height={40} width={40} />
                   </div>
 
-                  <div className="bg-white md:mt-[80px] mt-[60px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    
+                  <div className="bg-white dark:bg-neutral-900 md:mt-[80px] mt-[60px] m-5 md:m-0 md:min-w-[400px]  md:max-w-[600px] p-2 text-center  max-h-[550px] overflow-x-auto py-5 rounded-xl shadow-2xl">                    
                   <p className="text-lg font-semibold underline pb-2">
                     Terms & Conditions
                   </p>

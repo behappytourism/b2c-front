@@ -23,7 +23,6 @@ const logoutUser = createAsyncThunk(
   "/usersSlice/logoutUser",
   async (_, { getState }) => {
     console.log("logged out succesfully");
-
   }
 );
 

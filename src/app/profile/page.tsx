@@ -42,7 +42,7 @@ import { logoutUser } from "@/redux/features/usersSlice";
 import { useRouter } from "next/navigation";
 import Orders from "./orders/page";
 import Affiliate from "./affiliate/page";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Label from "@/components/Label";
 import Input from "@/shared/Input";
 import ButtonPrimary from "@/shared/ButtonPrimary";
