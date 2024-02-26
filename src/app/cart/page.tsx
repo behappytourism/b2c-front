@@ -908,7 +908,7 @@ const Cart = () => {
             </div>
            )}
 
-            <div className="flex justify-between font-bold text-xl bg-gray-200 p-3 rounded-lg">
+            <div className="flex justify-between font-bold text-xl dark:bg-neutral-800 bg-gray-200 p-3 rounded-lg">
               <p>Final Amount</p>
               <p>
               

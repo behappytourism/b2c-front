@@ -339,7 +339,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
                 onClick={fromInput}
                 value={searchQuery}
                 ref={fromInputRef}
-                className=" placeholder:text-black placeholder:mr-2"
+                className=" placeholder:text-black dark:placeholder:text-neutral-100 placeholder:mr-2"
                 placeholder={fromDestination || "Pickup (Airport, Train, Hotel)"}
               />
 
@@ -432,7 +432,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
                 onClick={toInput}
                 ref={toInputRef}
                 value={toSearchQuery}
-                className=" placeholder:text-black placeholder:mr-2"
+                className=" placeholder:text-black dark:placeholder:text-neutral-100 placeholder:mr-2"
                 placeholder={toDestination || "Drop (Airport, Train, Hotel)"}
               />
 
@@ -527,13 +527,13 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
               <div className="md:flex">
                 <input
                   onChange={(e) => setPickupDate(`${e.target.value}`)}
-                  className="border-none w-full text-black md:w-fit mb-3 md:mb-0 rounded-lg md:rounded-none md:rounded-l-lg cursor-pointer"
+                  className="border-none w-full dark:bg-neutral-900 dark:text-neutral-100 text-black md:w-fit mb-3 md:mb-0 rounded-lg md:rounded-none md:rounded-l-lg cursor-pointer"
                   type="date"
                   min={new Date().toISOString().split('T')[0]}
                 />
 
                 <div
-                  className="p-3 flex min-w-[100px] border-l border-gray-300 rounded-lg md:rounded-none md:rounded-r-lg justify-between bg-white cursor-pointer"
+                  className="p-3 flex min-w-[100px] dark:bg-neutral-900 dark:text-neutral-100 border-l border-gray-300 rounded-lg md:rounded-none md:rounded-r-lg justify-between bg-white cursor-pointer"
                   onClick={() => {
                     setShowArraiDate(!showArraiDate);
                   }}
@@ -595,7 +595,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
               <div className="md:flex">
                 <input
                   onChange={(e) => setReturnDate(`${e.target.value}`)}
-                  className={`border-none text-black rounded-lg md:rounded-none w-full mb-3 md:mb-0 md:w-fit md:rounded-l-lg ${transferType === "return" ? "cursor-pointer" : ""} ${transferType === "oneway" ? "text-gray-400" : "text-black"}`}
+                  className={`border-none dark:bg-neutral-900 dark:text-neutral-100 text-black rounded-lg md:rounded-none w-full mb-3 md:mb-0 md:w-fit md:rounded-l-lg ${transferType === "return" ? "cursor-pointer" : ""} ${transferType === "oneway" ? "text-gray-400" : "text-black"}`}
                   disabled={transferType === "oneway"}
                   type="date"
                   min={pickupDate}
@@ -603,7 +603,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
 
                 {transferType === "return" && (
                   <div
-                    className="p-3 flex justify-between min-w-[100px]  md:border-l border-gray-300 rounded-lg md:rounded-none md:rounded-r-lg bg-white cursor-pointer"
+                    className="p-3 flex justify-between dark:bg-neutral-900 dark:text-neutral-100 min-w-[100px]  md:border-l border-gray-300 rounded-lg md:rounded-none md:rounded-r-lg bg-white cursor-pointer"
                     onClick={() => {
                       setShowReturnDate(!showReturnDate);
                     }}
@@ -622,7 +622,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
 
                 {transferType === "oneway" && (
                   <div
-                    className="p-3 flex justify-between min-w-[100px]  md:border-l border-gray-300 rounded-lg md:rounded-none md:rounded-r-lg bg-white"
+                    className="p-3 flex justify-between min-w-[100px] dark:bg-neutral-900 dark:text-neutral-100  md:border-l border-gray-300 rounded-lg md:rounded-none md:rounded-r-lg bg-white"
 
                   >
                     <div className="flex">
@@ -686,7 +686,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
                 Passengers
               </label>
               <div
-                className="p-3 flex rounded justify-between min-w-[200px] bg-white cursor-pointer"
+                className="p-3 flex rounded dark:bg-neutral-900 dark:text-neutral-100 justify-between min-w-[200px] bg-white cursor-pointer"
                 onClick={() => {
                   setShowPax(!showPax);
                 }}
@@ -752,14 +752,14 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
               {search === false && (
                 <button
                   onClick={() => transferResults()}
-                  className="p-2 mt-6 bg-primary-300 w-full md:w-fit hover:bg-primary-400 rounded min-w-[200px] self-center min-h-[50px] text-white"
+                  className="p-2 mt-6 dark:bg-neutral-900 dark:text-neutral-100 bg-primary-300 w-full md:w-fit hover:bg-primary-400 rounded min-w-[200px] self-center min-h-[50px] text-white"
                 >
                   Search
                 </button>
               )}
 
               {search === true && (
-                <button type="button" className="p-2 mt-6 min-w-[200px] w-full md:w-fit bg-primary-300  text-sm font-medium text-white self-center min-h-[50px] rounded  dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600  flex justify-center items-center">
+                <button type="button" className="p-2 dark:bg-neutral-900 dark:text-neutral-100 mt-6 min-w-[200px] w-full md:w-fit bg-primary-300  text-sm font-medium text-white self-center min-h-[50px] rounded dark:border-gray-600  flex justify-center items-center">
                   <svg aria-hidden="true" role="status" className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"></path>
                     <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="#1C64F2"></path>
