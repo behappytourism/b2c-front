@@ -135,7 +135,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
   const { activities } = useSelector((state: RootState) => state.attraction);
 
   const [activitySelected, setActivitySelected] = useState(
-    Array(attractionData?.activities.length).fill(false)
+    Array(attractionData?.activities?.length).fill(false)
   );
 
   const toggleActivitySelection = (index: number) => {
@@ -722,7 +722,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     try {
       setErrorModalContent("");
       const selectedActivityAtIndex = selectedActivities[index];
-
+  
       if (selectedActivityAtIndex?.slotsAvailable?.length) {
         if (
           !selectedActivityAtIndex.hasOwnProperty("slot") ||
@@ -731,9 +731,14 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
           throw new Error("Select the slot for the next step");
         }
       }
-
-      dispatch(handleAddtocart([selectedActivityAtIndex]));
-      // router.push(`${thisPathname}/activity/checkout` as Route);
+  
+      const updatedSelectedActivity = {
+        ...selectedActivityAtIndex,
+        destination: attractionData?.destination?.name,
+        slug: attractionData?.slug
+      };
+  
+      dispatch(handleAddtocart([updatedSelectedActivity]));
     } catch (error) {
       setErrorModalContent(`${error}`);
     }
@@ -743,7 +748,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     try {
       setErrorModalContent("");
       const selectedActivityAtIndex = selectedActivities[index];
-
+  
       if (selectedActivityAtIndex?.slotsAvailable?.length) {
         if (
           !selectedActivityAtIndex.hasOwnProperty("slot") ||
@@ -752,8 +757,14 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
           throw new Error("Select the slot for the next step");
         }
       }
-
-      dispatch(handleAddtocart([selectedActivityAtIndex]));
+  
+      const updatedSelectedActivity = {
+        ...selectedActivityAtIndex,
+        destination: attractionData?.destination?.name,
+        slug: attractionData?.slug
+      };
+  
+      dispatch(handleAddtocart([updatedSelectedActivity]));
     } catch (error) {
       setErrorModalContent(`${error}`);
     }

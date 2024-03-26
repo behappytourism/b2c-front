@@ -220,9 +220,7 @@ export interface ActivityExcursion {
   images: string[];
   facilities: string;
   slug: string;
-  destination: {
-    name: string;
-  };
+  destination: string;
   adultAgeLimit: number;
   adultPrice: number;
   childAgeLimit: number;

@@ -97,6 +97,8 @@ export const attraction = createSlice({
     },
     // Handling add to cart functionality.
     handleAddtocart: (state, action) => {
+      // console.log(action.payload,"atC");
+
       var excursionArray = [];
       var selectedArray = action.payload;
       const localStorageCart =
