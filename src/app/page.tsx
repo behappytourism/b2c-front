@@ -27,6 +27,10 @@ const PageHome = () => {
     (state: RootState) => state.initials
   );
 
+
+  
+  
+
   const findAttraction = async () => {
     try {
       const attraction = await fetch(
@@ -68,7 +72,7 @@ const PageHome = () => {
 
   useEffect(() => {
     attractionFound();
-  }, [dest]);
+  }, []);
 
   const googleSignIn = async () => {
     const payload = {
