@@ -20,7 +20,7 @@ const PageHome = () => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const [attractionData, setAttractionData] = useState();
-  const [dest, setDest] = useState("");
+  const [dest, setDest] = useState("dubai");
   const [response, setResponse] = useState<responseTS>()
 
   const { attractionDestinations, globalData } = useSelector(
@@ -72,7 +72,7 @@ const PageHome = () => {
 
   useEffect(() => {
     attractionFound();
-  }, []);
+  }, [dest]);
 
   const googleSignIn = async () => {
     const payload = {
@@ -118,9 +118,15 @@ const PageHome = () => {
 
   const tabs = useMemo(() => {
     return response?.destinations?.map((destination: any) => {
-      return destination.name || "";
+      return destination.slug || "";
     });
   }, [response]);
+
+  
+  
+  // console.log(attractionData, "attractions");
+  // console.log(dest, "tabs");
+
   
   
 
