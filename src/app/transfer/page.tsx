@@ -102,14 +102,14 @@ const PageHome = () => {
   }, []);
 
   return (
-    <main className="nc-PageHome container relative overflow-hidden">
+    <main className="nc-PageHome  relative overflow-hidden">
       <BgGlassmorphism />
 
       <div className="relative md:mb-16 mb-16 lg:mb-16">
         <SectionHero
           currentPage="Transfer"
           currentTab="Transfer"
-          className="hidden lg:block pt-10 lg:pt-16 lg:pb-16 "
+          className="hidden lg:block top-[400px] lg:pt-16 lg:pb-16 -ml-[300px]"
         />
 
         <div className=" relative container space-y-10 lg:space-y-12 mt-[500px]"></div>

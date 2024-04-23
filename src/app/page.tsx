@@ -128,13 +128,15 @@ const PageHome = () => {
 
       <div className="relative  md:mb-16 mb-16 lg:mb-16">
         {/* SECTION HERO */}
+        {attractionData && (
         <SectionHero
           currentPage="Experiences"
           currentTab="Experiences"
           className="hidden lg:block pt-10 lg:pt-16 lg:pb-16 "
         />
+        )}
 
-        <div className="relative container space-y-10 lg:space-y-12 md:mt-[100px]">
+        <div className="relative container space-y-10 lg:space-y-12 md:mt-[10px]">
           {/* SECTION 1 */}
 
           {globalData.topAttractions?.length ? (
