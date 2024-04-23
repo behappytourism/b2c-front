@@ -5,10 +5,11 @@ import { Route } from "next";
 
 export interface ExperiencesSearchFormProps {
   closeModal?: () => void
+  autofocus?: boolean;
 }
 
 
-const ExperiencesSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
+const ExperiencesSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal, autofocus }) => {
   const [query, setQuery] = useState<string>("")
   const [destination, setDestination] = useState<string>("")
   const [response, setResponse] = useState({})
@@ -34,7 +35,7 @@ const ExperiencesSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) =
   const renderForm = () => {
     return (
       <form className="w-full max-w-[650px] relative -mb-10 flex flex-col md:flex-row rounded-xl md:rounded-xl md:shadow-xl dark:shadow-2xl md:bg-white dark:bg-neutral-800 ">
-        <LocationInput closeModal={closeModal} data={response} setQuery={setQuery} setDestination={setDestination} className="flex-[1.5]" />
+        <LocationInput autoFocus={autofocus} closeModal={closeModal} data={response} setQuery={setQuery} setDestination={setDestination} className="flex-[1.5]" />
       </form>
     );
   };

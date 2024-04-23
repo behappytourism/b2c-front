@@ -125,7 +125,7 @@ const HeroSearchForm2Mobile = () => {
                         </button>
                       </div>
 
-                      <Tab.List className="pt-12 flex w-full justify-center font-semibold text-sm sm:text-base text-neutral-500 dark:text-neutral-400 space-x-6 sm:space-x-8">
+                      <Tab.List className="pt-12 pb-6 flex w-full justify-center font-semibold text-sm sm:text-base text-neutral-500 dark:text-neutral-400 space-x-6 sm:space-x-8">
                         {["Attractions", "Transfer"].map((item, index) => (
                           <Tab
 
@@ -135,21 +135,21 @@ const HeroSearchForm2Mobile = () => {
                             {({ selected }) => (
                               <div onClick={() => setCurrentTab(item.toLowerCase())} className="relative focus:outline-none focus-visible:ring-0 outline-none select-none">
                                 <div
-                                  className={`${selected ? "text-black dark:text-white" : ""
+                                  className={`${selected ? " dark:text-white bg-neutral-400 p-2 rounded text-white" : "p-2"
                                     }  `}
                                 >
                                   {item}
                                 </div>
-                                {selected && (
-                                  <span className="absolute inset-x-0 top-full border-b-2 border-black dark:border-white"></span>
-                                )}
+                                {/* {selected && (
+                                  <span className="absolute inset-x-0 top-full   dark:border-white"></span>
+                                )} */}
                               </div>
                             )}
                           </Tab>
                         ))}
                       </Tab.List>
                       {currentTab === "attractions" && (
-                        <ExperiencesSearchForm closeModal={closeModal} />
+                        <ExperiencesSearchForm autofocus={true} closeModal={closeModal} />
                       )}
 
                       {currentTab === "transfer" && (
