@@ -1134,7 +1134,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
         </div> */}
       </main>
       {/* STICKY FOOTER MOBILE */}
-      <MobileFooterStickyDate attractionData={attractionData} />
+      {/* <MobileFooterStickyDate attractionData={attractionData} /> */}
     </div>
   );
 }
