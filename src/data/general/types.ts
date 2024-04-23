@@ -158,6 +158,7 @@ export interface Home {
   footerDescription?: string;
   instagramUrl?: string;
   twitterUrl?: string;
+  tripAdvisorUrl?: string;
   youtubeUrl?: string;
   phoneNumber1?: number;
   phoneNumber2?: number;

@@ -24,31 +24,41 @@ const PageHome = () => {
     (state: RootState) => state.initials
   );
 
-  const findAttraction = async () => {
+  const [banner, setBanner] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const updateCurrentSlide = (index: number) => {
+    if (currentSlide !== index) {
+      setCurrentSlide(index);
+    }
+  };
+
+  const findBanner = async () => {
     try {
-      // const attraction = await fetch('https://jsonplaceholder.typicode.com/todos/1')
-      const attraction = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/all?limit=8&skip=0&destination=${dest}`,
+      const banner = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/home/banners?name=transfer`,
         { next: { revalidate: 1 } }
       );
-      return attraction.json();
+      return banner.json();
     } catch (error) {
       console.log(error);
     }
   };
 
-  async function attractionFound() {
+  async function bannerFound() {
     try {
-      const response = await findAttraction();
-      setAttractionData(response);
+      const response = await findBanner();
+      setBanner(response);
     } catch (error) {
       console.error(error);
     }
   }
 
-  useEffect(() => {
-    attractionFound();
-  }, [dest]);
+  
+   useEffect(() => {
+    bannerFound()
+   },[])
+
 
   const googleSignIn = async () => {
     const payload = {

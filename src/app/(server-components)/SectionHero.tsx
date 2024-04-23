@@ -112,17 +112,21 @@ const SectionHero: FC<SectionHeroProps> = ({
                   className="bg-inherit cursor-pointer h-[20em] md:h-[30em] relative object-cover"
                   key={index}
                 >
-                  <p className="absolute  top-0 text-center w-full z-10">
+                  <p className="absolute  -top-[350px] text-center w-full z-10">
                     <div className="h-[20em] xl:h-[28em] lg:h-[23em] md:h-[18em] sm:h-[22em] flex flex-col justify-end">
-                      <div className="">
-                        <div
-                          className="text-3xl text-white font-extrabold  heading uppercase"
+                      <div className="flex justify-center">
+
+                        <p
+                          className="text-3xl w-fit  bg-black/50 p-2 text-white font-extrabold  heading uppercase"
                           style={{
                             textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+                            backgroundColor: item.title ? "rgba(0, 0, 0, 0.5)" : "transparent",
+
                           }}
                         >
                           {item?.title}
-                        </div>
+                        </p>
+                        
                         <div
                           className=" text-sm text-white font-medium"
                           style={{

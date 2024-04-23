@@ -20,6 +20,8 @@ const SocialsList1: FC<SocialsList1Props> = ({ className = "space-y-2.5" }) => {
     { name: "Instagram", icon: "lab la-instagram", href: globalData?.home?.instagramUrl || "" },
     { name: "Youtube", icon: "lab la-youtube", href: globalData?.home?.youtubeUrl || "" },
     { name: "Twitter", icon: "lab la-twitter", href: globalData?.home?.twitterUrl || "" },
+    { name: "Trip Advisor", icon: "lab la-tripadvisor", href: globalData?.home?.tripAdvisorUrl || "" },
+
   ];
 
 
