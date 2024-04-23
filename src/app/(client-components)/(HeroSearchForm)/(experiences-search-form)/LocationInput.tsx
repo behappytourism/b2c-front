@@ -53,8 +53,7 @@ const LocationInput: FC<LocationInputProps> = ({
   const [showValue, setShowValue] = useState("");
   const [showPopover, setShowPopover] = useState(autoFocus);
   const { Destination } = useSelector((state: RootState) => state.attraction);
-
-
+  
 
   if (setQuery) {
     setQuery(value);
@@ -105,7 +104,7 @@ const LocationInput: FC<LocationInputProps> = ({
 
     }
     setValue(item);
-    dispatch(setAttractionDestination({ Destination: item }))
+    dispatch(setAttractionDestination({ Destination: title }))
     if (title) {
       setShowValue(title);
     } else {

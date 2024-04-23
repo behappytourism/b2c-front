@@ -94,9 +94,10 @@ const ProfileSideBar: React.FC<ProfileSideBarProps> = ({ currentTab }) => {
   }, [thisPathname]);
 
   // Logout handler.
-  const handleLogout = () => {
-    dispatch(logoutUser() as any);
-    signOut()
+  const handleLogout = async() => {
+    await signOut()
+    await localStorage.removeItem("random-string");
+    await dispatch(logoutUser() as any);
   };
 
   // Validating whether user loggedin or not and redirecting to home ifnot.

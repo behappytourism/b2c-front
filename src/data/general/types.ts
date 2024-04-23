@@ -157,6 +157,8 @@ export interface Home {
   facebookUrl?: string;
   footerDescription?: string;
   instagramUrl?: string;
+  twitterUrl?: string;
+  youtubeUrl?: string;
   phoneNumber1?: number;
   phoneNumber2?: number;
   heros?: Heros[];

@@ -14,7 +14,7 @@ import { SessionProvider } from "next-auth/react"
 import FetchUserData from "./fetchUserData";
 import SectionDowloadApp from "./(home)/SectionDowloadApp";
 import SuccessAlert from "@/components/alerts/AlertSuccess";
-
+import favicon from "@/images/behappyfavicon.png"
 const poppins = Poppins({
   subsets: ["latin"],
   display: "swap",

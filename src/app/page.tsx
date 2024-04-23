@@ -14,22 +14,18 @@ import ComponentLoader from "@/components/loader/ComponentLoader";
 import SliderCards from "@/components/Attraction/SliderCards";
 
 interface responseTS {
-  destinations: []
+  destinations: [];
 }
 const PageHome = () => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const [attractionData, setAttractionData] = useState();
   const [dest, setDest] = useState("dubai");
-  const [response, setResponse] = useState<responseTS>()
+  const [response, setResponse] = useState<responseTS>();
 
   const { attractionDestinations, globalData } = useSelector(
     (state: RootState) => state.initials
   );
-
-
-  
-  
 
   const findAttraction = async () => {
     try {
@@ -52,23 +48,23 @@ const PageHome = () => {
     }
   }
 
-
-
   useEffect(() => {
     const findAttractionQuery = async () => {
       try {
-        const query = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/search/list?search=${""}`, { cache: 'no-store' })
-        setResponse(await query.json())
-  
+        const query = await fetch(
+          `${
+            process.env.NEXT_PUBLIC_SERVER_URL
+          }/api/v1/search/list?search=${""}`,
+          { cache: "no-store" }
+        );
+        setResponse(await query.json());
       } catch (error) {
         console.log(error);
- 
       }
-    }
+    };
 
-    findAttractionQuery()
-
-  }, [])
+    findAttractionQuery();
+  }, []);
 
   useEffect(() => {
     attractionFound();
@@ -114,21 +110,14 @@ const PageHome = () => {
     }
   }, [session]);
 
-  
-
   const tabs = useMemo(() => {
     return response?.destinations?.map((destination: any) => {
       return destination.slug || "";
     });
   }, [response]);
 
-  
-  
   // console.log(attractionData, "attractions");
   // console.log(dest, "tabs");
-
-  
-  
 
   //const tabs = ["dubai", "sharjah", "fujairah", "ras al khaimah", "ajman", "abu dhabi", "oman", "hatta"]
 
@@ -137,7 +126,7 @@ const PageHome = () => {
       {/* GLASSMOPHIN */}
       <BgGlassmorphism />
 
-      <div className="relative container md:mb-16 mb-16 lg:mb-16">
+      <div className="relative  md:mb-16 mb-16 lg:mb-16">
         {/* SECTION HERO */}
         <SectionHero
           currentPage="Experiences"
@@ -145,7 +134,7 @@ const PageHome = () => {
           className="hidden lg:block pt-10 lg:pt-16 lg:pb-16 "
         />
 
-        <div className="relative container space-y-10 lg:space-y-12 md:mt-[180px]">
+        <div className="relative container space-y-10 lg:space-y-12 md:mt-[100px]">
           {/* SECTION 1 */}
 
           {globalData.topAttractions?.length ? (

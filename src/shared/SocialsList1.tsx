@@ -13,11 +13,13 @@ const SocialsList1: FC<SocialsList1Props> = ({ className = "space-y-2.5" }) => {
 
 
   const { globalData } = useSelector((state: RootState) => state.initials)
-
+  
   const socials: SocialType[] = [
     { name: "Facebook", icon: "lab la-facebook-square", href: globalData?.home?.facebookUrl || "" },
     { name: "Whatsapp", icon: "lab la-whatsapp", href: `https://wa.me/${globalData?.home?.phoneNumber2}` },
     { name: "Instagram", icon: "lab la-instagram", href: globalData?.home?.instagramUrl || "" },
+    { name: "Youtube", icon: "lab la-youtube", href: globalData?.home?.youtubeUrl || "" },
+    { name: "Twitter", icon: "lab la-twitter", href: globalData?.home?.twitterUrl || "" },
   ];
 
 

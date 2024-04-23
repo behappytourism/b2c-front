@@ -114,7 +114,7 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
     <div className="w-full ">
       {renderTab()}
       </div>
-      <div className="mt-10">
+      <div className="mt-3">
         {renderForm()}
       </div>
 

@@ -20,10 +20,14 @@ const initialState = {
 
 
 const logoutUser = createAsyncThunk(
-  "/usersSlice/logoutUser",
-  async (_, { getState }) => {
-    console.log("logged out succesfully");
-  }
+	"/usersSlice/logoutUser",
+	async (_, { getState }) => {
+		console.log("logged out succesfully");
+		localStorage.removeItem("random-string");
+		if (typeof window !== "undefined") {
+			localStorage.removeItem("random-string");
+		}
+	}
 );
 
 

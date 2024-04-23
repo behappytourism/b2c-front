@@ -5,6 +5,7 @@ import SocialsList1 from "@/shared/SocialsList1";
 import FooterNav from "./FooterNav";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import Image from "next/image";
 
 
 
@@ -21,14 +22,13 @@ const Footer: React.FC = () => {
       <FooterNav />
 
       <div className="nc-Footer relative pb-28 md:pb-0 pt-5 md:pt-0 lg:py-16 border-t border-neutral-200 dark:border-neutral-700">
-        <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-4 lg:grid-cols-5 lg:gap-x-10 ">
+        <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-3 lg:grid-cols-3 lg:gap-x-20 ">
           <div className="grid grid-cols-4 gap-5 col-span-2 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
             <div className="col-span-2 md:col-span-1">
-              <Logo imgLight={process.env.NEXT_PUBLIC_COMPANY_LOGO} img={process.env.NEXT_PUBLIC_COMPANY_LOGO} />
+              {/* <Logo imgLight={process.env.NEXT_PUBLIC_COMPANY_LOGO} img={process.env.NEXT_PUBLIC_COMPANY_LOGO} className="" /> */}
+             <Image className="max-w-[200px]" src={process.env.NEXT_PUBLIC_COMPANY_LOGO || ""} alt="company logo" height={100} width={1000} />
             </div>
-            <div className="col-span-2 flex items-center md:col-span-3">
-              <SocialsList1 className="flex items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-2.5 lg:items-start" />
-            </div>
+     
           </div>
           {globalData.home && globalData.home?.footer && globalData.home?.footer?.map((ele, index) => {
             return (
@@ -52,6 +52,15 @@ const Footer: React.FC = () => {
               </div>
             )
           })}
+
+
+          <div>
+          <div className="col-span-2 flex items-center md:col-span-3">
+              <SocialsList1 className="flex items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-2.5 lg:items-start" />
+            </div>
+          </div>
+
+          
         </div>
       </div>
     </>

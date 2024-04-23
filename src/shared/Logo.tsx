@@ -15,7 +15,7 @@ export interface LogoProps {
 const Logo: React.FC<LogoProps> = ({
   img = "",
   imgLight = "",
-  className = "w-32",
+  className = "",
 }) => {
   return (
     <Link
