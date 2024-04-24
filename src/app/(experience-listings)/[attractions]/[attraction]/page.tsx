@@ -32,7 +32,7 @@ import { format, parse } from "date-fns";
 import GoogleMapReact from "google-map-react";
 import DefaultLoader from "@/components/loader/DefaultLoader";
 import ReactPlayer from "react-player";
-import { PlayCircleIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftIcon, PlayCircleIcon } from "@heroicons/react/24/solid";
 import MobileFooterStickyDate from "../../MobileFooterStickyDate";
 import {
   handleAddtocart,
@@ -882,9 +882,17 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
     );
   };
 
+  const backfunction = () => {
+    window?.history?.back();
+  }
+
   return (
     <div className={` nc-ListingExperiencesDetailPage  `}>
-      <div className="my-3">
+      <div className="my-3 flex justify-between">
+        <div onClick={() => backfunction()} className="flex items-center cursor-pointer text-center gap-3">
+        <ArrowLeftIcon height={20} width={20} />
+        <p>Back</p>
+        </div>
         <Breadcrumb breadCrumbs={breadcrum} />
       </div>
       <ListingImageGallery
@@ -1069,7 +1077,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
             attractionData?.sections?.map((section) => renderSection5(section))}
           {attractionData ? (
             <>
-              {renderSection6()}
+              {/* {renderSection6()} */}
               {renderSection7(
                 attractionData?.latitude,
                 attractionData?.longitude

@@ -26,6 +26,7 @@ import {
   ChevronUpIcon,
   ArrowRightIcon,
   ArrowDownIcon,
+  ArrowLeftIcon,
 } from "@heroicons/react/24/solid";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import {
@@ -918,10 +919,20 @@ const Cart = () => {
     );
   };
 
+  const backfunction = () => {
+    window?.history?.back();
+  }
+
   return (
     <div className="container relative z-10 mt-11 flex flex-col gap-10">
       {/* BREADCRUMBS */}
-      <Breadcrumb breadCrumbs={breadcrum} />
+      <div className="my-3 flex justify-between">
+        <div onClick={() => backfunction()} className="flex items-center cursor-pointer text-center gap-3">
+        <ArrowLeftIcon height={20} width={20} />
+        <p>Back</p>
+        </div>
+        <Breadcrumb breadCrumbs={breadcrum} />
+      </div>
 
       {cart.length || transferCart.length ? (
         <form onSubmit={submitHandler}>

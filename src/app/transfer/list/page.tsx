@@ -40,13 +40,15 @@ function TransferList() {
     };
   });
 
-  const handleCountChange = (
-    e: any,
+  const handleCountChange = (e: any) => {
+    setCount(e);
+  }
+
+  const handleAddToCart = (
     vehicle: any,
     trip: any,
     transfer: TransferExcursion
     ) => {
-    setCount(e);
     const selectedTransferItem = {
     
       date: trip?.date,
@@ -72,9 +74,9 @@ function TransferList() {
       returnTime: transfer?.returnTime || "",
 
       vehicle: {
-        count: e,
+        count: count,
         name: vehicle?.vehicle?.name,
-        price: vehicle?.price * e,
+        price: vehicle?.price * count,
         vehicle: vehicle?.vehicle?._id,
         vehicleType: vehicle?.vehicle?.vehicleType,
       },
@@ -201,7 +203,7 @@ function TransferList() {
                           Select Quantity:
                         </p>
                         <select
-                          onChange={(e) => handleCountChange(e.target.value, vehicle, trip, transferItem)}
+                          onChange={(e) => handleCountChange(e.target.value)}
                           className="border dark:bg-neutral-800 p-2 w-full max-h-[50px] border-gray-300"
                         >
                           {Array.from({ length: 5 }).map((val, ind) => (
@@ -210,7 +212,7 @@ function TransferList() {
                         </select>
                       </div>
 
-                      {/* <div className="flex flex-col mt-3 gap-3 font-semibold">
+                      <div className="flex flex-col mt-3 gap-3 font-semibold">
                         <button
                           onClick={() =>
                             handleAddToCart(vehicle, trip, transferItem)
@@ -219,15 +221,7 @@ function TransferList() {
                         >
                           Add To Cart
                         </button>
-                        <button
-                          onClick={() =>
-                            handleCheckout(vehicle, trip, transferItem)
-                          }
-                          className="border p-2 hover:bg-orange-700 bg-orange-500  text-white"
-                        >
-                          Checkout
-                        </button>
-                      </div> */}
+                      </div>
 
                     </div>
                   </div>
