@@ -32,6 +32,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
   const router = useRouter();
   const { user, jwtToken } = useSelector((state: RootState) => state.users);
   const { globalData } = useSelector((state: RootState) => state.initials);
+  const { cart } = useSelector((state: RootState) => state.attraction);
   const [enableLogin, setEnableLogin] = useState(false);
   const [login, setLogin] = useState("login");
 
@@ -95,6 +96,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
               {/* <Cart className="flex items-center" /> */}
              
              <Link className="self-center"  href={"/cart" as Route}>
+              <p className="absolute bg-black text-white p-2 rounded-full h-4 w-4 -mt-[3px] items-center text-xs flex justify-center">{cart?.length}</p>
               <ShoppingCartIcon  className="w-7 h-7"  />
               </Link>
 
