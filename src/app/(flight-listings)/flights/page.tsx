@@ -17,12 +17,12 @@ const ListingFlightsPage: FC<ListingFlightsPageProps> = ({ }) => {
 
       <div className=" relative">
         {/* SECTION HERO */}
-        <SectionHero
+        {/* <SectionHero
           currentPage="Flights"
           currentTab="Flights"
-
+         imgBanner={[]}
           className="hidden lg:block pt-10 pb-24 lg:pb-28 lg:pt-16 bg-primary-6000 "
-        />
+        /> */}
         <div className="container">
           {/* SECTION */}
           <SectionGridFilterCard className="pt-10 lg:pt-24 pb-24 lg:pb-28" />

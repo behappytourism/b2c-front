@@ -185,11 +185,11 @@ const visaHome = () => {
     <div>
       <header className="nc-PageHome relative">
         <div className="relative mb-2  lg:mb-2">
-          <SectionHero
+          {/* <SectionHero
             currentPage="Visa"
             currentTab="Visa"
             className=" lg:block pt-10 lg:pt-16 lg:pb-16 bg-primary-6000"
-          />
+          /> */}
         </div>
       </header>
       <div className="container mt-5 p-4">
