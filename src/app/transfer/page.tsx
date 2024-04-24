@@ -18,6 +18,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import TransferSearchForm from "./TransferSearchForm";
+import SkeletonLoader from "../profile/orders/SkeletonLoader";
 
 const PageHome = () => {
   const dispatch = useDispatch();
@@ -118,6 +119,8 @@ const PageHome = () => {
 
   return (
     <main className="nc-PageHome min-h-[650px] relative overflow-hidden">
+      {banner && (
+      <>
       <BgGlassmorphism />
 
       {/* <div className="relative md:mb-16 mb-16 lg:mb-16">
@@ -205,7 +208,8 @@ const PageHome = () => {
         <TransferSearchForm />
         </div>
       </div>
-
+      </>
+      )}
     </main>
   );
 };
