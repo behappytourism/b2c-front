@@ -41,7 +41,7 @@ const SectionHero: FC<SectionHeroProps> = ({
 
 
   return (
-    <main className="nc-PageHome min-h-[500px] relative overflow-hidden">
+    <main className="nc-PageHome min-h-[500px] relative">
     {banner && (
       <>
 
@@ -132,7 +132,7 @@ const SectionHero: FC<SectionHeroProps> = ({
         </div>
 
         <div className="container w-full flex justify-center  -mt-[160px]">
-          <div className="sticky -ml-[550px]">
+          <div className="sticky z-40 -ml-[550px]">
           <HeroSearchForm currentPage={currentPage} currentTab={currentTab} />
           </div>
         </div>
