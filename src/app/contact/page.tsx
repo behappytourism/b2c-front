@@ -8,6 +8,7 @@ import Textarea from "@/shared/Textarea";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import SocialsList1 from "@/shared/SocialsList1";
 
 export interface PageContactProps {}
 
@@ -56,7 +57,10 @@ const PageContact: FC<PageContactProps> = ({}) => {
               <h3 className="uppercase font-semibold text-sm dark:text-neutral-200 tracking-wider">
                   🌏 SOCIALS
                 </h3>
-                <SocialsList className="mt-2" />
+                {/* <SocialsList className="mt-2" /> */}
+                <div className="col-span-2 flex items-center md:col-span-3">
+              <SocialsList1 className="md:flex grid grid-cols-2 items-center space-x-3 lg:space-x-0 lg:flex-col lg:space-y-2.5 lg:items-start" />
+            </div>
                 </div>
                 <div className="w-full">
                   <iframe

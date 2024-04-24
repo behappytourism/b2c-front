@@ -16,12 +16,19 @@ import SliderCards from "@/components/Attraction/SliderCards";
 interface responseTS {
   destinations: [];
 }
+
+interface bannerImages {
+  img: string;
+}
+
 const PageHome = () => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const [attractionData, setAttractionData] = useState();
   const [dest, setDest] = useState("dubai");
   const [response, setResponse] = useState<responseTS>();
+  const [banner, setBanner] = useState<bannerImages[]>([]);
+
 
   const { attractionDestinations, globalData } = useSelector(
     (state: RootState) => state.initials
@@ -110,6 +117,33 @@ const PageHome = () => {
     }
   }, [session]);
 
+
+  const findBanner = async () => {
+    try {
+      const banner = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/home/banners?name=home`,
+        { next: { revalidate: 1 } }
+      );
+      return banner.json();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async function bannerFound() {
+    try {
+      const response = await findBanner();
+      setBanner(response);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  
+   useEffect(() => {
+    bannerFound()
+   },[])
+
   const tabs = useMemo(() => {
     return response?.destinations?.map((destination: any) => {
       return destination.slug || "";
@@ -122,6 +156,18 @@ const PageHome = () => {
   //const tabs = ["dubai", "sharjah", "fujairah", "ras al khaimah", "ajman", "abu dhabi", "oman", "hatta"]
 
   return (
+    <>
+      {banner.length === 0 && (
+         <main className="nc-PageHome flex justify-center relative overflow-hidden">
+          <div className="flex flex-col gap-5">
+             <ComponentLoader />
+              <ComponentLoader />
+              <ComponentLoader />
+              <ComponentLoader />
+          </div>
+         </main>
+      )}
+    {banner.length > 0 && (
     <main className="nc-PageHome flex justify-center relative overflow-hidden">
       {/* GLASSMOPHIN */}
       <BgGlassmorphism />
@@ -133,6 +179,7 @@ const PageHome = () => {
           currentPage="Experiences"
           currentTab="Experiences"
           className="hidden lg:block pt-10 lg:pt-16 lg:pb-16 "
+          imgBanner={banner}
         />
         )}
 
@@ -175,15 +222,19 @@ const PageHome = () => {
 
           {attractionDestinations.length === 0 && (
             <>
+             <div className="flex flex-col gap-5">
+             <ComponentLoader />
               <ComponentLoader />
               <ComponentLoader />
               <ComponentLoader />
-              <ComponentLoader />
+          </div>
             </>
           )}
         </div>
       </div>
     </main>
+    )}
+    </>
   );
 };
 

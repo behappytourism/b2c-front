@@ -115,6 +115,19 @@ const PageHome = () => {
   }, []);
 
   return (
+    <>
+      {banner.length === 0 && (
+         <main className="nc-PageHome flex justify-center relative overflow-hidden">
+          <div className="flex flex-col gap-5">
+             <ComponentLoader />
+              <ComponentLoader />
+              <ComponentLoader />
+              <ComponentLoader />
+          </div>
+         </main>
+      )}
+
+{banner.length > 0 && (
     <main className="nc-PageHome min-h-[650px] relative overflow-hidden">
       {banner && (
         <>
@@ -214,6 +227,8 @@ const PageHome = () => {
         </>
       )}
     </main>
+)}
+    </>
   );
 };
 
