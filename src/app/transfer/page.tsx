@@ -19,6 +19,7 @@ import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import TransferSearchForm from "./TransferSearchForm";
 import SkeletonLoader from "../profile/orders/SkeletonLoader";
+import HeroSearchForm from "../(client-components)/(HeroSearchForm)/HeroSearchForm";
 
 const PageHome = () => {
   const dispatch = useDispatch();
@@ -60,11 +61,9 @@ const PageHome = () => {
     }
   }
 
-  
-   useEffect(() => {
-    bannerFound()
-   },[])
-
+  useEffect(() => {
+    bannerFound();
+  }, []);
 
   const googleSignIn = async () => {
     const payload = {
@@ -103,8 +102,6 @@ const PageHome = () => {
     }
   }
 
-
-
   useEffect(() => {
     {
       session && googleProcess();
@@ -120,10 +117,10 @@ const PageHome = () => {
   return (
     <main className="nc-PageHome min-h-[650px] relative overflow-hidden">
       {banner && (
-      <>
-      <BgGlassmorphism />
+        <>
+          <BgGlassmorphism />
 
-      {/* <div className="relative md:mb-16 mb-16 lg:mb-16">
+          {/* <div className="relative md:mb-16 mb-16 lg:mb-16">
         <SectionHero
           currentPage="Transfer"
           currentTab="Transfer"
@@ -133,86 +130,88 @@ const PageHome = () => {
         <div className=" relative container space-y-10 lg:space-y-12 mt-[500px]"></div>
       </div> */}
 
-<div className="hidden md:grid md:grid-cols-1 ">
-      <Carousel
-          infiniteLoop
-          autoPlay
-          showThumbs={false}
-          interval={9000}
-          showArrows={false}
-          stopOnHover
-          swipeable={false}
-          selectedItem={currentSlide}
-          showIndicators={false}
-          showStatus={false}
-          onChange={updateCurrentSlide}
-        >
-          {banner &&
-            banner.map((item: any, index: number) => (
-              <>
-                <div className="absolute z-20 xl:bottom-20 md:bottom-[15em] lg:bottom-[9.5em]">
-                  <p
-                    className="ml-10 cursor-pointer -mb-10 text-2xl font-bold text-gray-400 hover:text-gray-400 bg-transparent border-2 transition-all duration-300 border-white hover:bg-soft h-14 w-14 rounded-full flex justify-center items-center"
-                    onClick={() => setCurrentSlide(currentSlide + 1)}
-                  >
-                    <ChevronRightIcon />
-                  </p>
-                </div>
-
-                <div
-                   onClick={() => {
-                    if (item?.buttonUrl !== "") {
-                      window.open(`${item.buttonUrl}`, "_blank");
-                    }
-                  }}
-                  className="bg-inherit cursor-pointer h-[20em] md:h-[30em] relative object-cover"
-                  key={index}
-                >
-                  <p className="absolute  -top-[350px] text-center w-full z-10">
-                    <div className="h-[20em] xl:h-[28em] lg:h-[23em] md:h-[18em] sm:h-[22em] flex flex-col justify-end">
-                      <div className="flex justify-center">
-
-                        <p
-                          className="text-3xl w-fit  bg-black/50 p-2 text-white font-extrabold  heading uppercase"
-                          style={{
-                            textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
-                            backgroundColor: item.title ? "rgba(0, 0, 0, 0.5)" : "transparent",
-
-                          }}
-                        >
-                          {item?.title}
-                        </p>
-                        
-                        <div
-                          className=" text-sm text-white font-medium"
-                          style={{
-                            textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)",
-                          }}
-                        >
-                          {item?.description}
-                        </div>
-                      </div>
+          <div className="hidden md:grid md:grid-cols-1 ">
+            <Carousel
+              infiniteLoop
+              autoPlay
+              showThumbs={false}
+              interval={9000}
+              showArrows={false}
+              stopOnHover
+              swipeable={false}
+              selectedItem={currentSlide}
+              showIndicators={false}
+              showStatus={false}
+              onChange={updateCurrentSlide}
+            >
+              {banner &&
+                banner.map((item: any, index: number) => (
+                  <>
+                    <div className="absolute z-20 xl:bottom-20 md:bottom-[15em] lg:bottom-[9.5em]">
+                      <p
+                        className="ml-10 cursor-pointer -mb-10 text-2xl font-bold text-gray-400 hover:text-gray-400 bg-transparent border-2 transition-all duration-300 border-white hover:bg-soft h-14 w-14 rounded-full flex justify-center items-center"
+                        onClick={() => setCurrentSlide(currentSlide + 1)}
+                      >
+                        <ChevronRightIcon />
+                      </p>
                     </div>
-                  </p>
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${item.image || ""}`}
-                    alt={`Slide ${index + 1}`}
-                    width={1000}
-                    height={100}
-                    className=""
-                  />
-                </div>
-              </>
-            ))}
-        </Carousel>
-      </div>
 
-      <div className="container w-full flex justify-center -mt-[320px]">
-        <div className="sticky ml-[250px]">
-        <TransferSearchForm />
-        </div>
-      </div>
-      </>
+                    <div
+                      onClick={() => {
+                        if (item?.buttonUrl !== "") {
+                          window.open(`${item.buttonUrl}`, "_blank");
+                        }
+                      }}
+                      className="bg-inherit cursor-pointer h-[20em] md:h-[30em] relative object-cover"
+                      key={index}
+                    >
+                      <p className="absolute  -top-[350px] text-center w-full z-10">
+                        <div className="h-[20em] xl:h-[28em] lg:h-[23em] md:h-[18em] sm:h-[22em] flex flex-col justify-end">
+                          <div className="flex justify-center">
+                            <p
+                              className="text-3xl w-fit  bg-black/50 p-2 text-white font-extrabold  heading uppercase"
+                              style={{
+                                textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+                                backgroundColor: item.title
+                                  ? "rgba(0, 0, 0, 0.5)"
+                                  : "transparent",
+                              }}
+                            >
+                              {item?.title}
+                            </p>
+
+                            <div
+                              className=" text-sm text-white font-medium"
+                              style={{
+                                textShadow: "1px 1px 2px rgba(0, 0, 0, 0.5)",
+                              }}
+                            >
+                              {item?.description}
+                            </div>
+                          </div>
+                        </div>
+                      </p>
+                      <Image
+                        src={`${process.env.NEXT_PUBLIC_SERVER_URL}${
+                          item.image || ""
+                        }`}
+                        alt={`Slide ${index + 1}`}
+                        width={1000}
+                        height={100}
+                        className=""
+                      />
+                    </div>
+                  </>
+                ))}
+            </Carousel>
+          </div>
+
+          <div className="container w-full flex justify-center mb-[100px] -mt-[160px]">
+            <div className="sticky -ml-[60px]">
+            <HeroSearchForm currentPage={"Transfer"} currentTab={"Transfer"} />
+            </div>
+          </div>
+        </>
       )}
     </main>
   );

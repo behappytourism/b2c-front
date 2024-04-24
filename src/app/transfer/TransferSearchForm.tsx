@@ -299,7 +299,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
   return (
     <>
       <div
-        className="md:-ml-[200px] max-h-[600px] md:overflow-visible overflow-x-auto py-10 px-12 backdrop-blur-xl rounded bg-opacity-30 bg-secondary-900">
+        className=" max-h-[600px] md:overflow-visible overflow-x-auto py-10 px-12 backdrop-blur-xl rounded bg-opacity-30 bg-secondary-900">
         <div className="flex gap-5 mb-3">
           <div className="flex gap-1 items-center">
             <input
