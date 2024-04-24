@@ -12,7 +12,7 @@ const CommonLayout: FC<CommonLayoutProps> = ({ children }) => {
                 <div className="w-full md:space-y-8 lg:space-y-10 lg:pl-10 flex-shrink-0">
                     {children}
                 </div>
-                <div className="absolute flex-grow mb-24 lg:mb-0">
+                <div className="absolute container flex-grow mb-24 lg:mb-0">
                     <div className="lg:fixed bg-white rounded-xl bottom-10 border-white shadow-xl z-10  hidden md:block"><ProfileSideBar /></div>
                 </div>
             </main>

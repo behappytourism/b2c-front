@@ -239,7 +239,7 @@ const ProfileSideBar: React.FC<ProfileSideBarProps> = ({ currentTab }) => {
           </span>
         </div>
 
-        <div
+        {/* <div
           onClick={() => router.push("/profile/delete-account" as Route)}
           className="flex items-center cursor-pointer space-x-4"
         >
@@ -256,9 +256,9 @@ const ProfileSideBar: React.FC<ProfileSideBarProps> = ({ currentTab }) => {
           >
             Delete Account
           </span>
-        </div>
+        </div> */}
 
-        <div
+        {/* <div
           onClick={() => router.push("/profile/affiliate" as Route)}
           className="flex items-center cursor-pointer space-x-4"
         >
@@ -275,7 +275,7 @@ const ProfileSideBar: React.FC<ProfileSideBarProps> = ({ currentTab }) => {
           >
             Affiliate
           </span>
-        </div>
+        </div> */}
 
         <div
           onClick={handleLogout}
