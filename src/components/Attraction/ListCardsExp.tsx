@@ -14,6 +14,7 @@ import priceConversion from "@/utils/priceConversion";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { handleSetFavourites } from "@/redux/features/attractionSlice";
+import { useRouter } from "next/navigation";
 
 export interface ListCardsExpHProps {
     className?: string;
@@ -25,11 +26,11 @@ const ListCardsExp: FC<ListCardsExpHProps> = ({
     data,
 }) => {
     const dispatch = useDispatch()
-
+    const navigate = useRouter();
+console.log(data);
 
     const { selectedCurrency } = useSelector((state: RootState) => state.initials)
     const { favourites } = useSelector((state: RootState) => state.attraction)
-
     // Check whether the arrtraction is liked or not.
     const isLiked = useMemo(() => {
         const liked = favourites.find((item) => item._id === data?._id)
@@ -136,7 +137,8 @@ const ListCardsExp: FC<ListCardsExpHProps> = ({
 
     return (
         <div
-            className={`nc-PropertyCardH group relative bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-700 rounded-3xl overflow-hidden ${className}`}
+        onClick={() => navigate.push(`/${data?.destination?.name}/${data?.slug}`)}
+            className={`nc-PropertyCardH cursor-pointer group mb-5 relative bg-white dark:bg-neutral-900 border border-neutral-200/80 dark:border-neutral-700 rounded-3xl overflow-hidden ${className}`}
         >
             {/* <Link href={data && `/${data?.destination?.name}/${data?.slug}` as Route} className="absolute inset-0"></Link> */}
             <div className="h-full w-full flex flex-col sm:flex-row sm:items-center">
