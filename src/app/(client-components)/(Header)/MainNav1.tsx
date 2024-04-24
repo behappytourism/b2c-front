@@ -96,7 +96,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
               {/* <Cart className="flex items-center" /> */}
              
              <Link className="self-center"  href={"/cart" as Route}>
-              <p className="absolute bg-black text-white p-2 rounded-full h-4 w-4 -mt-[3px] items-center text-xs flex justify-center">{cart?.length}</p>
+              <p className="absolute bg-orange-400 text-white p-2 rounded-full h-5 w-5 -mt-[8px] ml-[12px] items-center text-xs flex justify-center">{cart?.length}</p>
               <ShoppingCartIcon  className="w-7 h-7"  />
               </Link>
 
