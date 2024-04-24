@@ -108,7 +108,11 @@ const SectionHero: FC<SectionHeroProps> = ({
                 </div>
 
                 <div
-                  onClick={() => window.open(`${item?.buttonUrl}`, "_blank")}
+                 onClick={() => {
+                  if (item?.buttonUrl !== "") {
+                    window.open(`${item.buttonUrl}`, "_blank");
+                  }
+                }}
                   className="bg-inherit cursor-pointer h-[20em] md:h-[30em] relative object-cover"
                   key={index}
                 >
