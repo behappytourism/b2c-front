@@ -22,7 +22,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
     useState<null | Blob>(null);
   const { selectedCurrency } = useSelector(
     (state: RootState) => state.initials
-  );
+  );  
 
   const { jwtToken } = useSelector((state: RootState) => state.users);
 
@@ -70,13 +70,26 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
     }
   }
 
-  useEffect(() => {
-    {
-      orderId && getOrderInvoice(orderId);
-    }
-  }, []);
+  // useEffect(() => {
+  //   {
+  //     orderId && getOrderInvoice(orderId);
+  //   }
+  // }, []);
 
-  const handleDownload = () => {
+  // const handleDownload = () => {
+  //   if (orderInvoice) {
+  //     const pdfBlob = new Blob([orderInvoice], {
+  //       type: "application/pdf",
+  //     });
+  //     const url = URL.createObjectURL(pdfBlob);
+  //     const a = document.createElement("a");
+  //     a.href = url;
+  //     a.download = "orderInvoice.pdf";
+  //     a.click();
+  //   }
+  // };
+
+  useEffect(() => {
     if (orderInvoice) {
       const pdfBlob = new Blob([orderInvoice], {
         type: "application/pdf",
@@ -87,7 +100,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
       a.download = "orderInvoice.pdf";
       a.click();
     }
-  };
+  },[orderInvoice]) 
 
   const fetchAttractionAllTickets = async (
     attractionOrderId: string,
@@ -208,6 +221,9 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
     handleDownloadSingleTicket();
   }, [attractionOrderSingleTicket]);
 
+  console.log(data);
+  
+
   return (
     <div className="listingSection__wrap container mb-7">
       {!data && (
@@ -317,6 +333,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                     </div>
                   </div>
                 </div>
+                {/* <ButtonPrimary onClick={() => getAttractionSingleTicket(data?.attractionId, activity?._id, )}>Download Ticket</ButtonPrimary> */}
               </div>
             )
           )}
@@ -423,7 +440,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
 
           <div className="w-full flex justify-center">
             <button
-              onClick={() => handleDownload()}
+              onClick={() => getOrderInvoice(orderId || "")}
               className="p-2 mt-5 bg-primary-200 hover:bg-primary-400 cursor-pointer rounded font-semibold text-black"
             >
               Download Invoice
