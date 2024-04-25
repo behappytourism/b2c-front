@@ -249,10 +249,10 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
           {data?.attractionOrder?.activities?.map(
             (activity: any, index: number) => (
               <div className="mt-10 md:flex md:justify-between p-2 md:p-0">
-                <div className="bg-primary-200 w-full flex gap-10 text-white font-semibold md:p-4 p-2 mb-5 md:mb-0 rounded-xl">
-                  <div className="max-w-[300px]">
+                <div className="bg-white border w-full md:flex gap-10 text-white font-semibold md:p-4 p-2 mb-5 md:mb-0 rounded-xl">
+                  <div className="md:max-w-[300px] w-full">
                     <Image
-                      className="rounded-lg cursor-pointer"
+                      className="md:rounded-lg rounded-2xl cursor-pointer"
                       width={1000}
                       height={1000}
                       alt="picture 1"
@@ -261,11 +261,11 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                   </div>
 
                   <div className="text-black w-full">
-                    <p className="text-2xl underline">
+                    <p className="text-2xl my-3 md:my-0 underline">
                       {activity?.activity?.attraction?.title}
                     </p>
 
-                    <div className="flex justify-between mb-10">
+                    <div className="md:flex md:justify-between md:mb-10">
                       <div className="flex gap-2">
                         <p>Country:</p>
                         <p className="capitalize">
@@ -279,7 +279,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                       </div>
                     </div>
 
-                    <div className="flex justify-between mb-10">
+                    <div className="md:flex md:justify-between md:mb-10">
                       <div className="flex gap-2">
                         <p>Adult Count:</p>
                         <p className="capitalize">{activity?.adultsCount}</p>
@@ -289,14 +289,9 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                         <p>Children Count:</p>
                         <p className="capitalize">{activity?.childrenCount}</p>
                       </div>
-
-                      <div className="flex gap-2">
-                        <p>Infant Count:</p>
-                        <p className="capitalize">{activity?.infantCount}</p>
-                      </div>
                     </div>
 
-                    <div className="flex justify-between">
+                    <div className="md:flex md:justify-between">
                       <div className="flex gap-2">
                         <p>Grand Total:</p>
                         <p className="capitalize">
