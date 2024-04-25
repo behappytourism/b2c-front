@@ -325,8 +325,9 @@ const Cart = () => {
         )}
         {/* <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div> */}
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-          <div className="">
+        <div className="">
+          <div className="flex gap-2 mb-5">
+          <div className="min-w-[80px]">
             {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">Mr/Mrs</p> */}
             <Select
               name="gender"
@@ -339,7 +340,8 @@ const Cart = () => {
               <option value={"other"}>Ms.</option>
             </Select>
           </div>
-          <div className="">
+          <div className="flex gap-2">
+          <div className="w-full">
             {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Firstname
             </p> */}
@@ -352,7 +354,7 @@ const Cart = () => {
               required
             />
           </div>
-          <div className="">
+          <div className="w-full">
             {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Lastname
             </p> */}
@@ -365,7 +367,9 @@ const Cart = () => {
               required
             />
           </div>
-          <div className="">
+          </div>
+          </div>
+          <div className="mb-5">
             {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">Email</p> */}
             <Input
               type="email"
@@ -376,7 +380,8 @@ const Cart = () => {
               placeholder="email"
             />
           </div>
-          <div className="">
+          <div className="flex gap-2 mb-5">
+          <div className="w-fit">
             {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Country
             </p> */}
@@ -396,7 +401,7 @@ const Cart = () => {
               ))}
             </Select>
           </div>
-          <div className="">
+          <div className="w-full">
             {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Phone Number
             </p> */}
@@ -413,6 +418,7 @@ const Cart = () => {
                 required
                 className="no-spinner border-none w-fit bg-transparent"
               />
+            </div>
             </div>
           </div>
           <div className="md:col-span-2 lg:col-span-3">
@@ -921,15 +927,18 @@ const Cart = () => {
 
   const backfunction = () => {
     window?.history?.back();
-  }
+  };
 
   return (
     <div className="container relative z-10 mt-11 flex flex-col gap-10">
       {/* BREADCRUMBS */}
       <div className="my-3 flex justify-between">
-        <div onClick={() => backfunction()} className="flex items-center cursor-pointer text-center gap-3">
-        <ArrowLeftIcon height={20} width={20} />
-        <p>Back</p>
+        <div
+          onClick={() => backfunction()}
+          className="flex items-center cursor-pointer text-center gap-3"
+        >
+          <ArrowLeftIcon height={20} width={20} />
+          <p>Back</p>
         </div>
         <Breadcrumb breadCrumbs={breadcrum} />
       </div>
