@@ -151,7 +151,7 @@ function TransferList() {
               <h1 className="text-2xl font-semibold mt-5 mb-3 border-b w-fit">
                 Vehicles
               </h1>
-              <div className="grid md:grid-cols-4 gap-5">
+              <div className="flex justify-around flex-wrap gap-5">
                 {trip?.vehicles?.map((vehicle: any, index: number) => (
                   <div className="border w-fit cursor-pointer dark:bg-neutral-800  bg-slate-100 transform md:hover:scale-110 transition-transform duration-300">
                     <div className="object-cover border-b px-10 items-center flex justify-center">
@@ -163,7 +163,7 @@ function TransferList() {
                           vehicle?.vehicle?.image
                           }` || ""
                         }
-                        width={200}
+                        width={100}
                         height={100}
                       />
                     </div>
@@ -227,16 +227,18 @@ function TransferList() {
                   </div>
                 ))}
               </div>
-            </div>
-          ))}
-        </div>
-      ))}
-
-      <div className="w-full flex justify-end mt-5">
+              <div className="w-full flex justify-end mt-5">
         <Link href={"/cart"}>
           <ButtonPrimary className="min-w-[2 00px]">Checkout</ButtonPrimary>
         </Link>
       </div>
+            </div>
+          ))}
+        </div>
+      ))}
+      
+
+
     </div>
   );
 }
