@@ -14,6 +14,9 @@ interface ResponseData {
     totalAttractions: number
     data: SearchByDestination[]
   }
+  destination: {
+    name: string
+  }
   skip: number
   limit: number
 }
@@ -45,17 +48,21 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
   }, [isLoading])
 
 
+  
+
   return (
     <div className={`nc-SectionGridFilterCard ${className}`}>
+      {data && (
       <Heading2
         className="capitalize"
-        heading={params && `Experiences in ${params?.replace("%20", " ")}`}
+        heading={params && `Experiences in ${data?.destination?.name} `}
         subHeading={
           <span className="block text-neutral-500 dark:text-neutral-400 mt-3">
             {data && data?.attractions && data?.attractions?.totalAttractions + " Attractions"}
           </span>
         }
       />
+    )}
 
       <div className="mb-8 lg:mb-11">
         <TabFilters setFilters={setFilters} filters={filters} />

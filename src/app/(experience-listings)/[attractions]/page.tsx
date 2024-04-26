@@ -15,6 +15,9 @@ interface responsesType {
   appliedFilters: {
    destination: string;
   }
+  destination: {
+    name: string;
+  }
   attractions: {
     _id: string | null
     totalAttractions: number
@@ -79,7 +82,6 @@ const ListingExperiencesPage: FC<ListingExperiencesPageProps> = ({
             <div className="backdrop-blur-xl bg-opacity-30 bg-secondary-200 md:mt-[16px]  m-5 md:m-0 md:w-full p-2 text-center min-h-[220px]  py-5 rounded-xl shadow-2xl">      
               <div className="">
               <HeroSearchForm currentPage="Experiences" currentTab="Experiences" />
-               
               </div>
             </div>
           </div>

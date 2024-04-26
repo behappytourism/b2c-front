@@ -297,6 +297,10 @@ const PayPage: FC<PayPageProps> = () => {
                         )}
                       </div>
                     )}
+
+                    {/* <div>
+                      <p>Invoice</p>
+                    </div> */}
                   </div>
 
                 </div>
