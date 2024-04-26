@@ -132,7 +132,7 @@ const LocationInput: FC<LocationInputProps> = ({
                   handleSelectLocation({
                     item: item?.name,
                   });
-                  router.push(`/${item?.name}` as Route)
+                  router.push(`/${item?.slug}` as Route)
                 }
                 }
                 key={item?._id}

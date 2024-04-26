@@ -55,6 +55,7 @@ export enum OrderStatusExcEnum {
 // All data in query search in attraction form.
 export interface QueryDestinations {
   name: string;
+  slug: string;
   _id: UUID | string;
 }
 
