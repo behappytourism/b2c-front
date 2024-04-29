@@ -129,6 +129,7 @@ export interface DestinationSearchByDestination {
   image?: string;
   isDeleted: boolean;
   name: string;
+  slug: string;
   updatedAt: Date | string;
   __v?: number;
   _id: UUID | string;

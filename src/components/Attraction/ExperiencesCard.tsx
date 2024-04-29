@@ -73,7 +73,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
           uniqueID={`ExperiencesCard_${"id"}`}
           ratioClass={ratioClass}
           galleryImgs={images}
-          href={data && (`/${data?.destination?.name}/${data?.slug}` as Route)}
+          href={data && (`/${data?.destination?.slug}/${data?.slug}` as Route)}
           galleryClass={size === "default" ? "" : ""}
         />
         <BtnLikeIcon
@@ -170,7 +170,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
     <div
       className={`nc-ExperiencesCard border group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
     >
-       <Link href={`/${data?.destination?.name}/${data?.slug}` as Route}>
+       <Link href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
       {renderSliderGallery()}
         {renderContent()}
       </Link>

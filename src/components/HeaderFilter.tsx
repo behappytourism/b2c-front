@@ -27,15 +27,16 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
   useEffect(() => {
     setTabActiveState(tabActive);
   }, [tabActive]);
-
+  
   const handleClickTab = (item: string) => {
-    const tabItem = item === "all" ? "" : item;
-    
+    const tabItem = item === "all" ? "" : (item === "abu dhabi" ? "abu-dhabi" : (item === "ras al khaimah" ? "ras-al-khaimah" : item));
+  
     console.log(tabItem);
-    
+  
     onClickTab(tabItem);
     setTabActiveState(item);
   };
+  
   
 
   useEffect(() => {

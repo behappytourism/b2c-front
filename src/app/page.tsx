@@ -145,7 +145,7 @@ const PageHome = () => {
    },[])
 
    const tabs: string[] = useMemo(() => {
-    let destinations: string[] = response?.destinations.map((destination: any) => destination.slug || "") || [];
+    let destinations: string[] = response?.destinations.map((destination: any) => destination.name || "") || [];
     destinations.unshift("all");
     return destinations;
   }, [response]);
