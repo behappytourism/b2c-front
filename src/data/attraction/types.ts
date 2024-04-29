@@ -370,6 +370,7 @@ export interface TimeSlotExcursion {
 
 export interface OrderExcursion {
   _id: UUID | string;
+  attractionId: string;
   activities: [
     {
       attraction: {

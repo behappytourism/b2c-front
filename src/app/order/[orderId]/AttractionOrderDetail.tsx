@@ -22,7 +22,9 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
     useState<null | Blob>(null);
   const { selectedCurrency } = useSelector(
     (state: RootState) => state.initials
-  );  
+  );
+  const [search, setSearch] = useState(false);
+  const [invoice, setInvoice] = useState(false);
 
   const { jwtToken } = useSelector((state: RootState) => state.users);
 
@@ -56,6 +58,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
   };
 
   async function getOrderInvoice(orderId: string) {
+    setInvoice(true);
     try {
       const response = await fetchAttractionInvoice(orderId);
 
@@ -100,7 +103,8 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
       a.download = "orderInvoice.pdf";
       a.click();
     }
-  },[orderInvoice]) 
+    setInvoice(false);
+  }, [orderInvoice]);
 
   const fetchAttractionAllTickets = async (
     attractionOrderId: string,
@@ -126,6 +130,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
     attractionOrderId: string,
     activityId: string
   ) {
+    setSearch(true);
     try {
       const response = await fetchAttractionAllTickets(
         attractionOrderId,
@@ -143,7 +148,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
     }
   }
 
-  const handleDownloadAllTickets = () => {
+  useEffect(() => {
     if (attractionOrderAllTickets) {
       const pdfBlob = new Blob([attractionOrderAllTickets], {
         type: "application/pdf",
@@ -154,10 +159,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
       a.download = "attractionalltickets.pdf";
       a.click();
     }
-  };
-
-  useEffect(() => {
-    handleDownloadAllTickets();
+    setSearch(false);
   }, [attractionOrderAllTickets]);
 
   const fetchAttractionSingleTicket = async (
@@ -221,9 +223,6 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
     handleDownloadSingleTicket();
   }, [attractionOrderSingleTicket]);
 
-  console.log(data);
-  
-
   return (
     <div className="listingSection__wrap container mb-7">
       {!data && (
@@ -264,22 +263,29 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
 
           {data?.attractionOrder?.activities?.map(
             (activity: any, index: number) => (
-              <div className="mt-10 md:flex md:justify-between p-2 md:p-0">
-                <div className="bg-white border w-full md:flex gap-10 text-white font-semibold md:p-4 p-2 mb-5 md:mb-0 rounded-xl">
+              <div className="mt-10 md:flex md:justify-between p-4 md:p-2">
+                <div className="bg-white border w-full md:flex gap-10 text-white font-semibold md:p-4  mb-5 md:mb-0 rounded-xl">
                   <div className="md:max-w-[300px] w-full">
                     <Image
-                      className="md:rounded-lg rounded-2xl cursor-pointer"
+                      className="rounded-none max-h-[300px]  min-h-[200px] w-full rounded-t-xl md:rounded-t-none md:mb-0 mb-3 cursor-pointer"
                       width={1000}
-                      height={1000}
+                      height={100}
                       alt="picture 1"
                       src={`${process.env.NEXT_PUBLIC_CDN_URL}${activity?.activity?.attraction?.images[0]}`}
                     />
                   </div>
 
-                  <div className="text-black w-full">
-                    <p className="text-2xl my-3 md:my-0 underline">
+                  <div className="text-black w-full px-4 md:px-0 pb-3 md:pb-0">
+                    <p className="text-2xl my-3 md:block hidden md:my-0 underline">
                       {activity?.activity?.attraction?.title}
                     </p>
+
+                      <div className="flex md:hidden gap-2">
+                        <p>Name:</p>
+                        <p className="capitalize">
+                        {activity?.activity?.attraction?.title}
+                        </p>
+                      </div>
 
                     <div className="md:flex md:justify-between md:mb-10">
                       <div className="flex gap-2">
@@ -305,9 +311,16 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                         <p>Children Count:</p>
                         <p className="capitalize">{activity?.childrenCount}</p>
                       </div>
+
+                      <div className="flex gap-2">
+                        <p>Date:</p>
+                        <p>
+                          {new Date(activity?.date).toLocaleDateString("en-GB")}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="md:flex md:justify-between">
+                    <div className="md:flex md:justify-between items-center text-center">
                       <div className="flex gap-2">
                         <p>Grand Total:</p>
                         <p className="capitalize">
@@ -324,16 +337,53 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                         <p className="capitalize">{activity?.status}</p>
                       </div>
 
-                      <div className="flex gap-2">
-                        <p>Date:</p>
-                        <p>
-                          {new Date(activity?.date).toLocaleDateString("en-GB")}
-                        </p>
+                      <div>
+                        <div className="w-full flex justify-center">
+                          {search === false && (
+                            <button
+                              onClick={() =>
+                                getAttractionAllTickets(
+                                  data?.attractionId,
+                                  activity?._id
+                                )
+                              }
+                              className="md:px-2 md:py-1 px-2 py-2  mt-5 md:mt-0 w-full md:w-fit bg-primary-200 hover:bg-primary-400 cursor-pointer rounded font-semibold text-black"
+                            >
+                              Download Ticket
+                            </button>
+                          )}
+
+                          {search === true && (
+                            <button
+                              type="button"
+                              className="px-2 py-1 mt-5 md:mt-0  dark:bg-neutral-900 dark:text-neutral-100 min-w-[200px] w-full md:w-fit bg-primary-300  text-sm font-medium text-white self-center min-h-[50px] rounded dark:border-gray-600  flex justify-center items-center"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                role="status"
+                                className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
+                                viewBox="0 0 100 101"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                  fill="currentColor"
+                                ></path>
+                                <path
+                                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                  fill="#1C64F2"
+                                ></path>
+                              </svg>
+                              Downloading...
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                {/* <ButtonPrimary onClick={() => getAttractionSingleTicket(data?.attractionId, activity?._id, )}>Download Ticket</ButtonPrimary> */}
+                {/* <ButtonPrimary onClick={() => getAttractionAllTickets(data?.attractionId, activity?._id, )}>Download Ticket</ButtonPrimary> */}
               </div>
             )
           )}
@@ -438,13 +488,79 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
             )
           )}
 
-          <div className="w-full flex justify-center">
-            <button
-              onClick={() => getOrderInvoice(orderId || "")}
-              className="p-2 mt-5 bg-primary-200 hover:bg-primary-400 cursor-pointer rounded font-semibold text-black"
-            >
-              Download Invoice
-            </button>
+          <div className="flex gap-5">
+            <div className="w-full flex justify-center">
+              {invoice === false && (
+                <button
+                  onClick={() => getOrderInvoice(orderId || "")}
+                  className="p-2 mt-5 w-full md:w-fit mx-4 bg-primary-200 hover:bg-primary-400 cursor-pointer rounded font-semibold text-black"
+                >
+                  Download Invoice
+                </button>
+              )}
+
+              {invoice === true && (
+                <button
+                  type="button"
+                  className="p-2 dark:bg-neutral-900 dark:text-neutral-100 mt-6 min-w-[200px] w-full md:w-fit bg-primary-300  text-sm font-medium text-white self-center min-h-[50px] rounded dark:border-gray-600  flex justify-center items-center"
+                >
+                  <svg
+                    aria-hidden="true"
+                    role="status"
+                    className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
+                    viewBox="0 0 100 101"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                      fill="#1C64F2"
+                    ></path>
+                  </svg>
+                  Downloading...
+                </button>
+              )}
+            </div>
+
+            {/* <div className="w-full flex justify-center">
+            {search === false && (
+              <button            
+                className="p-2 mt-5 bg-primary-200 hover:bg-primary-400 cursor-pointer rounded font-semibold text-black"
+              >
+                Download Ticket
+              </button>
+            )}
+
+            {search === true && (
+              <button
+                type="button"
+                className="p-2 dark:bg-neutral-900 dark:text-neutral-100 mt-6 min-w-[200px] w-full md:w-fit bg-primary-300  text-sm font-medium text-white self-center min-h-[50px] rounded dark:border-gray-600  flex justify-center items-center"
+              >
+                <svg
+                  aria-hidden="true"
+                  role="status"
+                  className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
+                  viewBox="0 0 100 101"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                    fill="currentColor"
+                  ></path>
+                  <path
+                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                    fill="#1C64F2"
+                  ></path>
+                </svg>
+                Downloading...
+              </button>
+            )}
+          </div> */}
           </div>
         </div>
       )}
