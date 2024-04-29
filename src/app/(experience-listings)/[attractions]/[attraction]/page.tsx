@@ -907,7 +907,7 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
       {/* SINGLE HEADER */}
       <header className="rounded-md sm:rounded-xl">
         <div className="relative grid grid-cols-3 gap-1 sm:gap-2">
-          {attractionData && attractionData?.images?.length && (
+          {/* {attractionData && attractionData?.images?.length && (
             <div
               onClick={() => setIsVideoModal(!isVideoModal)}
               className=" col-span-4 row-span-4 md:col-span-3 md:row-span-3 relative min-h-[30vh] md:min-h-[100vh] rounded-md sm:rounded-xl overflow-hidden cursor-pointer"
@@ -938,17 +938,12 @@ function ListingExperiencesDetailPage<ListingExperiencesDetailPageProps>({
                     }`}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
                   />
-                  {/* <div className="block absolute top-0 bottom-0 left-0 right-0">
-                    <div className="cursor-pointer flex justify-center items-center h-full z-10">
-                      <PlayCircleIcon color="white" width={100} height={100} />
-                    </div>
-                  </div> */}
                 </>
               )}
 
               <div className="absolute inset-0 bg-neutral-900 bg-opacity-20 opacity-0 hover:opacity-100 transition-opacity"></div>
             </div>
-          )}
+          )} */}
 
           {attractionData?.images
             ?.filter((_, i) => i < 3)

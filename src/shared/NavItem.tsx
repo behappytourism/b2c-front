@@ -19,7 +19,7 @@ const NavItem: FC<NavItemProps> = ({
   onClick = () => {},
   isActive = false,
   renderX,
-}) => {
+}) => {  
   return (
     <li className="nc-NavItem relative" data-nc-id="NavItem">
       {renderX && renderX}

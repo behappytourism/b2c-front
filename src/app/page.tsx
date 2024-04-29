@@ -25,7 +25,7 @@ const PageHome = () => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const [attractionData, setAttractionData] = useState();
-  const [dest, setDest] = useState("dubai");
+  const [dest, setDest] = useState("all");
   const [response, setResponse] = useState<responseTS>();
   const [banner, setBanner] = useState<bannerImages[]>([]);
 
@@ -37,7 +37,7 @@ const PageHome = () => {
   const findAttraction = async () => {
     try {
       const attraction = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/all?limit=8&skip=0&destination=${dest}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/all?limit=100&skip=0&destination=${dest}`,
         { next: { revalidate: 1 } }
       );
       return attraction.json();
@@ -144,11 +144,16 @@ const PageHome = () => {
     bannerFound()
    },[])
 
-  const tabs = useMemo(() => {
-    return response?.destinations?.map((destination: any) => {
-      return destination.slug || "";
-    });
+   const tabs: string[] = useMemo(() => {
+    let destinations: string[] = response?.destinations.map((destination: any) => destination.slug || "") || [];
+    destinations.unshift("all");
+    return destinations;
   }, [response]);
+
+  
+  
+  
+  
 
   // console.log(attractionData, "attractions");
   // console.log(dest, "tabs");

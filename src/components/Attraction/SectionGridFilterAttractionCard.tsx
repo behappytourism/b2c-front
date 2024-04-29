@@ -36,7 +36,7 @@ const SectionGridFilterAttractionCard: FC<SectionGridFilterCardProps> = ({
   heading = "Attractions",
   subHeading = "Popular places to visit that BeHappy recommends for you",
   headingIsCenter,
-  tabs = ["dubai"],
+  tabs = ["all"],
   setDest
 }) => {
 
@@ -45,6 +45,7 @@ const SectionGridFilterAttractionCard: FC<SectionGridFilterCardProps> = ({
       setDest(item)
     }
   }
+  
   return (
     <div className={`nc-SectionGridFilterCard ${className}`}>
       {/* <Heading2
@@ -59,7 +60,7 @@ const SectionGridFilterAttractionCard: FC<SectionGridFilterCardProps> = ({
         }
       /> */}
       <HeaderFilter
-        tabActive={"dubai"}
+        tabActive={"all"}
         subHeading={subHeading}
         tabs={tabs}
         heading={heading}

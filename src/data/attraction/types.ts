@@ -63,6 +63,7 @@ export interface Destination {
   _id: UUID | string;
   country: UUID | string;
   name: string;
+  slug: string;
   createdAt: Date | string;
   updatedAt: Date | string;
   __v?: number;

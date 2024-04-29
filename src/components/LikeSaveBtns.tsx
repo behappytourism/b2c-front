@@ -37,6 +37,9 @@ const LikeSaveBtns = ({
       return null;
     }
 
+    console.log(attraction, "share");
+    
+
     return (
       <Transition appear show={modalHandler} as={Fragment}>
         <Dialog
@@ -109,13 +112,13 @@ const LikeSaveBtns = ({
                       )}
                       <div className="flex justify-between  items-center space-x-2">
                         <div className="w-full text-xs py-2 rounded-lg bg-stone-200 px-2 whitespace-nowrap overflow-hidden">
-                          {process.env.NEXT_PUBLIC_CLIENT_URL + pathname}{" "}
+                          {process.env.NEXT_PUBLIC_CLIENT_URL + "/" + attraction?.destination?.slug + "/" + attraction?.slug}{" "}
                         </div>
                         <div
                           className="text-2xl"
                           onClick={() => {
                             navigator.clipboard.writeText(
-                              process.env.NEXT_PUBLIC_CLIENT_URL + pathname
+                              process.env.NEXT_PUBLIC_CLIENT_URL  + "/" + attraction?.destination?.slug + "/" + attraction?.slug
                             );
                             setIsCopied(true);
                           }}
