@@ -73,6 +73,8 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
   const [tab, setTab] = useState("");
   const initialDate = new Date();
 
+  console.log(data, "dataa");
+  
   // Promotion Calculation function.
   const promotionCalculationHandler = (
     isPromoCodeExist: boolean,
@@ -111,6 +113,8 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
       })
     );
   };
+
+  // localStorage.removeItem('AttractionCart');
 
   const handleAddToCart = () => {
     setAddToCart(!addToCart);
@@ -460,6 +464,8 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
     );
   };
 
+  console.log(data);
+  
   const PriceBreakDownSection = () => {
     return (
       <div className="py-1">
@@ -695,7 +701,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                       <div className="border-b border-dashed flex-1"></div>
                       <span className="text-right font-medium text-lg">
                         {priceConversion(
-                          data.grandTotal,
+                          data.priceWithoutPromoGrandTotal,
                           selectedCurrency,
                           true
                         )}

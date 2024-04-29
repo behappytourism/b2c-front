@@ -270,7 +270,7 @@ const Cart = () => {
       if (item.isPromoAdded) {
         return acc + item.priceWithoutPromoGrandTotal;
       } else {
-        return acc + item.grandTotal;
+        return acc + item.priceWithoutPromoGrandTotal;
       }
     }, 0);
   }, [cart]);
@@ -682,6 +682,9 @@ const Cart = () => {
     );
   };
 
+
+  console.log(cart);
+  
   const renderSidebar = () => {
     return (
       <div className="flex flex-col gap-5 w-full">
@@ -805,7 +808,7 @@ const Cart = () => {
                   <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
                     <span>Amount Incl. VAT</span>
                     <span>
-                      {priceConversion(item.grandTotal, selectedCurrency, true)}
+                      {priceConversion(item.priceWithoutPromoGrandTotal, selectedCurrency, true)}
                     </span>
                   </div>
                   {item.promoCode !== "" && (
@@ -843,7 +846,7 @@ const Cart = () => {
                             true
                           )
                         : priceConversion(
-                            item.grandTotal,
+                            item.priceWithoutPromoGrandTotal,
                             selectedCurrency,
                             true
                           )}
