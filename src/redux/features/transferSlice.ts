@@ -109,7 +109,7 @@ export const attraction = createSlice({
     //   },
     // Handling add to cart functionality.
 
-   handleAddtocart: (state, action) => {
+    handleAddtocart: (state, action) => {
       let transferArray: TransferCart[] = [];
       let selectedArray: any[] = action.payload;
       const localStorageCart =
@@ -136,11 +136,14 @@ export const attraction = createSlice({
           // Trip already exists
           const trip = transferArray[existingTripIndex].trips[0]; // Retrieve the trip
           if (transferType === "return" && trip.returnDate === date && trip.returnTime === time) {
-            // If it's a return trip with matching returnDate and returnTime, add to returnVehicle
-            trip.returnVehicle.push(selectedTransferItem.vehicles);
-          } else {
-            // If it's not a return trip, or if returnDate and returnTime do not both match, add to vehicles
-            trip.vehicles.push(selectedTransferItem.vehicles);
+            // If it's a return trip with matching returnDate and returnTime, replace returnVehicle
+            trip.returnVehicle = [selectedTransferItem.vehicles];
+          } else if (transferType === "return" && trip.returnDate !== date && trip.returnTime !== time) {
+            // If it's a return trip but with different returnDate or returnTime, replace vehicles
+            trip.vehicles = [selectedTransferItem.vehicles];
+        } else {
+            // If it's not a return trip, or if returnDate and returnTime do not both match, replace vehicles
+            trip.vehicles = [selectedTransferItem.vehicles];
           }
         } else {
           // Create a new trip and add it to the transferArray
@@ -148,13 +151,13 @@ export const attraction = createSlice({
             _id: selectedTransferItem._id,
             date,
             time,
-            returnDate: selectedTransferItem.returnDate,
-            pickupDate: selectedTransferItem.pickupDate,
-            returnTime: selectedTransferItem.returnTime,
-            pickupTime: selectedTransferItem.pickupTime,
+            returnDate,
+            pickupDate,
+            returnTime,
+            pickupTime,
             noOfAdults: selectedTransferItem.noOfAdults,
             noOfChildrens: selectedTransferItem.noOfChildrens,
-            transferType: transferType,
+            transferType,
             suggestionType: selectedTransferItem.pickupSuggestionType,
             transferFrom: {
               _id: pickupLocationId,
@@ -180,6 +183,7 @@ export const attraction = createSlice({
             returnVehicle: transferType === "return" && returnDate === date && returnTime === time ? [selectedTransferItem.vehicles] : [],
           };
     
+          // Add the new trip to the transferArray
           transferArray.push({
             trips: [newTrip],
           });
@@ -191,6 +195,10 @@ export const attraction = createSlice({
     
       state.transferCart = transferArray || [];
     },
+    
+    
+    
+    
     
     
     

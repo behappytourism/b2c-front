@@ -89,6 +89,8 @@ export interface TransferCart {
             noOfAdults: number;
             returnTime: string;
             returnDate: string;
+            pickupTime: string;
+            pickupDate: string
             noOfChildrens: number;
             transferType: string;
             suggestionType: string;

@@ -155,7 +155,7 @@ const Cart = () => {
       transferType: trip?.transferType,
       selectedVehicleTypes:
         trip?.vehicles?.flatMap((vehi) =>
-          vehi.map((vehicle: any) => ({
+          vehi?.map((vehicle: any) => ({
             vehicle: vehicle?.vehicle,
             count: vehicle?.count,
           }))
@@ -169,7 +169,7 @@ const Cart = () => {
         ) || [],
     }))
   );
-
+  
   // Handling submit.
   const submitHandler = async (e: { preventDefault: () => void }) => {
     try {

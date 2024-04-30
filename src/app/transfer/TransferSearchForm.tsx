@@ -381,7 +381,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
             </div>
           </div>
           {showFrom === true && (
-            <div className="absolute border border-black md:mt-20 -mt-5 dark:bg-neutral-900 bg-white dark:bg- mr-3 md:mr-0 md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
+            <div className="absolute z-10 border border-black md:mt-20 -mt-5 dark:bg-neutral-900 bg-white dark:bg- mr-3 md:mr-0 md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
               {searchQuery.length < 2 && <p>please type atleast 3 letters</p>}
 
               {searchQuery.length > 2 && (
@@ -491,7 +491,7 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
           </div>
 
           {showTo === true && (
-            <div className="absolute border border-black md:mt-20 md:ml-[620px] mr-3 md:mr-0 dark:bg-neutral-900 bg-white md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
+            <div className="absolute z-10 border border-black md:mt-20 md:ml-[620px] mr-3 md:mr-0 dark:bg-neutral-900 bg-white md:min-w-[480px] p-2 rounded-lg max-h-[300px] overflow-y-auto">
               {toSearchQuery.length < 2 && <p>please type atleast 3 letters</p>}
 
               {toSearchQuery.length > 2 && (

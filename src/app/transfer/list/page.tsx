@@ -115,7 +115,6 @@ function TransferList() {
           text: "The items are added to the cart",
         })
       );
-      setCount(0);
       setOnewayVisible(false);
       setReturnVisible(true);
     } else {
