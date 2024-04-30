@@ -108,7 +108,8 @@ export const attraction = createSlice({
     //     }
     //   },
     // Handling add to cart functionality.
-    handleAddtocart: (state, action) => {
+
+   handleAddtocart: (state, action) => {
       let transferArray: TransferCart[] = [];
       let selectedArray: any[] = action.payload;
       const localStorageCart =
@@ -120,7 +121,7 @@ export const attraction = createSlice({
     
       for (const selectedTransferItem of selectedArray) {
         const { date, time, transferType, pickupLocationId, dropOffLocationId, returnDate, returnTime, pickupDate, pickupTime } = selectedTransferItem;
-    
+       
         // Check if there is a trip with the same details
         const existingTripIndex = transferArray.findIndex(
           (trip: TransferCart) => 
@@ -136,10 +137,10 @@ export const attraction = createSlice({
           const trip = transferArray[existingTripIndex].trips[0]; // Retrieve the trip
           if (transferType === "return" && trip.returnDate === date && trip.returnTime === time) {
             // If it's a return trip with matching returnDate and returnTime, add to returnVehicle
-            trip.returnVehicle.push(selectedTransferItem.vehicle);
+            trip.returnVehicle.push(selectedTransferItem.vehicles);
           } else {
             // If it's not a return trip, or if returnDate and returnTime do not both match, add to vehicles
-            trip.vehicles.push(selectedTransferItem.vehicle);
+            trip.vehicles.push(selectedTransferItem.vehicles);
           }
         } else {
           // Create a new trip and add it to the transferArray
@@ -175,8 +176,8 @@ export const attraction = createSlice({
               __v: 0,
               name: "",
             },
-            vehicles: transferType === "return" && returnDate !== date || returnTime !== time ? [selectedTransferItem.vehicle] : [],
-            returnVehicle: transferType === "return" && returnDate === date && returnTime === time ? [selectedTransferItem.vehicle] : [],
+            vehicles: transferType === "return" && returnDate !== date || returnTime !== time ? [selectedTransferItem.vehicles] : [],
+            returnVehicle: transferType === "return" && returnDate === date && returnTime === time ? [selectedTransferItem.vehicles] : [],
           };
     
           transferArray.push({
@@ -190,6 +191,8 @@ export const attraction = createSlice({
     
       state.transferCart = transferArray || [];
     },
+    
+    
     
     
     

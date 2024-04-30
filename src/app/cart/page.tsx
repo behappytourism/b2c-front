@@ -83,8 +83,6 @@ const Cart = () => {
     (state: RootState) => state.transfer
   );
 
-  //  console.log(cart, "cart");
-
   const [briefPayments, setBriefPayments] = useState(cart.map(() => true));
   const [briefTransferStates, setBriefTransferStates] = useState<boolean[]>(
     Array(transferCart.length).fill(true)
@@ -141,7 +139,7 @@ const Cart = () => {
       isPromoAdded: item?.isPromoAdded,
     };
   });
-
+  
   const transferArray = transferCart.flatMap((item, index) =>
     item.trips.map((trip, tripIndex) => ({
       dropOffLocation: trip?.transferTo?._id,
@@ -156,15 +154,19 @@ const Cart = () => {
       returnTime: trip?.returnTime || "",
       transferType: trip?.transferType,
       selectedVehicleTypes:
-        trip?.vehicles?.map((vehicle: any) => ({
-          vehicle: vehicle?.vehicle,
-          count: vehicle?.count,
-        })) || [],
+        trip?.vehicles?.flatMap((vehi) =>
+          vehi.map((vehicle: any) => ({
+            vehicle: vehicle?.vehicle,
+            count: vehicle?.count,
+          }))
+        ) || [],
       selectedReturnVehicleTypes:
-        trip?.returnVehicle?.map((vehicle: any) => ({
-          vehicle: vehicle?.vehicle,
-          count: vehicle?.count,
-        })) || [],
+        trip?.returnVehicle?.flatMap((vehi) =>
+          vehi.map((vehicle: any) => ({
+            vehicle: vehicle?.vehicle,
+            count: vehicle?.count,
+          }))
+        ) || [],
     }))
   );
 
@@ -278,9 +280,13 @@ const Cart = () => {
   const totalTransferPrice: number = useMemo(() => {
     return transferCart.reduce((total, item) => {
       // Calculate total price for vehicles in the 'vehicles' array
+
       const vehiclesPrice = item.trips.reduce((tripSum, trip) => {
         const vehicleTotal = trip.vehicles.reduce((vehicleSum, vehicle) => {
-          return vehicleSum + (vehicle.price || 0);
+          const totalForTrip = vehicle.reduce((acc: any, vehi: any) => {
+            return acc + (vehi?.price || 0);
+          }, 0);
+          return vehicleSum + totalForTrip;
         }, 0);
         return tripSum + vehicleTotal;
       }, 0);
@@ -289,7 +295,10 @@ const Cart = () => {
       const returnVehiclesPrice = item.trips.reduce((tripSum, trip) => {
         const returnVehicleTotal = trip.returnVehicle.reduce(
           (vehicleSum, vehicle) => {
-            return vehicleSum + (vehicle.price || 0);
+            const totalForReturn = vehicle.reduce((acc: any, vehi: any) => {
+              return acc + (vehi?.price || 0);
+            }, 0);
+            return vehicleSum + totalForReturn;
           },
           0
         );
@@ -327,47 +336,47 @@ const Cart = () => {
 
         <div className="">
           <div className="flex gap-2 mb-5">
-          <div className="min-w-[80px]">
-            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">Mr/Mrs</p> */}
-            <Select
-              name="gender"
-              value={pax.gender}
-              onChange={onChangeHandler}
-              required
-            >
-              <option value={"male"}>Mr.</option>
-              <option value={"female"}>Mrs.</option>
-              <option value={"other"}>Ms.</option>
-            </Select>
-          </div>
-          <div className="flex gap-2">
-          <div className="w-full">
-            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
+            <div className="min-w-[80px]">
+              {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">Mr/Mrs</p> */}
+              <Select
+                name="gender"
+                value={pax.gender}
+                onChange={onChangeHandler}
+                required
+              >
+                <option value={"male"}>Mr.</option>
+                <option value={"female"}>Mrs.</option>
+                <option value={"other"}>Ms.</option>
+              </Select>
+            </div>
+            <div className="flex gap-2">
+              <div className="w-full">
+                {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Firstname
             </p> */}
-            <Input
-              type="text"
-              name="firstname"
-              placeholder="first name"
-              value={pax.firstname}
-              onChange={onChangeHandler}
-              required
-            />
-          </div>
-          <div className="w-full">
-            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
+                <Input
+                  type="text"
+                  name="firstname"
+                  placeholder="first name"
+                  value={pax.firstname}
+                  onChange={onChangeHandler}
+                  required
+                />
+              </div>
+              <div className="w-full">
+                {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Lastname
             </p> */}
-            <Input
-              type="text"
-              name="lastname"
-              value={pax.lastname}
-              placeholder="last name"
-              onChange={onChangeHandler}
-              required
-            />
-          </div>
-          </div>
+                <Input
+                  type="text"
+                  name="lastname"
+                  value={pax.lastname}
+                  placeholder="last name"
+                  onChange={onChangeHandler}
+                  required
+                />
+              </div>
+            </div>
           </div>
           <div className="mb-5">
             {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">Email</p> */}
@@ -381,44 +390,48 @@ const Cart = () => {
             />
           </div>
           <div className="flex gap-2 mb-5">
-          <div className="w-fit">
-            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
+            <div className="w-fit">
+              {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Country
             </p> */}
-            <Select
-              name="country"
-              value={pax.country}
-              onChange={onChangeHandler}
-              required
-              placeholder="country"
-              className="capitalize"
-            >
-              <option>country</option>
-              {countries?.map((item) => (
-                <option className="capitalize" key={item._id} value={item._id}>
-                  {item.countryName}{" "}
-                </option>
-              ))}
-            </Select>
-          </div>
-          <div className="w-full">
-            {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
+              <Select
+                name="country"
+                value={pax.country}
+                onChange={onChangeHandler}
+                required
+                placeholder="country"
+                className="capitalize"
+              >
+                <option>country</option>
+                {countries?.map((item) => (
+                  <option
+                    className="capitalize"
+                    key={item._id}
+                    value={item._id}
+                  >
+                    {item.countryName}{" "}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <div className="w-full">
+              {/* <p className="text-neutral-500 dark:text-neutral-400 p-2">
               Phone Number
             </p> */}
-            <div className="flex items-center border rounded-xl">
-              <p className="border-r pl-1 pr-1 text-[14px]">{paxphoneCode}</p>
-              <Input
-                type="number"
-                name="phone"
-                value={pax.phone}
-                placeholder="phone number"
-                onChange={onChangeHandler}
-                min={0}
-                maxLength={10}
-                required
-                className="no-spinner border-none w-fit bg-transparent"
-              />
-            </div>
+              <div className="flex items-center border rounded-xl">
+                <p className="border-r pl-1 pr-1 text-[14px]">{paxphoneCode}</p>
+                <Input
+                  type="number"
+                  name="phone"
+                  value={pax.phone}
+                  placeholder="phone number"
+                  onChange={onChangeHandler}
+                  min={0}
+                  maxLength={10}
+                  required
+                  className="no-spinner border-none w-fit bg-transparent"
+                />
+              </div>
             </div>
           </div>
           <div className="md:col-span-2 lg:col-span-3">
@@ -572,34 +585,38 @@ const Cart = () => {
                       </p>
                     </div>
                     {trip?.vehicles?.map((vehicle: any, index) => (
-                      <div className="border p-2 rounded-lg mt-3">
-                        <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                          <span>Name</span>
-                          <span className="capitalize">{vehicle?.name}</span>
-                        </div>
-                        <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                          <span>Count</span>
-                          <span className="capitalize">{vehicle?.count}</span>
-                        </div>
-                        <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                          <span>Price</span>
-                          <span className="capitalize">
-                            {priceConversion(
-                              vehicle?.price,
-                              selectedCurrency,
-                              true
+                      <>
+                        {vehicle?.map((vehi: any, vehiIndex: number) => (
+                          <div className="border p-2 rounded-lg mt-3">
+                            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                              <span>Name</span>
+                              <span className="capitalize">{vehi?.name}</span>
+                            </div>
+                            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                              <span>Count</span>
+                              <span className="capitalize">{vehi?.count}</span>
+                            </div>
+                            <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                              <span>Price</span>
+                              <span className="capitalize">
+                                {priceConversion(
+                                  vehi?.price,
+                                  selectedCurrency,
+                                  true
+                                )}
+                              </span>
+                            </div>
+                            {vehi?.vehicleType && (
+                              <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                                <span>Vehicle Type</span>
+                                <span className="capitalize">
+                                  {vehi?.vehicleType}
+                                </span>
+                              </div>
                             )}
-                          </span>
-                        </div>
-                        {vehicle?.vehicleType && (
-                          <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                            <span>Vehicle Type</span>
-                            <span className="capitalize">
-                              {vehicle?.vehicleType}
-                            </span>
                           </div>
-                        )}
-                      </div>
+                        ))}
+                      </>
                     ))}
 
                     {trip?.transferType === "return" && (
@@ -636,38 +653,44 @@ const Cart = () => {
                         </div>
                         {trip?.returnVehicle?.map(
                           (returnVehicle: any, index) => (
-                            <div className="border p-2 rounded-lg mt-3">
-                              <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                                <span>Name</span>
-                                <span className="capitalize">
-                                  {returnVehicle?.name}
-                                </span>
-                              </div>
-                              <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                                <span>Count</span>
-                                <span className="capitalize">
-                                  {returnVehicle?.count}
-                                </span>
-                              </div>
-                              <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                                <span>Price</span>
-                                <span className="capitalize">
-                                  {priceConversion(
-                                    returnVehicle?.price,
-                                    selectedCurrency,
-                                    true
-                                  )}
-                                </span>
-                              </div>
-                              {returnVehicle?.vehicleType && (
-                                <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
-                                  <span>Vehicle Type</span>
-                                  <span className="capitalize">
-                                    {returnVehicle?.vehicleType}
-                                  </span>
-                                </div>
+                            <>
+                              {returnVehicle?.map(
+                                (rtnVehi: any, rtnVehiIndex: number) => (
+                                  <div className="border p-2 rounded-lg mt-3">
+                                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                                      <span>Name</span>
+                                      <span className="capitalize">
+                                        {rtnVehi?.name}
+                                      </span>
+                                    </div>
+                                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                                      <span>Count</span>
+                                      <span className="capitalize">
+                                        {rtnVehi?.count}
+                                      </span>
+                                    </div>
+                                    <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                                      <span>Price</span>
+                                      <span className="capitalize">
+                                        {priceConversion(
+                                          rtnVehi?.price,
+                                          selectedCurrency,
+                                          true
+                                        )}
+                                      </span>
+                                    </div>
+                                    {rtnVehi?.vehicleType && (
+                                      <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
+                                        <span>Vehicle Type</span>
+                                        <span className="capitalize">
+                                          {rtnVehi?.vehicleType}
+                                        </span>
+                                      </div>
+                                    )}
+                                  </div>
+                                )
                               )}
-                            </div>
+                            </>
                           )
                         )}
                       </div>
@@ -682,9 +705,6 @@ const Cart = () => {
     );
   };
 
-
-  console.log(cart);
-  
   const renderSidebar = () => {
     return (
       <div className="flex flex-col gap-5 w-full">
@@ -808,7 +828,11 @@ const Cart = () => {
                   <div className="flex justify-between text-neutral-6000 dark:text-neutral-300">
                     <span>Amount Incl. VAT</span>
                     <span>
-                      {priceConversion(item.priceWithoutPromoGrandTotal, selectedCurrency, true)}
+                      {priceConversion(
+                        item.priceWithoutPromoGrandTotal,
+                        selectedCurrency,
+                        true
+                      )}
                     </span>
                   </div>
                   {item.promoCode !== "" && (

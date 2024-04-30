@@ -14,14 +14,11 @@ const Footer: React.FC = () => {
 
   const { globalData } = useSelector((state: RootState) => state.initials)
 
-
-
-
   return (
     <>
       <FooterNav />
 
-      <div className="nc-Footer relative pb-28 md:pb-0 pt-5 md:pt-0 lg:py-16 border-t border-neutral-200 dark:border-neutral-700">
+      <div className="nc-Footer relative pb-28 md:pb-0 pt-5 md:pt-0 lg:pt-16 lg:py-4  border-t border-neutral-200 dark:border-neutral-700">
         <div className="container grid grid-cols-2 gap-y-10 gap-x-5 sm:gap-x-8 md:grid-cols-3 lg:grid-cols-3 lg:gap-x-20 ">
           <div className="grid grid-cols-4 gap-5 col-span-2 md:col-span-4 lg:md:col-span-1 lg:flex lg:flex-col">
             <div className="col-span-2 md:col-span-1">
@@ -62,6 +59,15 @@ const Footer: React.FC = () => {
 
           
         </div>
+
+        <div className="flex justify-center mt-5">
+          <p className="text-sm">
+          All Rights Reserved by Be Happy Travel & Tourism L.L.C.
+          </p>
+        </div>
+
+
+
       </div>
     </>
   );
