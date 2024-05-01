@@ -50,6 +50,7 @@ export enum OrderStatusExcEnum {
   pending = "pending",
   paid = "paid",
   failed = "failed",
+  completed = "completed"
 }
 
 // All data in query search in attraction form.
@@ -373,6 +374,7 @@ export interface TimeSlotExcursion {
 export interface OrderExcursion {
   _id: UUID | string;
   attractionId: string;
+  paymentState: string;
   activities: [
     {
       attraction: {

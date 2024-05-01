@@ -12,6 +12,7 @@ import { format } from "date-fns";
 import priceConversion from "@/utils/priceConversion";
 import Toggle from "@/shared/Toggle";
 import { usePathname } from "next/navigation";
+import SkeletonLoader from "@/app/profile/orders/SkeletonLoader";
 
 export interface PayPageProps { }
 
@@ -120,9 +121,11 @@ const page: FC<PayPageProps> = () => {
     const renderTransfer = () => {
       return (
         <div>
+                {orderlist?.transferOrder && (
           <h1 className={`text-xl font-semibold pb-2 border-b w-fit`}>
             Transfer
           </h1>
+                )}
 
           {orderlist?.transferOrder?.journey?.map((item: any, index: number) => (
             <>
@@ -215,7 +218,9 @@ const page: FC<PayPageProps> = () => {
     const renderSidebar = () => {
       return (
         <div className="flex flex-col gap-5 w-full">
+                {orderlist?.attractionOrder && (
           <h1 className="text-xl font-semibold pb-2 border-b w-fit">Tours</h1>
+                )}
       
             {orderlist?.attractionOrder?.activities.map((item: any, i: number) => (
               <div key={item._id} className="rounded-lg border w-full md:p-3">
@@ -302,7 +307,10 @@ const page: FC<PayPageProps> = () => {
       );
     };
 
+    
     return (
+      <>
+      {orderlist && (
       <div className="w-full flex flex-col sm:rounded-2xl space-y-10 px-0 sm:p-6 xl:p-8">
         {orderlist?.orderStatus === "completed" && (
           <h2 className="text-3xl lg:text-4xl font-semibold">
@@ -376,6 +384,19 @@ const page: FC<PayPageProps> = () => {
           <ButtonPrimary href="/">Explore more attractions</ButtonPrimary>
         </div>
       </div>
+      )}
+
+      {!orderlist && (
+        <>
+        <div className="flex flex-col gap-10">
+        <SkeletonLoader />
+        <SkeletonLoader />
+        <SkeletonLoader />
+        <SkeletonLoader />
+        </div>
+        </>
+      )}
+      </>
     );
   };
 

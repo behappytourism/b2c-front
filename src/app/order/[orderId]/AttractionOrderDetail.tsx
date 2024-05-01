@@ -5,7 +5,7 @@ import ButtonSecondary from "@/shared/ButtonSecondary";
 import React, { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import priceConversion from "@/utils/priceConversion";
-import { OrderExcursion } from "@/data/attraction/types";
+import { OrderExcursion, OrderStatusExcEnum } from "@/data/attraction/types";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import Image from "next/image";
 
@@ -223,6 +223,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
     handleDownloadSingleTicket();
   }, [attractionOrderSingleTicket]);
 
+  
   return (
     <div className="listingSection__wrap container mb-7">
       {!data && (
@@ -259,15 +260,56 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
 
       {data && (
         <div className="text text-center">
-          <h1 className="text-3xl">Order Details</h1>
+          <div className="flex  w-full justify-center items-center text-center">
+          <h1 className="text-3xl underline">Order Details</h1>
+          </div>
+          {data?.orderStatus === OrderStatusExcEnum.completed && (
+          <div className="flex w-full justify-end">
+              {invoice === false && (
+                <button
+                  onClick={() => getOrderInvoice(orderId || "")}
+                  className="p-2  w-full md:w-fit mx-4 bg-primary-200 hover:bg-primary-400 cursor-pointer rounded font-semibold text-black"
+                >
+                  Download Invoice
+                </button>
+              )}
+
+              {invoice === true && (
+                <button
+                  type="button"
+                  className="p-2 dark:bg-neutral-900 dark:text-neutral-100 mt-6 min-w-[200px] w-full md:w-fit bg-primary-300  text-sm font-medium text-white self-center min-h-[50px] rounded dark:border-gray-600  flex justify-center items-center"
+                >
+                  <svg
+                    aria-hidden="true"
+                    role="status"
+                    className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
+                    viewBox="0 0 100 101"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                      fill="currentColor"
+                    ></path>
+                    <path
+                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                      fill="#1C64F2"
+                    ></path>
+                  </svg>
+                  Downloading...
+                </button>
+              )}
+            </div>      
+            )}      
+      
 
           {data?.attractionOrder?.activities?.map(
             (activity: any, index: number) => (
               <div className="mt-10 md:flex md:justify-between p-4 md:p-2">
-                <div className="bg-white border w-full md:flex gap-10 text-white font-semibold md:p-4  mb-5 md:mb-0 rounded-xl">
+                <div className="bg-white border w-full md:flex gap-4 text-white font-semibold md:p-4  mb-5 md:mb-0 rounded-xl">
                   <div className="md:max-w-[300px] w-full">
                     <Image
-                      className="rounded-none max-h-[300px]  min-h-[200px] w-full rounded-t-xl md:rounded-t-none md:mb-0 mb-3 cursor-pointer"
+                      className="rounded-none border-r-2 pr-3 max-h-[300px]  min-h-[200px] w-full rounded-t-xl md:rounded-t-none md:mb-0 mb-3 cursor-pointer"
                       width={1000}
                       height={100}
                       alt="picture 1"
@@ -276,7 +318,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                   </div>
 
                   <div className="text-black w-full px-4 md:px-0 pb-3 md:pb-0">
-                    <p className="text-2xl my-3 md:block hidden md:my-0 underline">
+                    <p className="text-2xl my-3 md:block hidden md:my-0 border-b pb-1">
                       {activity?.activity?.attraction?.title}
                     </p>
 
@@ -287,7 +329,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                         </p>
                       </div>
 
-                    <div className="md:flex md:justify-between md:mb-10">
+                    <div className="md:flex md:justify-between md:mt-3 md:mb-5">
                       <div className="flex gap-2">
                         <p>Country:</p>
                         <p className="capitalize">
@@ -301,7 +343,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                       </div>
                     </div>
 
-                    <div className="md:flex md:justify-between md:mb-10">
+                    <div className="md:flex md:justify-between md:mb-5">
                       <div className="flex gap-2">
                         <p>Adult Count:</p>
                         <p className="capitalize">{activity?.adultsCount}</p>
@@ -337,6 +379,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                         <p className="capitalize">{activity?.status}</p>
                       </div>
 
+                      {data?.orderStatus === OrderStatusExcEnum.completed && (activity?.status === "booked" || activity?.status === "completed" || activity?.status === "pending") && (
                       <div>
                         <div className="w-full flex justify-center">
                           {search === false && (
@@ -380,6 +423,10 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                           )}
                         </div>
                       </div>
+                      )}
+
+
+
                     </div>
                   </div>
                 </div>
@@ -393,7 +440,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
               <>
                 {journeyItem?.trips?.map((trip: any, index: number) => (
                   <div className="mt-10 md:flex md:justify-between p-2 md:p-0">
-                    <div className="bg-primary-200 w-full text-white font-semibold md:p-4 p-2 mb-5 md:mb-0 rounded-xl">
+                    <div className=" w-full text-white font-semibold md:p-4 p-2 mb-5 md:mb-0 rounded-xl">
                       <div className="text-black flex justify-between w-full mb-5">
                         <div className="text-left">
                           <p className="text-2xl">
@@ -415,7 +462,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                         </div>
                       </div>
 
-                      <div className="text-black mb-5 border-b pb-5 border-black flex justify-between w-full">
+                      <div className="text-black mb-5   border-black flex justify-between w-full">
                         <div className="text-left">
                           <p className="text-xl">
                             {new Date(trip?.pickupDate).toLocaleDateString(
@@ -431,15 +478,30 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                         </div>
                       </div>
 
+
+                      <div className="text-black mb-5 border-b pb-5 border-black flex justify-between w-full">
+                        <div className="text-left">
+                          <p className="text-xl">
+                           {data?.orderStatus}
+                          </p>
+                          <p className="text-gray-400">Order Status</p>
+                        </div>
+
+                        <div className="text-right">
+                          <p className="text-xl">{data?.paymentState}</p>
+                          <p className="text-gray-400">Payment State</p>
+                        </div>
+                      </div>
+
                       <div className="text-black">
                         <p className="text-2xl underline mb-10">Vehicles</p>
-                        <div className="grid grid-cols-2 justify-between">
+                        <div className="">
                           {trip?.vehicleTypes?.map((vehicle: any) => (
-                            <div className="flex border-black shadow-2xl rounded border gap-10 p-2 w-fit items-center text-center">
-                              <div className="max-w-[300px]">
+                            <div className="flex rounded border gap-10 py-2 px-8 w-fit items-center text-center">
+                              <div className="max-w-[200px]">
                                 <Image
                                   className="rounded-lg cursor-pointer"
-                                  width={150}
+                                  width={1000}
                                   height={100}
                                   alt="picture 1"
                                   src={`${process.env.NEXT_PUBLIC_CDN_URL}${vehicle?.vehicleId?.image}`}
@@ -447,13 +509,13 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                               </div>
 
                               <div>
-                                <div className="flex gap-2">
-                                  <p>Name:</p>
+                                <div className="flex gap-5 md:text-xl">
+                                  <p className="font-thin">Name:</p>
                                   <p className="capitalize">{vehicle?.name}</p>
                                 </div>
 
-                                <div className="flex gap-2">
-                                  <p>Price:</p>
+                                <div className="flex gap-5  md:text-xl">
+                                  <p className="font-thin">Price:</p>
                                   <p className="capitalize">
                                     {priceConversion(
                                       trip?.tripPrice,
@@ -463,15 +525,15 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                                   </p>
                                 </div>
 
-                                <div className="flex gap-2">
-                                  <p>Airport Occupancy:</p>
+                                <div className="flex gap-5  md:text-xl">
+                                  <p className="font-thin">Airport Occupancy:</p>
                                   <p className="capitalize">
                                     {vehicle?.vehicleId?.airportOccupancy}
                                   </p>
                                 </div>
 
-                                <div className="flex gap-2">
-                                  <p>Normal Occupancy:</p>
+                                <div className="flex gap-5  md:text-xl">
+                                  <p className="font-thin">Normal Occupancy:</p>
                                   <p className="capitalize">
                                     {vehicle?.vehicleId?.normalOccupancy}
                                   </p>
@@ -489,42 +551,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
           )}
 
           <div className="flex gap-5">
-            <div className="w-full flex justify-center">
-              {invoice === false && (
-                <button
-                  onClick={() => getOrderInvoice(orderId || "")}
-                  className="p-2 mt-5 w-full md:w-fit mx-4 bg-primary-200 hover:bg-primary-400 cursor-pointer rounded font-semibold text-black"
-                >
-                  Download Invoice
-                </button>
-              )}
-
-              {invoice === true && (
-                <button
-                  type="button"
-                  className="p-2 dark:bg-neutral-900 dark:text-neutral-100 mt-6 min-w-[200px] w-full md:w-fit bg-primary-300  text-sm font-medium text-white self-center min-h-[50px] rounded dark:border-gray-600  flex justify-center items-center"
-                >
-                  <svg
-                    aria-hidden="true"
-                    role="status"
-                    className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
-                    viewBox="0 0 100 101"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                      fill="currentColor"
-                    ></path>
-                    <path
-                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                      fill="#1C64F2"
-                    ></path>
-                  </svg>
-                  Downloading...
-                </button>
-              )}
-            </div>
+           
 
             {/* <div className="w-full flex justify-center">
             {search === false && (

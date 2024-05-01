@@ -401,7 +401,7 @@ const PayPage: FC<PayPageProps> = () => {
     const renderSidebar = () => {
       return (
         <div className="flex flex-col gap-5 w-full">
-          {orderlist && (
+          {orderlist?.attractionOrder && (
             <h1 className="text-xl font-semibold pb-2 border-b w-fit">Tours</h1>
           )}
 
