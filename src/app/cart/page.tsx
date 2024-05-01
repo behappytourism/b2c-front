@@ -18,7 +18,7 @@ import Textarea from "@/shared/Textarea";
 import Toggle from "@/shared/Toggle";
 import priceConversion from "@/utils/priceConversion";
 import { format } from "date-fns";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -32,6 +32,7 @@ import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import {
   handleEmptyTransferCart,
   handleRemoveFromTransferCart,
+  storeTransferResults,
 } from "@/redux/features/transferSlice";
 import Link from "next/link";
 import { Route } from "next";
@@ -45,6 +46,7 @@ interface vehicleType {
 
 const Cart = () => {
   const thisPathname = usePathname();
+  const route = useRouter();
   const [leadPaxDes, setLeadPaxDes] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -81,6 +83,10 @@ const Cart = () => {
   const { cart } = useSelector((state: RootState) => state.attraction);
   const { transfer, transferCart } = useSelector(
     (state: RootState) => state.transfer
+  );
+
+  const [transferSearching, setTransferSearching] = useState<Array<boolean>>(
+    new Array(transferCart.length).fill(false)
   );
 
   const [briefPayments, setBriefPayments] = useState(cart.map(() => true));
@@ -139,7 +145,7 @@ const Cart = () => {
       isPromoAdded: item?.isPromoAdded,
     };
   });
-  
+
   const transferArray = transferCart.flatMap((item, index) =>
     item.trips.map((trip, tripIndex) => ({
       dropOffLocation: trip?.transferTo?._id,
@@ -169,7 +175,7 @@ const Cart = () => {
         ) || [],
     }))
   );
-  
+
   // Handling submit.
   const submitHandler = async (e: { preventDefault: () => void }) => {
     try {
@@ -312,6 +318,67 @@ const Cart = () => {
   const closeModal = () => {
     setError("");
   };
+
+  const transferSearch = async (trip: any, index: number) => {
+    // Set the loading state for the specific trip
+    const updatedTransferSearching = [...transferSearching];
+    updatedTransferSearching[index] = true;
+    setTransferSearching(updatedTransferSearching);
+    const body = {
+      dropOffLocation: trip?.transferTo?._id,
+      dropOffSuggestionType: trip?.transferTo?.dropOffSuggestionType,
+      noOfAdults: trip?.noOfAdults,
+      noOfChildrens: trip?.noOfChildrens,
+      pickupDate: trip?.pickupDate,
+      pickupLocation: trip?.transferFrom?._id,
+      pickupSuggestionType: trip?.transferFrom?.pickupSuggestionType,
+      pickupTime: trip?.pickupTime,
+      returnDate: trip?.returnDate,
+      returnTime: trip?.returnTime,
+      transferType: trip?.transferType,
+    };
+
+    let headers = {};
+
+    headers = {
+      "Content-Type": "application/json",
+    };
+
+    try {
+      const transferResult = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/transfer/search`,
+        {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(body),
+        }
+      );
+      return transferResult.json();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async function transferResults(trip: any, index: number) {
+    try {
+      const response = await transferSearch(trip, index);
+
+      {
+        response && dispatch(storeTransferResults([response]));
+      }
+
+      {
+        response && route.push("/transfer/list");
+      }
+
+      // Reset the loading state for the specific trip
+      const updatedTransferSearching = [...transferSearching];
+      updatedTransferSearching[index] = false;
+      setTransferSearching(updatedTransferSearching);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const renderDetailsCollection = () => {
     return (
@@ -500,6 +567,11 @@ const Cart = () => {
                 >
                   <div className="md:hidden block">
                     <div className="flex justify-end gap-3">
+                      <PencilSquareIcon
+                        onClick={() => transferResults(trip, index)}
+                        height={20}
+                        width={20}
+                      />
                       <i
                         onClick={() => handleRemoveTransferFromCart(index)}
                         className="las la-times-circle text-xl text-red-600 cursor-pointer"
@@ -541,6 +613,34 @@ const Cart = () => {
 
                   <div className="hidden md:block">
                     <div className="flex gap-3">
+                      {transferSearching[index] === false && (
+                        <PencilSquareIcon
+                          className="cursor-pointer"
+                          onClick={() => transferResults(trip, index)}
+                          height={20}
+                          width={20}
+                        />
+                      )}
+
+                      {transferSearching[index] === true && (
+                        <svg
+                          aria-hidden="true"
+                          role="status"
+                          className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
+                          viewBox="0 0 100 101"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor"
+                          ></path>
+                          <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="#1C64F2"
+                          ></path>
+                        </svg>
+                      )}
                       <i
                         onClick={() => handleRemoveTransferFromCart(index)}
                         className="las la-times-circle text-xl text-red-600 cursor-pointer"
