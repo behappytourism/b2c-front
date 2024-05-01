@@ -36,8 +36,6 @@ const LikeSaveBtns = ({
     if (attraction === undefined || null) {
       return null;
     }
-
-    console.log(attraction, "share");
     
 
     return (
