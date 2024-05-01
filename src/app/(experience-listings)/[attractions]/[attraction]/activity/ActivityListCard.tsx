@@ -72,8 +72,6 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
   const [date, setDate] = useState<Date | null>(null);
   const [tab, setTab] = useState("");
   const initialDate = new Date();
-
-  console.log(data, "dataa");
   
   // Promotion Calculation function.
   const promotionCalculationHandler = (
@@ -463,8 +461,6 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
       </tr>
     );
   };
-
-  console.log(data);
   
   const PriceBreakDownSection = () => {
     return (
@@ -723,7 +719,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                       <div className="border-b border-dashed flex-1"></div>
                       <span className="text-right font-medium text-lg">
                         {priceConversion(
-                          data.grandTotal,
+                          data.priceWithoutPromoGrandTotal,
                           selectedCurrency,
                           true
                         )}
