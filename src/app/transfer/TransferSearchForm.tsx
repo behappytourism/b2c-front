@@ -213,6 +213,10 @@ const TransferSearchForm: FC<ExperiencesSearchFormProps> = ({ closeModal }) => {
       }
 
       {
+        response &&   localStorage.removeItem("selectedVehicles");
+      }
+
+      {
         response && route.push("/transfer/list");
       }
 

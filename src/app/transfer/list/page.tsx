@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TruckIcon } from "@heroicons/react/24/solid";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import Link from "next/link";
@@ -55,11 +55,28 @@ function TransferList() {
     vehicleIndex: number
   ) => {
     const { value } = e.target;
-    setSelectedVehicles((prevState) => ({
-      ...prevState,
-      [`${tripIndex}-${vehicleIndex}`]: parseInt(value, 10),
-    }));
+    setSelectedVehicles((prevState) => {
+      const updatedState = {
+        ...prevState,
+        [`${tripIndex}-${vehicleIndex}`]: parseInt(value, 10),
+      };
+      localStorage.setItem('selectedVehicles', JSON.stringify(updatedState));
+      return updatedState;
+    });
   };
+  
+
+  // const handleCountChange = (
+  //   e: React.ChangeEvent<HTMLSelectElement>,
+  //   tripIndex: number,
+  //   vehicleIndex: number
+  // ) => {
+  //   const { value } = e.target;
+  //   setSelectedVehicles((prevState) => ({
+  //     ...prevState,
+  //     [`${tripIndex}-${vehicleIndex}`]: parseInt(value, 10),
+  //   }));
+  // };
 
   const handleCheckout = (
     trip: any,
@@ -175,6 +192,15 @@ function TransferList() {
 
   // localStorage.removeItem("TransferCart");
 
+
+  useEffect(() => {
+    const savedSelectedVehicles = localStorage.getItem('selectedVehicles');
+    if (savedSelectedVehicles) {
+      setSelectedVehicles(JSON.parse(savedSelectedVehicles));
+    }
+  }, []);
+  
+
   return (
     <div className="container p-5 my-20">
       <div className="mb-3">
@@ -289,6 +315,7 @@ function TransferList() {
                           Select Quantity:
                         </p>
                         <select
+                          value={selectedVehicles[`${tripIndex}-${vehicleIndex}`] || 0}
                           // onChange={(e) => handleCountChange(e.target.value)}
                           onChange={(e) =>
                             handleCountChange(e, tripIndex, vehicleIndex)
