@@ -81,6 +81,8 @@ const Cart = () => {
 
   const { jwtToken } = useSelector((state: RootState) => state.users);
   const { cart } = useSelector((state: RootState) => state.attraction);
+  console.log(cart, "carrttt");
+  
   const { transfer, transferCart } = useSelector(
     (state: RootState) => state.transfer
   );
@@ -276,7 +278,7 @@ const Cart = () => {
   const grandTotal: number = useMemo(() => {
     return cart.reduce((acc, item) => {
       if (item.isPromoAdded) {
-        return acc + item.priceWithoutPromoGrandTotal;
+        return acc + item.priceWithoutPromoGrandTotal - item?.appliedPromoAmount;
       } else {
         return acc + item.priceWithoutPromoGrandTotal;
       }
@@ -965,7 +967,7 @@ const Cart = () => {
                     <span>
                       {item.isPromoAdded
                         ? priceConversion(
-                            item.priceWithoutPromoGrandTotal,
+                            item.priceWithoutPromoGrandTotal - item?.appliedPromoAmount,
                             selectedCurrency,
                             true
                           )
