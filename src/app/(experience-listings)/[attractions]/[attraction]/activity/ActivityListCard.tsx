@@ -66,6 +66,8 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
     (state: RootState) => state.initials
   );
   const { jwtToken } = useSelector((state: RootState) => state.users);
+  const { cart } = useSelector((state: RootState) => state.attraction);
+
 
   const [priceDetails, setPriceDetails] = useState(false);
   const [defaultImage, setDefaultImage] = useState(0);
@@ -117,6 +119,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
   const handleAddToCart = () => {
     setAddToCart(!addToCart);
     setATCIndex(index);
+    handleChangeData("isChecked", !data.isChecked);
     dispatch(
       setAlertSuccess({
         status: true,
@@ -328,20 +331,23 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
       fecthApiResponse({ activity: data, jwtToken: jwtToken });
     }
   }, [data.isChecked]);
+  
 
   const renderSelectedBadge = () => {
-    return (
-      <>
-        {data.isChecked ? (
-          <p className="text-sm text-green-600 font-mono pb-2">
-            <i className="lar la-check-circle text-lg"></i>
-            <span className="pl-1 text-xl font-bold">Selected</span>
-          </p>
-        ) : (
-          ""
-        )}
-      </>
-    );
+    // Check if any cart item has the same _id as data._id
+    const isAdded = cart.some(item => item._id === data._id);
+  
+    // Render the badge if item is added to cart
+    if (isAdded) {
+      return (
+        <p className="text-green-600 font-mono pb-2">
+          <i className="lar la-check-circle md:text-lg text-xs"></i>
+          <span className="pl-1 md:text-lg text-xs font-bold">Added</span>
+        </p>
+      );
+    }
+    // Return null if not added
+    return null;
   };
 
   const PrivateTransferVehicleListingSection = () => {
@@ -923,7 +929,10 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
           </div>
 
           <div className="md:w-4/12 p-2">
+            <div className="flex gap-1 items-center">
             <h1 className="font-semibold mt-3 md:mt-0 text-lg mb-3">{data?.name}</h1>
+            <p>{renderSelectedBadge()}</p>
+            </div>
             <p className="text-sm">
               <div
                 dangerouslySetInnerHTML={{
@@ -1170,13 +1179,14 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   <GuestsInput
                     data={data}
                     handleChangeData={handleChangeData}
+                    className="z-[12]"
                   />
                 </div>
               ) : (
                 ""
               )}
 
-              <div className="py-2 ">
+              <div className="py-2">
                 <div className=" text-xs text-gray-400 dark:text-neutral-200 py-1">
                   Select tour date
                 </div>
@@ -1184,7 +1194,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   <StayDatesRangeInput
                     setDate={setDate}
                     attraction={attraction}
-                    className="flex-1 z-[11]"
+                    className="z-[11]"
                   />
                   {/* <SlideCalender  handleFunction={handleDateOnclick} initialSelection={initialDate ? new Date(initialDate) : activities.length ? new Date(activities[0].date) : new Date()} /> */}
                 </form>

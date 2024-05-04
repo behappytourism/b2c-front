@@ -41,7 +41,7 @@ const SectionHero: FC<SectionHeroProps> = ({
 
 
   return (
-    <main className="nc-PageHome min-h-[500px] relative">
+    <main className="nc-PageHome md:min-h-[500px] relative">
     {banner && (
       <>
 
@@ -131,7 +131,7 @@ const SectionHero: FC<SectionHeroProps> = ({
           </Carousel>
         </div>
 
-        <div className="container w-full flex justify-center  -mt-[160px]">
+        <div className="container w-full md:flex hidden justify-center  -mt-[160px]">
           <div className="sticky z-40 -ml-[550px]">
           <HeroSearchForm currentPage={currentPage} currentTab={currentTab} />
           </div>

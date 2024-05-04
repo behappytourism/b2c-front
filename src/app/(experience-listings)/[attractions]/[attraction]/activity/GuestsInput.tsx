@@ -44,7 +44,9 @@ const GuestsInput: FC<GuestsInputProps> = ({
                 <UserPlusIcon className="w-5 h-5 lg:w-5 lg:h-5" />
               </div>
               <div className="flex-grow text-base divide-x divide-gray-200">
-                <span className="pr-1 text-sm">{data.adultCount + " Adult "}</span>
+                <span className="pr-1 text-sm">
+                  {data.adultCount + " Adult "}
+                </span>
                 {data.childCount ? (
                   <span className="px-1  text-sm">
                     {data.childCount + " Children "}
@@ -53,7 +55,9 @@ const GuestsInput: FC<GuestsInputProps> = ({
                   ""
                 )}
                 {data.infantCount ? (
-                  <span className="pl-1 text-sm">{data.infantCount + " Infant"}</span>
+                  <span className="pl-1 text-sm">
+                    {data.infantCount + " Infant"}
+                  </span>
                 ) : (
                   ""
                 )}

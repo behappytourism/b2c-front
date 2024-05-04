@@ -26,7 +26,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   size = "default",
   className = "",
   data,
-  ratioClass = "aspect-w-6 aspect-h-4",
+  ratioClass = "aspect-w-3 aspect-h-2",
 }) => {
   const dispatch = useDispatch<AppDispatch>();
   const searchParams = useSearchParams()!;
@@ -94,7 +94,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
         {isPromoCode && (
           <>
             {bookingType && (
-              <div className="absolute left-[100px] top-0 flex gap-1 items-center font-bold text-white text-sm">
+              <div className="absolute left-[100px] top-0  md:flex hiddengap-1 items-center font-bold text-white text-sm">
                 <Badge
                   name={bookingType}
                   className=" relative capitalize "
@@ -108,7 +108,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
         {!isPromoCode && (
           <>
             {bookingType && (
-              <div className="absolute left-0 top-0 flex gap-1 items-center font-bold text-white text-sm">
+              <div className="absolute left-0 top-0 md:flex hidden gap-1 items-center font-bold text-white text-sm">
                 <Badge
                   name={bookingType}
                   className=" relative capitalize "
@@ -127,16 +127,38 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
       <div
         className={`${size === "default" ? "p-3 space-y-1 " : "p-3 space-y-1"}`}
       >
-        <div className="space-y-5 mb-1">
-          <div className="items-center space-y-1 mb-3">
+        <div className="md:space-y-5 md:mb-1">
+          <div className="items-center space-y-1 md:mb-3">
+            
+        <div className="flex md:hidden items-center justify-between">
+          <p className="text-xs font-bold">
+            <Badge
+              name={bookingType}
+              className=" relative capitalize "
+              color="red"
+            />
+          </p>
+          <p className="text-xs font-thin">
+            {" "}
+            <StartRating
+              reviewCount={totalReviews}
+              point={Number(averageRating?.toFixed(2))}
+            />
+          </p>
+        </div>
+
             <h2
               className={` font-medium capitalize overflow-hidden text-xl ${
                 size === "default" ? "text-base" : "text-base"
               }`}
             >
-              <span className={` line-clamp-1 text-center`}>{title}</span>
+              <span
+                className={` line-clamp-1 md:text-center text-xs md:text-xl md:font-medium font-semibold`}
+              >
+                {title}
+              </span>
             </h2>
-            <div className="flex gap-5 text-gray-500 justify-center">
+            <div className="md:flex hidden gap-5 text-gray-500 justify-center">
               <p className={`font-thin text-sm capitalize overflow-hidden`}>
                 {destination?.name}, {category?.categoryName}
               </p>
@@ -145,10 +167,18 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
                 point={Number(averageRating?.toFixed(2))}
               />
             </div>
+
+            <div className="flex md:hidden  text-neutral-900 ">
+              <p
+                className={`font-medium text-[10px] capitalize overflow-hidden`}
+              >
+                {destination?.name}, {category?.categoryName}
+              </p>
+            </div>
           </div>
         </div>
         <div className="border-b border-neutral-100 dark:border-neutral-800"></div>
-        <div className="flex justify-between items-center">
+        <div className="md:flex hidden justify-between items-center">
           <div className="text-base font-semibold">
             <p className="font-thin text-gray-400 text-sm capitalize">
               Starting from
@@ -162,6 +192,13 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
             </p>
           </div>
         </div>
+
+        <div className="flex md:hidden items-center">
+          <p className="text-xs font-bold">
+            {priceConversion(activity?.lowPrice, selectedCurrency, true)}
+          </p>
+          <p className="text-xs font-thin">/person</p>
+        </div>
       </div>
     );
   };
@@ -170,8 +207,8 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
     <div
       className={`nc-ExperiencesCard border group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
     >
-       <Link href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
-      {renderSliderGallery()}
+      <Link href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
+        {renderSliderGallery()}
         {renderContent()}
       </Link>
     </div>

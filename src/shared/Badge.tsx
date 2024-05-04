@@ -56,7 +56,7 @@ const Badge: FC<BadgeProps> = ({
   };
 
   const CLASSES =
-    "nc-Badge inline-flex px-2.5 py-1 font-bold text-xs " +
+    "nc-Badge inline-flex md:px-2.5 px-1 md:py-1 font-bold md:text-xs text-[9px]" +
     className;
   return !!href ? (
     <Link

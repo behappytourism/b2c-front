@@ -81,7 +81,6 @@ const Cart = () => {
 
   const { jwtToken } = useSelector((state: RootState) => state.users);
   const { cart } = useSelector((state: RootState) => state.attraction);
-  console.log(cart, "carrttt");
   
   const { transfer, transferCart } = useSelector(
     (state: RootState) => state.transfer

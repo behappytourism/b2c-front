@@ -177,7 +177,7 @@ const PageHome = () => {
       {/* GLASSMOPHIN */}
       <BgGlassmorphism />
 
-      <div className="relative  md:mb-16 mb-16 lg:mb-16">
+      <div className="relative  md:mb-16 mb-16 lg:mb-16 pt-5 md:pt-0">
         {/* SECTION HERO */}
         {attractionData && (
         <SectionHero

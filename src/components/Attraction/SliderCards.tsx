@@ -42,7 +42,7 @@ const SliderCards: FC<SliderCardsProps> = ({
             return setNumberOfitem(1);
         }
         if (windowWidth < 500) {
-            return setNumberOfitem(itemPerRow - 3);
+            return setNumberOfitem(2);
         }
         if (windowWidth < 1024) {
             return setNumberOfitem(itemPerRow - 2);
@@ -96,7 +96,7 @@ const SliderCards: FC<SliderCardsProps> = ({
                 }}
             >
                 <div className={`relative flow-root`} {...handlers}>
-                    <div className={`overflow-hidden rounded-xl grid md:grid-cols-4 gap-2` }>
+                    <div className={`overflow-hidden rounded-xl grid grid-cols-2 md:grid-cols-4 gap-2` }>
                         {/* <motion.ul
                             initial={false}
                             className="relative whitespace-nowrap -mx-2 xl:-mx-4"
@@ -118,7 +118,7 @@ const SliderCards: FC<SliderCardsProps> = ({
                                     //         width: `calc(1/${numberOfItems} * 100%)`,
                                     //     }}
                                     // >
-                                        <ExperiencesCard size="default" key={item._id} data={item} />
+                                        <ExperiencesCard size="small" key={item._id} data={item} />
                                     // {/* </motion.li> */}
                                 ))}
                             {/* </AnimatePresence>

@@ -28,10 +28,12 @@ const NavMobile: React.FC<NavMobileProps> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    dispatch(logoutUser() as any);
-    signOut();
+  const handleLogout = async() => {
+    await signOut()
+    await localStorage.removeItem("random-string");
+    await dispatch(logoutUser() as any);
   };
+
   const _renderMenuChild = (item: NavItemType) => {
     return (
       <ul className="nav-mobile-sub-menu pl-6 pb-1 text-base">
@@ -137,7 +139,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
         {data.map(_renderItem)}
         <div
           onClick={handleLogout}
-          className="flex items-center cursor-pointer py-6 px-2 space-y-1"
+          className="flex gap-1 items-center text-center cursor-pointer py-6 px-2 space-y-1"
         >
           <OutlineLogout className="h-6 w-6" />
 

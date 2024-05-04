@@ -432,7 +432,7 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
       console.log(error);
     }
   };
-
+  
   const renderActivitySection = () => {
     return (
       <div className="border-b pb-5">
@@ -885,8 +885,8 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
 
   return (
     <div className={` nc-ListingExperiencesDetailPage  `}>
-      <div className="my-3 flex justify-between">
-        <div onClick={() => backfunction()} className="flex items-center cursor-pointer text-center gap-3">
+      <div className="my-3 flex md:flex-row flex-col gap-2 md:justify-between">
+        <div onClick={() => backfunction()} className="flex items-center cursor-pointer text-xs md:text-base text-center gap-3">
         <ArrowLeftIcon height={20} width={20} />
         <p>Back</p>
         </div>

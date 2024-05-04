@@ -50,7 +50,7 @@ const HeaderFilter: FC<HeaderFilterProps> = ({
       <Heading desc={subHeading}>{heading}</Heading>
       <div className="flex items-center justify-between">
         <Nav
-          className="sm:space-x-2"
+          className="sm:space-x-2 gap-1"
           containerClassName="relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
         >
           {tabs.map((item, index) => (
