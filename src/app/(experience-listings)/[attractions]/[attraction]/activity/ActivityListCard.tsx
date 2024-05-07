@@ -893,6 +893,9 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
     dispatch(handleDateChange(date));
   };
 
+  console.log(data.images);
+  
+
   return (
     <div
       key={data?._id}
@@ -918,9 +921,19 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
               /> */}
               {data && data.images && data.images[0] && (
                 <Image
-                  className="rounded-t-xl md:rounded-t-none md:rounded-none cursor-pointer"
+                  className="rounded-t-xl block md:hidden md:rounded-t-none md:rounded-none cursor-pointer"
+                  width={500}
+                  height={500}
+                  alt="picture 1"
+                  src={`${process.env.NEXT_PUBLIC_CDN_URL}${data.images[0]}`}
+                />
+              )}
+
+{data && data.images && data.images[0] && (
+                <Image
+                  className="rounded-t-xl md:block hidden md:rounded-t-none md:rounded-none cursor-pointer"
                   width={1000}
-                  height={1000}
+                  height={500}
                   alt="picture 1"
                   src={`${process.env.NEXT_PUBLIC_CDN_URL}${data.images[0]}`}
                 />
@@ -1179,7 +1192,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   <GuestsInput
                     data={data}
                     handleChangeData={handleChangeData}
-                    className="z-[12]"
+                    className="z-[13]"
                   />
                 </div>
               ) : (

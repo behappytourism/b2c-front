@@ -69,7 +69,7 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
   };
 
   return (
-    <Popover className={`StayDatesRangeInput z-[15] relative flex ${className}`}>
+    <Popover className={`StayDatesRangeInput z-[11] relative flex ${className}`}>
       {({ open, close }) => (
         <>
           <Popover.Button

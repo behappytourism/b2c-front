@@ -883,6 +883,7 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
     window?.history?.back();
   }
 
+  
   return (
     <div className={` nc-ListingExperiencesDetailPage  `}>
       <div className="my-3 flex md:flex-row flex-col gap-2 md:justify-between">
