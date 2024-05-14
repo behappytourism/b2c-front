@@ -136,9 +136,10 @@ const Cart = () => {
   
 
   const activity = cart.map((item) => {
+    const date = item?.date instanceof Date ? item.date : new Date(item?.date); // Convert item.date to Date object
     return {
       activity: item?._id,
-      date: item?.date ? item.date.toString().split('T')[0] : '',
+      date: date instanceof Date ? date.toISOString().split('T')[0] : '', 
       adultsCount: item?.adultCount,
       childrenCount: item?.childCount,
       infantCount: item?.infantCount,
