@@ -132,10 +132,13 @@ const Cart = () => {
     });
   };
 
+  console.log(cart);
+  
+
   const activity = cart.map((item) => {
     return {
       activity: item?._id,
-      date: item?.date,
+      date: item?.date ? item.date.toString().split('T')[0] : '',
       adultsCount: item?.adultCount,
       childrenCount: item?.childCount,
       infantCount: item?.infantCount,
