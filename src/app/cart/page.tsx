@@ -131,8 +131,6 @@ const Cart = () => {
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
-
-  console.log(cart);
   
 
   const activity = cart.map((item) => {
