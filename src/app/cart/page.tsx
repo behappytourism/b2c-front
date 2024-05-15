@@ -109,6 +109,9 @@ const Cart = () => {
     setBriefPayments(updatedBriefPayments);
   };
 
+  console.log(cart);
+  
+
   useEffect(() => {
     const filteredCountries = countries?.filter(
       (country) => country?._id === pax?.country
@@ -134,9 +137,11 @@ const Cart = () => {
   
 
   const activity = cart.map((item) => {
+    const formattedDate = item?.date ? new Date(item.date).toISOString().split('T')[0] : '';
+    console.log(formattedDate);
     return {
       activity: item?._id,
-      date: item?.date, 
+      date: formattedDate, 
       adultsCount: item?.adultCount,
       childrenCount: item?.childCount,
       infantCount: item?.infantCount,

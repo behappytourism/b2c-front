@@ -111,6 +111,7 @@ const formatDate = (date: Date) => {
                   minDate={attraction && attraction.bookingPriorDays ? addDays(new Date(), Number(attraction.bookingPriorDays)) : new Date()}
                   monthsShown={2}
                   showPopperArrow={false}
+                  dateFormat="yyyy/MM/dd"
                   inline
                   renderCustomHeader={(p) => (
                     <DatePickerCustomHeaderTwoMonth {...p} />
