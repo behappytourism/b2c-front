@@ -36,12 +36,20 @@ const StayDatesRangeInput: FC<StayDatesRangeInputProps> = ({
     dispatch(handleDateChange(date));
   };
 
-  //Onchange settign date function.
-  const onChangeDate = (dates: Date | null) => {
-    dispatch(handleDateChange(dates));
-    setStartDate(dates ? new Date(dates) : dates);
-    close()
-  };
+//Onchange setting date function.
+const onChangeDate = (dates: Date | null) => {
+  const formattedDate = dates ? formatDate(dates) : null; // Format the date
+  console.log(formattedDate);
+  
+  dispatch(handleDateChange(formattedDate));
+  setStartDate(dates ? new Date(dates) : dates);
+  close();
+};
+
+// Function to format date as yyyy-MM-dd
+const formatDate = (date: Date) => {
+  return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+};
 
   useEffect(() => {
     if (setDate) {

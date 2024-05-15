@@ -892,8 +892,6 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
     }
     dispatch(handleDateChange(date));
   };
-
-  console.log(data.images);
   
 
   return (
