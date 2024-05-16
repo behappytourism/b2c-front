@@ -38,7 +38,7 @@ const GuestsInput: FC<GuestsInputProps> = ({
             }`}
           >
             <Popover.Button
-              className={`relative z-10 flex-1 flex text-left items-center p-1 space-x-3 px-5 focus:outline-none`}
+              className={`relative  flex-1 flex text-left items-center p-1 space-x-3 px-5 focus:outline-none`}
             >
               <div className="text-neutral-300 dark:text-neutral-400">
                 <UserPlusIcon className="w-5 h-5 lg:w-5 lg:h-5" />

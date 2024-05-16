@@ -1190,7 +1190,6 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   <GuestsInput
                     data={data}
                     handleChangeData={handleChangeData}
-                    className="z-[13]"
                   />
                 </div>
               ) : (
@@ -1205,7 +1204,6 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                   <StayDatesRangeInput
                     setDate={setDate}
                     attraction={attraction}
-                    className="z-[11]"
                   />
                   {/* <SlideCalender  handleFunction={handleDateOnclick} initialSelection={initialDate ? new Date(initialDate) : activities.length ? new Date(activities[0].date) : new Date()} /> */}
                 </form>
