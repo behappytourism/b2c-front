@@ -41,7 +41,6 @@ import AccountDelete from "../(account-pages)/account-delete/page";
 import { logoutUser } from "@/redux/features/usersSlice";
 import { useRouter } from "next/navigation";
 import Orders from "./orders/page";
-import Affiliate from "./affiliate/page";
 import { signOut } from "next-auth/react";
 import Label from "@/components/Label";
 import Input from "@/shared/Input";

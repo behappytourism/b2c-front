@@ -203,15 +203,126 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
     );
   };
 
+
+  const renderMobileContent = () => {
+    return(
+      <div className="flex">
+
+        <div className="w-3/12">
+        <GallerySlider
+          uniqueID={`ExperiencesCard_${"id"}`}
+          ratioClass={ratioClass}
+          galleryImgs={images}
+          href={data && (`/${data?.destination?.slug}/${data?.slug}` as Route)}
+          galleryClass={size === "default" ? "" : ""}
+        />
+        </div>
+
+        <div className="w-9/12">
+
+        <div
+        className={`${size === "default" ? "p-3 space-y-1 " : "p-3 space-y-1"}`}
+      >
+        <div className="md:space-y-5 md:mb-1">
+          <div className="items-center space-y-1 md:mb-3">
+            
+        <div className="flex md:hidden items-center justify-between">
+          <p className="text-xs font-bold">
+            <Badge
+              name={bookingType}
+              className=" relative capitalize "
+              color="red"
+            />
+          </p>
+          <p className="text-xs font-thin">
+            {" "}
+            <StartRating
+              reviewCount={totalReviews}
+              point={Number(averageRating?.toFixed(2))}
+            />
+          </p>
+        </div>
+
+            <h2
+              className={` font-medium capitalize overflow-hidden text-xl ${
+                size === "default" ? "text-base" : "text-base"
+              }`}
+            >
+              <span
+                className={` line-clamp-1 md:text-center text-xs md:text-xl md:font-medium font-semibold`}
+              >
+                {title}
+              </span>
+            </h2>
+            <div className="md:flex hidden gap-5 text-gray-500 justify-center">
+              <p className={`font-thin text-sm capitalize overflow-hidden`}>
+                {destination?.name}, {category?.categoryName}
+              </p>
+              <StartRating
+                reviewCount={totalReviews}
+                point={Number(averageRating?.toFixed(2))}
+              />
+            </div>
+
+            <div className="flex md:hidden  text-neutral-900 ">
+              <p
+                className={`font-medium text-[10px] capitalize overflow-hidden`}
+              >
+                {destination?.name}, {category?.categoryName}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="border-b border-neutral-100 dark:border-neutral-800"></div>
+        <div className="md:flex hidden justify-between items-center">
+          <div className="text-base font-semibold">
+            <p className="font-thin text-gray-400 text-sm capitalize">
+              Starting from
+            </p>
+            <p className="text-xl font-bold">
+              {priceConversion(activity?.lowPrice, selectedCurrency, true)}
+            </p>
+
+            <p className="text-xs text-gray-400 dark:text-neutral-400 font-thin">
+              * price varies
+            </p>
+          </div>
+        </div>
+
+        <div className="flex md:hidden items-center">
+          <p className="text-xs font-bold">
+            {priceConversion(activity?.lowPrice, selectedCurrency, true)}
+          </p>
+          <p className="text-xs font-thin">/person</p>
+        </div>
+      </div>
+
+        </div>
+
+      </div>
+    )
+  }
+
   return (
+    <>
     <div
-      className={`nc-ExperiencesCard border group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
+      className={`nc-ExperiencesCard  border group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
     >
       <Link href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
         {renderSliderGallery()}
         {renderContent()}
       </Link>
     </div>
+
+
+    {/* <div
+      className={`nc-ExperiencesCard md:hidden block border group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
+    >
+      <Link href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
+        {renderMobileContent()}
+      </Link>
+    </div> */}
+    </>
   );
 };
 

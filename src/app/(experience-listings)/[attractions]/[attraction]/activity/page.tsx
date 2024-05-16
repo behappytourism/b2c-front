@@ -23,7 +23,7 @@ interface ActivityDetailPageProps {
 const findAttraction = async (attractionSlug: string) => {
   try {
     const attraction = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/single/${attractionSlug}?affiliateCode=`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/single/${attractionSlug}`,
       { next: { revalidate: 1 } }
     );
     return attraction.json();

@@ -105,7 +105,7 @@ const PageHome = () => {
     try {
       const response = await googleSignIn();
       dispatch(setUser(response));
-      dispatch(fetchAffiliateUser() as any);
+      // dispatch(fetchAffiliateUser() as any);
     } catch (error) {
       console.error(error);
     }

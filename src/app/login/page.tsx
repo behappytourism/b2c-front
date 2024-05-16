@@ -80,7 +80,6 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
     try {
       const response = await logIn();
       dispatch(setUser(response));
-      dispatch(fetchAffiliateUser() as any);
       {response?.jwtToken && (
       router.push("/")
       )}
@@ -119,7 +118,6 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
     try {
       const response = await googleSignIn();
       dispatch(setUser(response));
-      dispatch(fetchAffiliateUser() as any);
       {response?.jwtToken && (
         router.push("/")
       )}

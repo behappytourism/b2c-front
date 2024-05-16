@@ -45,7 +45,6 @@ enum CategoryAccounts {
   UpdatePassword = "update-password",
   DeleteAccount = "delete-account",
   Orders = "orders",
-  Affiliate = "affiliate",
   Logout = "logout",
   favourite = "favourite"
 }
@@ -75,7 +74,6 @@ const ProfileSideBar: React.FC<ProfileSideBarProps> = ({ currentTab }) => {
         "update-password",
         "delete-account",
         "orders",
-        "affiliate",
         "",
         "logout",
         "favourite"

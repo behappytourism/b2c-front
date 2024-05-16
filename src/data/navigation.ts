@@ -194,13 +194,13 @@ export const NAVIGATION_DEMO: NavItemType[] = [
     type: "megaMenu",
     megaMenu: megaMenuDemo,
   },
-  {
-    id: ncNanoId(),
-    href: "/profile/affiliate",
-    name: "Affiliate",
-    type: "megaMenu",
-    megaMenu: megaMenuDemo,
-  },
+  // {
+  //   id: ncNanoId(),
+  //   href: "/profile/affiliate",
+  //   name: "Affiliate",
+  //   type: "megaMenu",
+  //   megaMenu: megaMenuDemo,
+  // },
   // {
   //   id: ncNanoId(),
   //   href: "/listing-stay",
