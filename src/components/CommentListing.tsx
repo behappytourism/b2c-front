@@ -18,7 +18,7 @@ const CommentListing: FC<CommentListingProps> = ({
   className = "",
   data,
   hasListingTitle,
-}) => {
+}) => {  
   return (
     <div
       key={data?._id}
@@ -29,7 +29,7 @@ const CommentListing: FC<CommentListingProps> = ({
         <Avatar
           sizeClass="h-10 w-10 text-lg"
           radius="rounded-full"
-          userName={data?.user?.name || "Unknown"}
+          userName={data?.userName || "Unknown"}
         // imgUrl={`https://avatars.dicebear.com/api/initials/${data?.userName}.svg`}
         />
       </div>

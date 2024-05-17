@@ -275,6 +275,7 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
         return;
       }
       setTotalReviews([]);
+      window.location.reload();
       fetchReviewResponse({ limit, skip: 0, attraction: attraction });
     } catch (error: any) {
       setRatingSubmitErr(error?.response?.data?.error);
