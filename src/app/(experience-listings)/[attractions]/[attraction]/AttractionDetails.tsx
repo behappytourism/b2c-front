@@ -104,7 +104,10 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
   const { selectedCurrency } = useSelector(
     (state: RootState) => state.initials
   );
-  const { jwtToken, user } = useSelector((state: RootState) => state.users);
+  const { user } = useSelector((state: RootState) => state.users);
+
+ const jwtToken = localStorage.getItem("random-string");
+ 
 
   const { favourites } = useSelector((state: RootState) => state.attraction);
   //   const { attraction } = params;
