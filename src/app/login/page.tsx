@@ -46,6 +46,10 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
     (state: RootState) => state.users
   );
   
+  const { ReviewsURL } = useSelector(
+    (state: RootState) => state.attraction
+  );
+    
   
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -81,7 +85,14 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
       const response = await logIn();
       dispatch(setUser(response));
       {response?.jwtToken && (
-      router.push("/")
+        <>
+        {ReviewsURL && (
+           router.push(ReviewsURL)
+        )}
+        {!ReviewsURL && (
+          router.push("/")
+        )}
+        </>
       )}
       setError(response?.error)
     } catch (error) {

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import ListCardsExp from "@/components/Attraction/ListCardsExp"
 import { RootState } from "@/redux/store"

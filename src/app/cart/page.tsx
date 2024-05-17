@@ -107,10 +107,7 @@ const Cart = () => {
     const updatedBriefPayments = [...briefPayments];
     updatedBriefPayments[index] = !updatedBriefPayments[index];
     setBriefPayments(updatedBriefPayments);
-  };
-
-  console.log(cart);
-  
+  };  
 
   useEffect(() => {
     const filteredCountries = countries?.filter(
@@ -138,7 +135,6 @@ const Cart = () => {
 
   const activity = cart.map((item) => {
     const formattedDate = item?.date ? new Date(item.date).toISOString().split('T')[0] : '';
-    console.log(formattedDate);
     return {
       activity: item?._id,
       date: formattedDate, 

@@ -39,6 +39,7 @@ import {
   handleChangeActivityData,
   handleDateChange,
   handleSetFavourites,
+  setAttractionReviewsURL,
   storeAttractionActivity,
 } from "@/redux/features/attractionSlice";
 import placeholder from "@/images/placeholder-large-h.png";
@@ -51,7 +52,7 @@ import ActivityListCard from "./activity/ActivityListCard";
 import Head from "next/head";
 
 export interface AttractionDetailPageProps {
-	attraction: string;
+  attraction: string;
 }
 
 const findAttraction = async (attractionSlug: string) => {
@@ -103,14 +104,12 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
   const { selectedCurrency } = useSelector(
     (state: RootState) => state.initials
   );
-  const { jwtToken, isLoggedIn } = useSelector(
-    (state: RootState) => state.users
-  );
+  const { jwtToken, user } = useSelector((state: RootState) => state.users);
 
   const { favourites } = useSelector((state: RootState) => state.attraction);
-//   const { attraction } = params;
+  //   const { attraction } = params;
   //
-  const [skipReview, setSkipReview] = useState<number>(0);
+  const [skipReview, setSkipReview] = useState<number>(5);
   const [isVideoModal, setIsVideoModal] = useState<boolean>(false);
   const [addToCart, setAddToCart] = useState<boolean>(false);
   const [checkout, setCheckout] = useState<boolean>(false);
@@ -134,6 +133,10 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
   const [activitySelected, setActivitySelected] = useState(
     Array(attractionData?.activities?.length).fill(false)
   );
+
+  const handleReviewsURL = () => {
+    dispatch(setAttractionReviewsURL({ ReviewsURL: thisPathname }));
+  };
 
   const toggleActivitySelection = (index: number) => {
     const updatedActivitySelected = [...activitySelected];
@@ -432,7 +435,7 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
       console.log(error);
     }
   };
-  
+
   const renderActivitySection = () => {
     return (
       <div className="border-b pb-5">
@@ -550,29 +553,33 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
           Reviews ({attractionReviews?.totalAttractionReviews} reviews)
         </h2>
 
-          {/* comment */}
-          <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
-          {totalReviews &&
-           totalReviews?.slice(0, 5).map((review, reviewNumber) => (
-            <CommentListing key={reviewNumber} data={review} className="mb-5 pt-3" />
-          ))}
-          
-          {totalReviews.length > 5 && (
-          <div className="pt-5 mb-10">
-            <ButtonSecondary
-              disabled={isReviewSeeMoreDisabled()}
-              className=" cursor-pointer disabled:cursor-not-allowed "
-              onClick={() => reviewOnClickHandler()}
-            >
-              View more reviews
-            </ButtonSecondary>
-          </div>
-          )}
+        {/* comment */}
+        <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+          {attractionData &&
+            attractionData?.reviews
+              ?.slice(0, skipReview)
+              ?.map((review, reviewNumber) => (
+                <CommentListing
+                  key={reviewNumber}
+                  data={review}
+                  className="mb-5 pt-3"
+                />
+              ))}
 
+          {attractionData && attractionData?.reviews?.length > 5 && (
+            <div className="pt-5 mb-10">
+              <ButtonSecondary
+                className=" cursor-pointer disabled:cursor-not-allowed "
+                onClick={() => reviewOnClickHandler()}
+              >
+                View more reviews
+              </ButtonSecondary>
+            </div>
+          )}
         </div>
 
         {/* Content */}
-        {isLoggedIn ? (
+        {user?.name ? (
           <form onSubmit={reviewSubmitHandler}>
             <div className="mt-10">
               <FiveStartIconForRate
@@ -608,10 +615,12 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
             </div>
           </form>
         ) : (
-          ""
+          <div className="">
+            <ButtonPrimary onClick={() => handleReviewsURL()} href="/login">
+              Write a review
+            </ButtonPrimary>
+          </div>
         )}
-
-      
       </div>
     );
   };
@@ -725,7 +734,7 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
     try {
       setErrorModalContent("");
       const selectedActivityAtIndex = selectedActivities[index];
-  
+
       if (selectedActivityAtIndex?.slotsAvailable?.length) {
         if (
           !selectedActivityAtIndex.hasOwnProperty("slot") ||
@@ -734,13 +743,13 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
           throw new Error("Select the slot for the next step");
         }
       }
-  
+
       const updatedSelectedActivity = {
         ...selectedActivityAtIndex,
         destination: attractionData?.destination?.name,
-        slug: attractionData?.slug
+        slug: attractionData?.slug,
       };
-  
+
       dispatch(handleAddtocart([updatedSelectedActivity]));
     } catch (error) {
       setErrorModalContent(`${error}`);
@@ -751,7 +760,7 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
     try {
       setErrorModalContent("");
       const selectedActivityAtIndex = selectedActivities[index];
-  
+
       if (selectedActivityAtIndex?.slotsAvailable?.length) {
         if (
           !selectedActivityAtIndex.hasOwnProperty("slot") ||
@@ -760,13 +769,13 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
           throw new Error("Select the slot for the next step");
         }
       }
-  
+
       const updatedSelectedActivity = {
         ...selectedActivityAtIndex,
         destination: attractionData?.destination?.name,
-        slug: attractionData?.slug
+        slug: attractionData?.slug,
       };
-  
+
       dispatch(handleAddtocart([updatedSelectedActivity]));
     } catch (error) {
       setErrorModalContent(`${error}`);
@@ -887,15 +896,17 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
 
   const backfunction = () => {
     window?.history?.back();
-  }
+  };
 
-  
   return (
     <div className={` nc-ListingExperiencesDetailPage  `}>
       <div className="my-3 flex md:flex-row flex-col gap-2 md:justify-between">
-        <div onClick={() => backfunction()} className="flex items-center cursor-pointer text-xs md:text-base text-center gap-3">
-        <ArrowLeftIcon height={20} width={20} />
-        <p>Back</p>
+        <div
+          onClick={() => backfunction()}
+          className="flex items-center cursor-pointer text-xs md:text-base text-center gap-3"
+        >
+          <ArrowLeftIcon height={20} width={20} />
+          <p>Back</p>
         </div>
         <Breadcrumb breadCrumbs={breadcrum} />
       </div>
@@ -1144,6 +1155,6 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
       {/* <MobileFooterStickyDate attractionData={attractionData} /> */}
     </div>
   );
-}
+};
 
 export default AttractionDetails;

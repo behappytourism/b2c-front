@@ -10,10 +10,11 @@ import { UUID } from "crypto";
 import { addDays } from "date-fns";
 
 type InitialState = {
-  Destination: "";
+  Destination: string;
   activities: ActivityExcursion[];
   cart: ActivityExcursion[];
   favourites: SearchByDestination[];
+  ReviewsURL: string;
 };
 
 var cartItems =
@@ -27,6 +28,7 @@ const initialState = {
   activities: [],
   cart: cartItems ? JSON.parse(cartItems) : [],
   favourites: favItems ? JSON.parse(favItems) : [],
+  ReviewsURL: "",
 } as InitialState;
 
 export const attraction = createSlice({
@@ -80,6 +82,9 @@ export const attraction = createSlice({
     },
     setAttractionDestination: (state, action) => {
       state.Destination = action.payload?.Destination;
+    },
+    setAttractionReviewsURL: (state, action) => {
+      state.ReviewsURL = action.payload?.ReviewsURL;
     },
     // handle change in value of each activity in this array of activity.
     handleChangeActivityData: (state, action) => {
@@ -188,5 +193,6 @@ export const {
   handleChangeCart,
   handleSetFavourites,
   setAttractionDestination,
+  setAttractionReviewsURL,
 } = attraction.actions;
 export default attraction.reducer;
