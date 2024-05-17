@@ -71,11 +71,11 @@ export const attraction = createSlice({
         // Initially setting the transferType.
         if (activity?.activityType !== ActivityTypeEnum.transfer) {
           activity.transferType = TransferTypeEmun.without;
-        } else if (isPrivateTransferAvail) {
-          activity.transferType = TransferTypeEmun.private;
         } else if (isSharedTransferAvail) {
           activity.transferType = TransferTypeEmun.shared;
-        }
+        } else if (isPrivateTransferAvail) {
+          activity.transferType = TransferTypeEmun.private;
+        } 
       }
     },
     setAttractionDestination: (state, action) => {

@@ -11,7 +11,7 @@ export interface BtnLikeIconProps {
 
 const BtnLikeIcon: FC<BtnLikeIconProps> = ({
   className = "",
-  colorClass = "text-white bg-black bg-opacity-30 hover:bg-opacity-50",
+  colorClass = "text-white md:bg-black md:bg-opacity-30 hover:bg-opacity-50",
   isLiked = false,
   onClick = () => { },
 }) => {

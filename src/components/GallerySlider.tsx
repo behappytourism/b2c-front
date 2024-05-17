@@ -109,7 +109,7 @@ export default function GallerySlider({
                   src={currentImage || ""}
                   fill
                   alt="listing card gallery"
-                  className={`object-cover ${imageClass} transform hover:scale-110 transition-transform duration-300`}
+                  className={`object-cover ${imageClass} rounded-lg md:rounded-none transform hover:scale-110 transition-transform duration-300`}
                   onLoadingComplete={() => setLoaded(true)}
                   sizes="(max-width: 1025px) 100vw, 100px"
                 />

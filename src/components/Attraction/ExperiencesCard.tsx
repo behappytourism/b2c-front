@@ -14,6 +14,7 @@ import priceConversion from "@/utils/priceConversion";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { handleSetFavourites } from "@/redux/features/attractionSlice";
+import Image from "next/image";
 
 export interface ExperiencesCardProps {
   className?: string;
@@ -208,7 +209,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
     return(
       <div className="flex">
 
-        <div className="w-3/12">
+        <div className="w-4/12 flex flex-col justify-center">
         <GallerySlider
           uniqueID={`ExperiencesCard_${"id"}`}
           ratioClass={ratioClass}
@@ -216,9 +217,11 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
           href={data && (`/${data?.destination?.slug}/${data?.slug}` as Route)}
           galleryClass={size === "default" ? "" : ""}
         />
+        {/* <Image className="rounded min-h-[90px] max-h-[90px] max-w-[100px]" alt="attraction image" src={process.env.NEXT_PUBLIC_CDN_URL + images[0]} width={500} height={100} /> */}
         </div>
 
-        <div className="w-9/12">
+        <div className="w-8/12">
+        <Link href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
 
         <div
         className={`${size === "default" ? "p-3 space-y-1 " : "p-3 space-y-1"}`}
@@ -229,7 +232,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
         <div className="flex md:hidden items-center justify-between">
           <p className="text-xs font-bold">
             <Badge
-              name={bookingType}
+              name={category?.categoryName}
               className=" relative capitalize "
               color="red"
             />
@@ -244,19 +247,19 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
         </div>
 
             <h2
-              className={` font-medium capitalize overflow-hidden text-xl ${
+              className={` font-medium capitalize  text-xl ${
                 size === "default" ? "text-base" : "text-base"
               }`}
             >
               <span
-                className={` line-clamp-1 md:text-center text-xs md:text-xl md:font-medium font-semibold`}
+                className={` md:text-center text-sm md:text-xl md:font-medium font-bold`}
               >
                 {title}
               </span>
             </h2>
             <div className="md:flex hidden gap-5 text-gray-500 justify-center">
               <p className={`font-thin text-sm capitalize overflow-hidden`}>
-                {destination?.name}, {category?.categoryName}
+                {destination?.name}
               </p>
               <StartRating
                 reviewCount={totalReviews}
@@ -297,6 +300,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
         </div>
       </div>
 
+        </Link>
         </div>
 
       </div>
@@ -306,22 +310,26 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   return (
     <>
     <div
-      className={`nc-ExperiencesCard  border group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
+      className={`nc-ExperiencesCard hidden md:block  border group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
     >
-      <Link href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
+
         {renderSliderGallery()}
+        <Link href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
         {renderContent()}
       </Link>
     </div>
 
 
-    {/* <div
-      className={`nc-ExperiencesCard md:hidden block border group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
+    <div
+      className={`nc-ExperiencesCard md:hidden block  group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
     >
-      <Link href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
+              <BtnLikeIcon
+          isLiked={isLiked}
+          onClick={handleLikeExc}
+          className="absolute left-0 top-4"
+        />
         {renderMobileContent()}
-      </Link>
-    </div> */}
+    </div>
     </>
   );
 };

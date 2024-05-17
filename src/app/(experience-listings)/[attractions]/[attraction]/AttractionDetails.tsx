@@ -550,19 +550,40 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
           Reviews ({attractionReviews?.totalAttractionReviews} reviews)
         </h2>
 
+          {/* comment */}
+          <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+          {totalReviews &&
+           totalReviews?.slice(0, 5).map((review, reviewNumber) => (
+            <CommentListing key={reviewNumber} data={review} className="mb-5 pt-3" />
+          ))}
+          
+          {totalReviews.length > 5 && (
+          <div className="pt-5 mb-10">
+            <ButtonSecondary
+              disabled={isReviewSeeMoreDisabled()}
+              className=" cursor-pointer disabled:cursor-not-allowed "
+              onClick={() => reviewOnClickHandler()}
+            >
+              View more reviews
+            </ButtonSecondary>
+          </div>
+          )}
+
+        </div>
+
         {/* Content */}
         {isLoggedIn ? (
           <form onSubmit={reviewSubmitHandler}>
-            <div className="space-y-5">
+            <div className="mt-10">
               <FiveStartIconForRate
                 setStars={setStars}
                 iconClass="w-6 h-6"
-                className="space-x-0.5"
+                className="mb-5"
               />
               <Input
                 fontClass=""
                 sizeClass="h-16 px-4 py-3"
-                rounded="rounded-lg"
+                rounded="rounded-lg mb-5"
                 placeholder="Title of feedback"
                 onChange={(e) => {
                   setReview((prev) => {
@@ -577,6 +598,7 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
                   });
                 }}
                 placeholder="Share your thoughts ..."
+                className="mb-5"
               />
               <div className="flex justify-end">
                 <ButtonPrimary className="rounded-lg" type="submit">
@@ -589,23 +611,7 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
           ""
         )}
 
-        {/* comment */}
-        <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
-          {totalReviews &&
-            totalReviews?.map((review) => (
-              <CommentListing data={review} className="py-8" />
-            ))}
-
-          <div className="pt-8">
-            <ButtonSecondary
-              disabled={isReviewSeeMoreDisabled()}
-              className=" cursor-pointer disabled:cursor-not-allowed "
-              onClick={() => reviewOnClickHandler()}
-            >
-              View more reviews
-            </ButtonSecondary>
-          </div>
-        </div>
+      
       </div>
     );
   };
@@ -1070,7 +1076,7 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
             attractionData?.sections?.map((section) => renderSection5(section))}
           {attractionData ? (
             <>
-              {/* {renderSection6()} */}
+              {renderSection6()}
               {renderSection7(
                 attractionData?.latitude,
                 attractionData?.longitude
