@@ -8,14 +8,17 @@ import { NavItemType } from "./NavigationItem";
 import { NAVIGATION_DEMO } from "@/data/navigation";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import SocialsList from "@/shared/SocialsList";
-import { ChevronDownIcon } from "@heroicons/react/24/solid";
+import { ChevronDownIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";
 import Link from "next/link";
 import LangDropdown from "@/app/(client-components)/(Header)/LangDropdown";
 import { ArrowLeftOnRectangleIcon as OutlineLogout } from "@heroicons/react/24/outline";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/redux/features/usersSlice";
 import { signOut } from "next-auth/react";
+import { RootState } from "@/redux/store";
+import LoginBar from "@/shared/LoginBar";
+import ButtonSecondary from "../ButtonSecondary";
 
 export interface NavMobileProps {
   data?: NavItemType[];
@@ -27,6 +30,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
   onClickClose,
 }) => {
   const dispatch = useDispatch();
+  const { user, jwtToken } = useSelector((state: RootState) => state.users);
 
   const handleLogout = async() => {
     await signOut()
@@ -137,6 +141,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
       </div>
       <ul className="flex flex-col py-6 px-2 space-y-1">
         {data.map(_renderItem)}
+        {user?.name && jwtToken && (
         <div
           onClick={handleLogout}
           className="flex gap-1 items-center text-center cursor-pointer py-6 px-2 space-y-1"
@@ -147,6 +152,19 @@ const NavMobile: React.FC<NavMobileProps> = ({
             Logout
           </span>
         </div>
+)}
+
+{!user?.name && (
+          <ButtonSecondary
+          className="flex gap-1 w-fit border-none items-center text-center cursor-pointer px-2"
+          href="/login">
+          <UserCircleIcon className="h-6 w-6" />
+
+<span className="text-neutral-6000 dark:text-neutral-300">
+  Login
+</span>
+          </ButtonSecondary>
+)}
       </ul>
       <div className="flex items-center justify-end py-6 px-5">
         <LangDropdown
