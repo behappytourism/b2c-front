@@ -315,6 +315,8 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
       break;
   }
 
+  
+
   const renderSection1 = () => {
     return (
       <div className="py-5 !space-y-5">
@@ -352,7 +354,7 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
                 ? Number(attractionData?.averageRating?.toFixed(2))
                 : 0
             }
-            reviewCount={attractionData?.totalRating}
+            reviewCount={attractionData?.reviews?.length}
           />
           <span>·</span>
           <span>

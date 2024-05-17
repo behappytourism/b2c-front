@@ -12,6 +12,7 @@ const StartRating: FC<StartRatingProps> = ({
   point = 4.5,
   reviewCount = 112,
 }) => {
+  
   return (
     <div
       className={`nc-StartRating flex items-center space-x-1 text-sm  ${className}`}
