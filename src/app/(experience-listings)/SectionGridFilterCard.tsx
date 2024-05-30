@@ -83,7 +83,7 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
                   <ExperiencesCard key={attraction._id} data={attraction} />
                 ))}
               </div>
-              {data && data.attractions?.totalAttractions && (
+              {/* {data && data.attractions?.totalAttractions && (
                 <div className="flex mt-16 justify-center items-center">
                   <Pagination
                     limit={filters?.limit}
@@ -109,7 +109,7 @@ const SectionGridFilterCard: FC<SectionGridFilterCardProps> = ({
                     }}
                   />
                 </div>
-              )}
+              )} */}
             </>
           ) : <>
             <div className="w-full flex justify-start h-full items-center ">

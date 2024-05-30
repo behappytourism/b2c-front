@@ -1,25 +1,38 @@
-"use client"
 import { Poppins } from "next/font/google";
-import SiteHeader from "./(client-components)/(Header)/SiteHeader";
-import ClientCommons from "./ClientCommons";
 import "./globals.css";
 import "@/fonts/line-awesome-1.3.0/css/line-awesome.css";
 import "@/styles/index.scss";
 import "rc-slider/assets/index.css";
-import Footer from "@/components/Footer";
-import FooterNav from "@/components/FooterNav";
-import { ReduxProvider } from "@/redux/provider";
-import FetchInitialData from "./FetchInitialData";
-import { SessionProvider } from "next-auth/react"
-import FetchUserData from "./fetchUserData";
-import SectionDowloadApp from "./(home)/SectionDowloadApp";
-import SuccessAlert from "@/components/alerts/AlertSuccess";
-import favicon from "@/images/behappyfavicon.png"
+import BasicLayout from "./rootLayout";
+import { Metadata } from "next";
+
 const poppins = Poppins({
   subsets: ["latin"],
   display: "swap",
   weight: ["300", "400", "500", "600", "700"],
 });
+
+
+export const metadata: Metadata = {
+  title: {
+    default: `Travel Agency in Dubai | Best Tourism Company UAE | ${process.env.NEXT_PUBLIC_TITLE_SHORT_NAME}`,
+    template: `%s | ${process.env.NEXT_PUBLIC_TITLE_SHORT_NAME}`
+  },
+  keywords: [
+    "travel agency in dubai",
+    "tourism company in dubai",
+    "best travel company in dubai",
+    "tour agency",
+    "travel and tours",
+    "travels in dubai",
+    "tour and travel agency",
+    "travel agency dubai",
+    "travel agency uae",
+  ],
+  description: `Explore Dubai with our tour and travel agency in UAE. Visa services, hotel booking, and airport transfers available. Experienced team. Best services. Contact today!`
+}
+
+
 
 
 
@@ -34,8 +47,8 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={poppins.className}>
-      <title id="title">{process.env.NEXT_PUBLIC_TITLE_SHORT_NAME}</title>
       <link rel="icon" id="companyLogo" type="image/svg+xml" href={process.env.NEXT_PUBLIC_COMPANY_FAVICON} />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 
       {/* Google Tag Manager */}
@@ -53,19 +66,7 @@ export default function RootLayout({
 
 
       <body className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
-        <SessionProvider>
-          <ReduxProvider>
-            <ClientCommons />
-            <FetchInitialData />
-            <FetchUserData />
-            <SiteHeader />
-            {children}
-            <SuccessAlert />
-            {/* <SectionDowloadApp /> */}
-            <FooterNav />
-            <Footer />
-          </ReduxProvider>
-        </SessionProvider>
+      <BasicLayout children={children} params={params} />
       </body>
     </html>
   );
