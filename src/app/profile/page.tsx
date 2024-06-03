@@ -96,10 +96,13 @@ const ProfilePage: FC<ProfilePageProps> = ({}) => {
     }
   }, []);
 
+  console.log(profile);
+  
+
   // setting initial data.
   useEffect(() => {
     setProfile({
-      name: user?.name || "",
+      name: "" || user?.name,
       email: user?.email || "",
       country: user?.country || "",
       phoneNumber: user?.phoneNumber?.toString() || "",
@@ -195,8 +198,8 @@ const ProfilePage: FC<ProfilePageProps> = ({}) => {
                 />
               </div>
             </div>
-            <form
-              onSubmit={updateProfileDetails}
+            <div
+             // onSubmit={updateProfileDetails}
               className="flex-grow mt-10 md:mt-0 md:pl-16 max-w-3xl space-y-6"
             >
               <div>
@@ -204,6 +207,7 @@ const ProfilePage: FC<ProfilePageProps> = ({}) => {
                 <Input
                   onChange={onChangeData}
                   className="mt-1.5"
+                  name="name"
                   defaultValue="Eden Tuan"
                   value={profile?.name || user?.name}
                   required
@@ -217,7 +221,7 @@ const ProfilePage: FC<ProfilePageProps> = ({}) => {
                   className="mt-1.5"
                   defaultValue="example@email.com"
                   value={profile?.email || user?.email}
-                  required
+                  disabled
                 />
               </div>
 
@@ -261,12 +265,12 @@ const ProfilePage: FC<ProfilePageProps> = ({}) => {
               </div>
 
               <div className="pt-2">
-                <ButtonPrimary type="submit">Update info</ButtonPrimary>
+                <ButtonPrimary onClick={() => updateProfileDetails()}>Update info</ButtonPrimary>
                 {error !== "" && (
                   <p className="text-[13px] mt-3 text-red-600">{error}</p>
                 )}
               </div>
-            </form>
+            </div>
           </div>
         )}
       </div>
