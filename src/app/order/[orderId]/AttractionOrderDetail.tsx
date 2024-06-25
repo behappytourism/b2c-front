@@ -273,11 +273,11 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                 </button>
               )}
 
-              <button
+              {/* <button
                 className="p-2  w-full md:w-fit mx-4 bg-black text-white hover:bg-primary-400 cursor-pointer rounded font-semibold"
               >
                 Cancel
-              </button>
+              </button> */}
 
               {invoice === true && (
                 <button
