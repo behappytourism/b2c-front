@@ -96,7 +96,6 @@ const ProfilePage: FC<ProfilePageProps> = ({}) => {
     }
   }, []);
 
-  console.log(profile);
   
 
   // setting initial data.
