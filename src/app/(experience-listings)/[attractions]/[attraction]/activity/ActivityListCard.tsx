@@ -947,7 +947,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
             <p className="text-sm">
               <div
                 dangerouslySetInnerHTML={{
-                  __html: data?.description.slice(0, 100) + "...",
+                  __html: data?.description?.slice(0, 100) + "...",
                 }}
               />
               <button
@@ -1153,7 +1153,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
           </>
 
           <div className="md:w-5/12 p-2">
-            <div className="md:flex md:justify-between">
+            <div className="md:flex md:justify-between md:gap-1">
               <div className="py-2">
                 <p className=" text-xs text-gray-400 py-1">
                   Choose transfer type?
@@ -1183,6 +1183,20 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
             <div className="md:flex md:justify-between">
               {/* On Person */}
               {data.base !== BaseTypeEnum.hourly ? (
+                <div className="py-2">
+                  <p className=" text-xs text-gray-400 py-1">
+                    Choose your pax?
+                  </p>
+                  <GuestsInput
+                    data={data}
+                    handleChangeData={handleChangeData}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+
+{data.base === BaseTypeEnum.hourly && data?.activityType === "transfer" && data?.transferType === "private" ? (
                 <div className="py-2">
                   <p className=" text-xs text-gray-400 py-1">
                     Choose your pax?

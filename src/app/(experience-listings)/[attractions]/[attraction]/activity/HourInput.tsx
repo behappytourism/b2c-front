@@ -23,14 +23,14 @@ const HourInput: FC<HourInputProps> = ({
             {({ open, close }) => (
                 <>
                     <Popover.Button
-                        className={`w-full flex items-center justify-between p-3 text-sm rounded-full border border-neutral-300 dark:border-neutral-700  focus:outline-none ${open ? " shadow-lg " : ""
+                        className={`w-fit flex items-center gap-5 p-1.5 text-sm rounded-xl border border-neutral-300 dark:border-neutral-700  focus:outline-none ${open ? " shadow-lg " : ""
                             }`}
                     >
                         <div className="flex items-center gap-1">
                             <div className="text-neutral-300 dark:text-neutral-400">
                                 <ClockIcon className="w-5 h-5 lg:w-6 lg:h-6" />
                             </div>
-                            <div className="capitalize pl-2 text-base">
+                            <div className="capitalize text-[12px]">
                                 {data.hourCount + " Hour"}
                             </div>
                         </div>
