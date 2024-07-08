@@ -36,7 +36,7 @@ const LandingPage = () => {
   const findAttraction = async () => {
     try {
       const attraction = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/all?limit=100&skip=0&destination=${dest}`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/all?limit=100&skip=0`,
         { next: { revalidate: 1 } }
       );
       return attraction.json();
@@ -143,7 +143,7 @@ const LandingPage = () => {
 
   const tabs: string[] = useMemo(() => {
     let destinations: string[] =
-      response?.destinations.map(
+      response?.destinations?.map(
         (destination: any) => destination.name || ""
       ) || [];
     destinations.unshift("all");
@@ -157,7 +157,7 @@ const LandingPage = () => {
 
   return (
     <>
-      {banner.length === 0 && (
+      {banner?.length === 0 && (
         <main className="nc-PageHome flex justify-center relative overflow-hidden">
           <div className="flex flex-col gap-5">
             <ComponentLoader />
@@ -167,7 +167,7 @@ const LandingPage = () => {
           </div>
         </main>
       )}
-      {banner.length > 0 && (
+      {banner?.length > 0 && (
         <main className="nc-PageHome flex justify-center relative overflow-hidden">
           {/* GLASSMOPHIN */}
           <BgGlassmorphism />
@@ -235,7 +235,7 @@ const LandingPage = () => {
             </div>
           </div>
         </main>
-      )}
+      )} 
     </>
   );
 };

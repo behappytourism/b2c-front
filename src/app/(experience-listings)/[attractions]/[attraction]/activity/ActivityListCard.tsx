@@ -893,6 +893,8 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
     dispatch(handleDateChange(date));
   };
   
+  console.log(data);
+  
 
   return (
     <div
@@ -1196,7 +1198,7 @@ const ActivityListCard: FC<ActivityDetailPageProps> = ({
                 ""
               )}
 
-{data.base === BaseTypeEnum.hourly && data?.activityType === "transfer" && data?.transferType === "private" ? (
+{data.base === BaseTypeEnum.hourly && data?.activityType === "transfer"  ? (
                 <div className="py-2">
                   <p className=" text-xs text-gray-400 py-1">
                     Choose your pax?

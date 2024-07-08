@@ -3,11 +3,15 @@
 import { RootState } from "@/redux/store";
 import ButtonSecondary from "@/shared/ButtonSecondary";
 import React, { FC, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import priceConversion from "@/utils/priceConversion";
 import { OrderExcursion, OrderStatusExcEnum } from "@/data/attraction/types";
 import ButtonPrimary from "@/shared/ButtonPrimary";
 import Image from "next/image";
+import Checkbox from "@/shared/Checkbox";
+import BtnLoader from "@/shared/Loader/BtnLoader";
+import { useParams } from "next/navigation";
+import { setAlertSuccess } from "@/redux/features/transferSlice";
 
 export interface OrderTemplateProps {
   data?: OrderExcursion;
@@ -15,6 +19,8 @@ export interface OrderTemplateProps {
 }
 
 const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
+  const params = useParams();
+  const dispatch = useDispatch();
   const [orderInvoice, setOrderInvoice] = useState<null | Blob>(null);
   const [attractionOrderAllTickets, setAttractionOrderAllTickets] =
     useState<null | Blob>(null);
@@ -25,10 +31,35 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
   );
   const [search, setSearch] = useState(false);
   const [invoice, setInvoice] = useState(false);
+  const [cancel, setCancel] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [cancelModal, setCancelModal] = useState(false);
+  const [cancelTransferActivityId, setCancelTransferActivityId] = useState<
+    string[]
+  >([]);
+  const [cancelAttractionActivityId, setCancelAttractionActivityId] = useState<
+    string[]
+  >([]);
+  const [cancellationRemark, setCancellationRemark] = useState<string>("");
 
   const { jwtToken } = useSelector((state: RootState) => state.users);
 
   //console.log(data?.transferOrder, "data");
+
+  const handleCancel = () => {
+    setCancel(true);
+  };
+
+  const handleCancelBack = () => {
+    setCancel(false);
+    setCancelAttractionActivityId([]);
+    setCancelTransferActivityId([]);
+    setCancellationRemark("");
+  };
+
+  const handleCancelRemark = () => {
+    setCancelModal(true);
+  };
 
   function formatDate(updatedAt: Date | string) {
     const options = {
@@ -223,8 +254,115 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
     handleDownloadSingleTicket();
   }, [attractionOrderSingleTicket]);
 
+  const handleOrderCancellation = async () => {
+    const body = {
+      orderId: `${params.orderId}`,
+      attractionCancellations: cancelAttractionActivityId,
+      transferCancellations: cancelTransferActivityId,
+      cancellationRemark: cancellationRemark,
+    };
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/orders/cancel`,
+        {
+          method: "PATCH",
+          body: JSON.stringify(body),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      return response.json();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async function cancelProcess() {
+    try {
+      const response = await handleOrderCancellation();
+
+      dispatch(
+        setAlertSuccess({
+          status: true,
+          title: "Order Cancellation Request",
+          text: `${response?.data?.message || response?.error || response?.message}`,
+        })
+      );
+
+
+      setCancelAttractionActivityId([]);
+      setCancelTransferActivityId([]);
+      setCancelModal(false);
+      setCancel(false);
+      setLoading(false);
+      // setError(response?.error)
+    } catch (error) {
+      const err = error as {
+        response?: { data?: { error?: string }; error?: string };
+      };
+      dispatch(
+        setAlertSuccess({
+          status: true,
+          title: "Order Cancellation Request",
+          text: `${
+            err.response?.data?.error ||
+            err.response?.error ||
+            "An unexpected error occurred"
+          }`,
+        })
+      );
+      setCancelAttractionActivityId([]);
+      setCancelTransferActivityId([]);
+      setCancelModal(false);
+      setCancel(false);
+      setLoading(false);
+      console.error(error);
+    }
+  }
+
   return (
     <div className="listingSection__wrap container mb-7">
+      <>
+        {cancelModal === true && (
+          <div className="fixed w-full h-full z-50 left-0 top-0 backdrop-blur-sm bg-opacity-10 bg-black">
+            <div className="w-full flex justify-center">
+              <div className="min-w-[500px] max-w-[500px] bg-white shadow-sm rounded-lg p-4 shadow-black mt-[10%]">
+                <p className="text-2xl mb-3 font-semibold">
+                  Cancellation Remark
+                </p>
+                <input
+                  onChange={(e) => setCancellationRemark(e?.target?.value)}
+                  type="text"
+                  className="border w-full rounded px-2 my-5 py-1 placeholder:text-gray-300"
+                  placeholder="cancellation remark"
+                />
+                <div className="flex w-full justify-end gap-5">
+                  <button
+                    disabled={loading}
+                    onClick={() => setCancelModal(false)}
+                    className="bg-black text-white rounded py-1 px-3"
+                  >
+                    Back
+                  </button>
+                  {loading ? (
+                    <BtnLoader />
+                  ) : (
+                    <button
+                      className="bg-[#4AB0BA] text-white rounded py-1 px-3"
+                      onClick={() => cancelProcess()}
+                    >
+                      Confirm
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </>
       {!data && (
         <>
           <div
@@ -262,55 +400,100 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
           <div className="flex  w-full justify-center items-center text-center">
             <h1 className="text-3xl underline">Order Details</h1>
           </div>
-          {data?.orderStatus === OrderStatusExcEnum.completed && (
-            <div className="flex w-full justify-end">
-              {invoice === false && (
-                <button
-                  onClick={() => getOrderInvoice(orderId || "")}
-                  className="p-2  w-full md:w-fit mx-4 bg-primary-200 hover:bg-primary-400 cursor-pointer rounded font-semibold text-black"
-                >
-                  Download Invoice
-                </button>
-              )}
+          {cancel === false && (
+            <>
+              {data?.orderStatus === OrderStatusExcEnum.completed && (
+                <div className="flex w-full justify-end">
+                  {invoice === false && (
+                    <button
+                      onClick={() => getOrderInvoice(orderId || "")}
+                      className="p-2  w-full md:w-fit mx-4 bg-[#4AB0BA] cursor-pointer rounded font-semibold text-white"
+                    >
+                      Download Invoice
+                    </button>
+                  )}
 
-              {/* <button
-                className="p-2  w-full md:w-fit mx-4 bg-black text-white hover:bg-primary-400 cursor-pointer rounded font-semibold"
-              >
-                Cancel
-              </button> */}
-
-              {invoice === true && (
-                <button
-                  type="button"
-                  className="p-2 dark:bg-neutral-900 dark:text-neutral-100 mt-6 min-w-[200px] w-full md:w-fit bg-primary-300  text-sm font-medium text-white self-center min-h-[50px] rounded dark:border-gray-600  flex justify-center items-center"
-                >
-                  <svg
-                    aria-hidden="true"
-                    role="status"
-                    className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
-                    viewBox="0 0 100 101"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <button
+                    onClick={() => handleCancel()}
+                    className="p-2  w-full md:w-fit mx-4 bg-black text-white cursor-pointer rounded font-semibold"
                   >
-                    <path
-                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                      fill="currentColor"
-                    ></path>
-                    <path
-                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                      fill="#1C64F2"
-                    ></path>
-                  </svg>
-                  Downloading...
-                </button>
+                    Cancel
+                  </button>
+
+                  {invoice === true && (
+                    <button
+                      type="button"
+                      className="p-2 dark:bg-neutral-900 dark:text-neutral-100 mt-6 min-w-[200px] w-full md:w-fit bg-primary-300  text-sm font-medium text-white self-center min-h-[50px] rounded dark:border-gray-600  flex justify-center items-center"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        role="status"
+                        className="inline mr-2 w-4 h-4 text-gray-200 animate-spin dark:text-gray-600"
+                        viewBox="0 0 100 101"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                          fill="currentColor"
+                        ></path>
+                        <path
+                          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                          fill="#1C64F2"
+                        ></path>
+                      </svg>
+                      Downloading...
+                    </button>
+                  )}
+                </div>
               )}
+            </>
+          )}
+
+          {cancel === true && (
+            <div className="flex gap-5 justify-end">
+              <button
+                onClick={() => handleCancelBack()}
+                className="bg-black w-52 rounded-full text-white  h-8"
+              >
+                Back
+              </button>
+              <button
+                onClick={() => handleCancelRemark()}
+                className="bg-[#4AB0BA] w-52 rounded-full text-white  h-8"
+              >
+                Continue
+              </button>
             </div>
           )}
 
           {data?.attractionOrder?.activities?.map(
             (activity: any, index: number) => (
               <div className="mt-10 md:flex md:justify-between p-4 md:p-2">
-                <div className="bg-white border w-full md:flex gap-4 text-white font-semibold md:p-4  mb-5 md:mb-0 rounded-xl">
+                {cancel && (
+                  <div className="mr-3 mt-[110px]">
+                    <Checkbox
+                      defaultChecked={cancelAttractionActivityId.includes(
+                        activity?._id
+                      )}
+                      name="cancel"
+                      onChange={() =>
+                        setCancelAttractionActivityId((prevState: string[]) =>
+                          prevState.includes(activity?._id)
+                            ? prevState.filter((id) => id !== activity?._id)
+                            : [...prevState, activity?._id]
+                        )
+                      }
+                    />
+                  </div>
+                )}
+                <div
+                  className={`bg-white ${
+                    cancelAttractionActivityId.includes(activity?._id)
+                      ? "border-blue-300 border-2"
+                      : "border"
+                  } border w-full md:flex gap-4 text-white font-semibold md:p-4  mb-5 md:mb-0 rounded-xl`}
+                >
                   <div className="md:max-w-[300px] w-full">
                     <Image
                       className="rounded-none border-r-2 pr-3 max-h-[300px]  min-h-[200px] w-full rounded-t-xl md:rounded-t-none md:mb-0 mb-3 cursor-pointer"
@@ -397,7 +580,7 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
                                       activity?._id
                                     )
                                   }
-                                  className="md:px-2 md:py-1 px-2 py-2  mt-5 md:mt-0 w-full md:w-fit bg-primary-200 hover:bg-primary-400 cursor-pointer rounded font-semibold text-black"
+                                  className="md:px-2 md:py-1 px-2 py-2  mt-5 md:mt-0 w-full md:w-fit bg-[#4AB0BA] cursor-pointer rounded font-semibold text-white"
                                 >
                                   Download Ticket
                                 </button>
@@ -443,111 +626,143 @@ const AttractionOrderDetail: FC<OrderTemplateProps> = ({ data, orderId }) => {
             (journeyItem: any, index: number) => (
               <>
                 {journeyItem?.trips?.map((trip: any, index: number) => (
-                  <div className="mt-10 md:flex md:justify-between p-2 md:p-0">
-                    <div className=" w-full text-white font-semibold md:p-4 p-2 mb-5 md:mb-0 rounded-xl">
-                      <div className="text-black flex justify-between w-full mb-5">
-                        <div className="text-left">
-                          <p className="text-2xl">
-                            {" "}
-                            {trip?.transferFrom?.airportName ||
-                              trip?.transferFrom?.name ||
-                              trip?.transferFrom?.areaName}
-                          </p>
-                          <p className="text-gray-400">Pickup Location</p>
-                        </div>
-
-                        <div className="text-right">
-                          <p className="text-2xl">
-                            {trip?.transferTo?.name ||
-                              trip?.transferTo?.airportName ||
-                              trip?.transferTo?.areaName}
-                          </p>
-                          <p className="text-gray-400">Drop Location</p>
-                        </div>
+                  <>
+                  <div className="flex gap-3 w-full">
+                    {cancel && (
+                      <div className="mr-3 mt-[280px]">
+                        <Checkbox
+                          defaultChecked={cancelTransferActivityId.includes(
+                            journeyItem?._id
+                          )}
+                          name="cancel"
+                          onChange={() =>
+                            setCancelTransferActivityId(
+                              (prevState: string[]) =>
+                                prevState.includes(journeyItem?._id)
+                                  ? prevState.filter((id) => id !== journeyItem?._id)
+                                  : [...prevState, journeyItem?._id]
+                            )
+                          }
+                        />
                       </div>
+                    )}
 
-                      <div className="text-black mb-5   border-black flex justify-between w-full">
-                        <div className="text-left">
-                          <p className="text-xl">
-                            {new Date(trip?.pickupDate).toLocaleDateString(
-                              "en-GB"
-                            )}
-                          </p>
-                          <p className="text-gray-400">Pickup Date</p>
+                    <div className={`mt-10 w-full md:flex md:justify-between ${
+                    cancelTransferActivityId.includes(journeyItem?._id)
+                      ? "border-blue-300 border-2"
+                      : "border"
+                  } rounded-xl p-2 md:p-0`}>
+                      <div className=" w-full text-white font-semibold md:p-4 p-2 mb-5 md:mb-0 rounded-xl">
+                        <div className="text-black flex justify-between w-full mb-5">
+                          <div className="text-left">
+                            <p className="text-2xl">
+                              {" "}
+                              {trip?.transferFrom?.airportName ||
+                                trip?.transferFrom?.name ||
+                                trip?.transferFrom?.areaName}
+                            </p>
+                            <p className="text-gray-400">Pickup Location</p>
+                          </div>
+
+                          <div className="text-right">
+                            <p className="text-2xl">
+                              {trip?.transferTo?.name ||
+                                trip?.transferTo?.airportName ||
+                                trip?.transferTo?.areaName}
+                            </p>
+                            <p className="text-gray-400">Drop Location</p>
+                          </div>
                         </div>
 
-                        <div className="text-right">
-                          <p className="text-xl">{trip?.pickupTime}</p>
-                          <p className="text-gray-400">Pickup Time</p>
-                        </div>
-                      </div>
+                        <div className="text-black mb-5   border-black flex justify-between w-full">
+                          <div className="text-left">
+                            <p className="text-xl">
+                              {new Date(trip?.pickupDate).toLocaleDateString(
+                                "en-GB"
+                              )}
+                            </p>
+                            <p className="text-gray-400">Pickup Date</p>
+                          </div>
 
-                      <div className="text-black mb-5 border-b pb-5 border-black flex justify-between w-full">
-                        <div className="text-left">
-                          <p className="text-xl">{data?.orderStatus}</p>
-                          <p className="text-gray-400">Order Status</p>
+                          <div className="text-right">
+                            <p className="text-xl">{trip?.pickupTime}</p>
+                            <p className="text-gray-400">Pickup Time</p>
+                          </div>
                         </div>
 
-                        <div className="text-right">
-                          <p className="text-xl">{data?.paymentState}</p>
-                          <p className="text-gray-400">Payment State</p>
-                        </div>
-                      </div>
+                        <div className="text-black mb-5 border-b border-gray-200 pb-5 flex justify-between w-full">
+                          <div className="text-left">
+                            <p className="text-xl">{data?.orderStatus}</p>
+                            <p className="text-gray-400">Order Status</p>
+                          </div>
 
-                      <div className="text-black">
-                        <p className="text-2xl underline mb-10">Vehicles</p>
-                        <div className="">
-                          {trip?.vehicleTypes?.map((vehicle: any) => (
-                            <div className="flex rounded border gap-10 py-2 px-8 w-fit items-center text-center">
-                              <div className="max-w-[200px]">
-                                <Image
-                                  className="rounded-lg cursor-pointer"
-                                  width={1000}
-                                  height={100}
-                                  alt="picture 1"
-                                  src={`${process.env.NEXT_PUBLIC_CDN_URL}${vehicle?.vehicleId?.image}`}
-                                />
+                          <div className="text-right">
+                            <p className="text-xl">{data?.paymentState}</p>
+                            <p className="text-gray-400">Payment State</p>
+                          </div>
+                        </div>
+
+                        <div className="text-black">
+                          <p className="text-2xl underline mb-10">Vehicles</p>
+                          <div className="">
+                            {trip?.vehicleTypes?.map((vehicle: any) => (
+                              <div className="flex rounded border gap-10 py-2 px-8 w-fit items-center text-center">
+                                <div className="max-w-[200px]">
+                                  <Image
+                                    className="rounded-lg cursor-pointer"
+                                    width={1000}
+                                    height={100}
+                                    alt="picture 1"
+                                    src={`${process.env.NEXT_PUBLIC_CDN_URL}${vehicle?.vehicleId?.image}`}
+                                  />
+                                </div>
+
+                                <div>
+                                  <div className="flex gap-5 md:text-xl">
+                                    <p className="font-thin">Name:</p>
+                                    <p className="capitalize">
+                                      {vehicle?.name}
+                                    </p>
+                                  </div>
+
+                                  <div className="flex gap-5  md:text-xl">
+                                    <p className="font-thin">Price:</p>
+                                    <p className="capitalize">
+                                      {priceConversion(
+                                        trip?.tripPrice,
+                                        selectedCurrency,
+                                        true
+                                      )}
+                                    </p>
+                                  </div>
+
+                                  <div className="flex gap-5  md:text-xl">
+                                    <p className="font-thin">
+                                      Airport Occupancy:
+                                    </p>
+                                    <p className="capitalize">
+                                      {vehicle?.vehicleId?.airportOccupancy}
+                                    </p>
+                                  </div>
+
+                                  <div className="flex gap-5  md:text-xl">
+                                    <p className="font-thin">
+                                      Normal Occupancy:
+                                    </p>
+                                    <p className="capitalize">
+                                      {vehicle?.vehicleId?.normalOccupancy}
+                                    </p>
+                                  </div>
+                                </div>
                               </div>
-
-                              <div>
-                                <div className="flex gap-5 md:text-xl">
-                                  <p className="font-thin">Name:</p>
-                                  <p className="capitalize">{vehicle?.name}</p>
-                                </div>
-
-                                <div className="flex gap-5  md:text-xl">
-                                  <p className="font-thin">Price:</p>
-                                  <p className="capitalize">
-                                    {priceConversion(
-                                      trip?.tripPrice,
-                                      selectedCurrency,
-                                      true
-                                    )}
-                                  </p>
-                                </div>
-
-                                <div className="flex gap-5  md:text-xl">
-                                  <p className="font-thin">
-                                    Airport Occupancy:
-                                  </p>
-                                  <p className="capitalize">
-                                    {vehicle?.vehicleId?.airportOccupancy}
-                                  </p>
-                                </div>
-
-                                <div className="flex gap-5  md:text-xl">
-                                  <p className="font-thin">Normal Occupancy:</p>
-                                  <p className="capitalize">
-                                    {vehicle?.vehicleId?.normalOccupancy}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+
+                    </div>
+                  </>
                 ))}
               </>
             )

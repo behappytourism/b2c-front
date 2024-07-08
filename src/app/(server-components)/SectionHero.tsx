@@ -38,12 +38,12 @@ const SectionHero: FC<SectionHeroProps> = ({
   };
 
  
-
+  
 
   return (
     <main className="nc-PageHome md:min-h-[500px] relative">
-    {banner && (
-      <>
+    {/* {!banner && (
+      <> */}
 
         {/* <div className="relative md:mb-16 mb-16 lg:mb-16">
       <SectionHero
@@ -70,7 +70,7 @@ const SectionHero: FC<SectionHeroProps> = ({
             onChange={updateCurrentSlide}
           >
             {banner &&
-              banner.map((item: any, index: number) => (
+              banner?.map((item: any, index: number) => (
                 <>
                   <div className="absolute z-20 xl:bottom-20 md:bottom-[15em] lg:bottom-[9.5em]">
                     <p
@@ -136,8 +136,8 @@ const SectionHero: FC<SectionHeroProps> = ({
           <HeroSearchForm currentPage={currentPage} currentTab={currentTab} />
           </div>
         </div>
-      </>
-    )}
+      {/* </>
+    )} */}
   </main>
   );
 };
