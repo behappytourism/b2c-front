@@ -36,7 +36,7 @@ const LandingPage = () => {
   const findAttraction = async () => {
     try {
       const attraction = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/all?limit=100&skip=0`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/all?limit=100&skip=0&destination=${dest}`,
         { next: { revalidate: 1 } }
       );
       return attraction.json();
