@@ -40,7 +40,7 @@ function Page() {
     }, []);    
 
     return (
-        <div className="px-20">
+        <div className="md:px-20">
             {loading ? (
                 <div className='w-full'>
                 <div className="w-full flex justify-center my-10">
@@ -84,7 +84,7 @@ function Page() {
                     <h1 className="text-3xl flex mt-5 mb-10 w-full justify-center underline">
                         About us
                     </h1>
-                    <div className="w-full flex justify-center mb-10 px-20 max-w-screen-2xl mx-auto">
+                    <div className="w-full flex justify-center mb-10 md:px-20 px-4 max-w-screen-2xl mx-auto">
                         <div
                             className="flex flex-col gap-5"
                             dangerouslySetInnerHTML={{ __html: aboutUs?.aboutUs?.aboutUs }}
