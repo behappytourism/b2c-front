@@ -8,6 +8,7 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { ChevronRightIcon } from "@heroicons/react/24/solid";
 import BgGlassmorphism from "@/components/BgGlassmorphism";
+import ExperiencesSearchForm from "../(client-components)/(HeroSearchForm)/(experiences-search-form)/ExperiencesSearchForm";
 
 export interface SectionHeroProps {
   className?: string;
@@ -134,6 +135,9 @@ const SectionHero: FC<SectionHeroProps> = ({
         <div className="container w-full md:flex hidden justify-center  -mt-[160px]">
           <div className="sticky z-40 -ml-[550px]">
           <HeroSearchForm currentPage={currentPage} currentTab={currentTab} />
+          <div className="mt-3">
+          <ExperiencesSearchForm />
+          </div>
           </div>
         </div>
       {/* </>

@@ -222,6 +222,9 @@ const PageHome = () => {
           <div className="container w-full flex justify-center mb-[100px] -mt-[160px]">
             <div className="sticky -ml-[60px]">
             <HeroSearchForm currentPage={"Transfer"} currentTab={"Transfer"} />
+            <div className="mt-3">
+            <TransferSearchForm />
+            </div>
             </div>
           </div>
         </>

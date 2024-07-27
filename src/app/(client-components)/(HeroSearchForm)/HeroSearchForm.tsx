@@ -82,25 +82,25 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
 
 
 
-  const renderForm = () => {
-    switch (tabActive) {
-      case "Stays":
-        return <StaySearchForm />;
-      case "Experiences":
-        return <ExperiencesSearchForm />;
-      case "Visa":
-        // router.push("/visa" as Route);
-        return <RentalCarSearchForm />;
-      case "Flights":
-        // router.push("/flights" as Route);
-        return <FlightSearchForm />;
-      case "Transfer":
-        return <TransferSearchForm />;
+  // const renderForm = () => {
+  //   switch (tabActive) {
+  //     case "Stays":
+  //       return <StaySearchForm />;
+  //     case "Experiences":
+  //       return <ExperiencesSearchForm />;
+  //     case "Visa":
+  //       // router.push("/visa" as Route);
+  //       return <RentalCarSearchForm />;
+  //     case "Flights":
+  //       // router.push("/flights" as Route);
+  //       return <FlightSearchForm />;
+  //     case "Transfer":
+  //       return <TransferSearchForm />;
 
-      default:
-        return null;
-    }
-  };
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   return (
     <div
@@ -114,9 +114,9 @@ const HeroSearchForm: FC<HeroSearchFormProps> = ({
     <div className="w-full ">
       {renderTab()}
       </div>
-      <div className="mt-3">
+      {/* <div className="mt-3">
         {renderForm()}
-      </div>
+      </div> */}
 
 
     </div>
