@@ -172,7 +172,7 @@ const LandingPage = () => {
           {/* GLASSMOPHIN */}
           <BgGlassmorphism />
 
-          <div className="relative  md:mb-16 mb-16 lg:mb-16 pt-5 md:pt-0">
+          <div className="relative mb-16">
             {/* SECTION HERO */}
             {attractionData && (
               <SectionHero
@@ -183,7 +183,8 @@ const LandingPage = () => {
               />
             )}
 
-            <div className="relative container space-y-10 lg:space-y-12 md:mt-[10px]">
+<div className="container space-y-10 lg:space-y-12 mt-[10px]">
+
               {/* SECTION 1 */}
 
               {globalData.topAttractions?.length ? (

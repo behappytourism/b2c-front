@@ -118,6 +118,13 @@ const SectionHero: FC<SectionHeroProps> = ({
                       </div>
                     </p>
                     <Image
+                    src={`${process.env.NEXT_PUBLIC_SERVER_URL}${item.image || ""}`}
+                    alt={`Slide ${index + 1}`}
+                    width={1000}
+                    height={100}
+                    priority={index === 0} // Ensure the first image is loaded eagerly
+                  />
+                    {/* <Image
                       src={`${process.env.NEXT_PUBLIC_SERVER_URL}${
                         item.image || ""
                       }`}
@@ -125,7 +132,7 @@ const SectionHero: FC<SectionHeroProps> = ({
                       width={1000}
                       height={100}
                       className=""
-                    />
+                    /> */}
                   </div>
                 </>
               ))}
