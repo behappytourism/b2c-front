@@ -5,6 +5,7 @@ import "@/styles/index.scss";
 import "rc-slider/assets/index.css";
 import BasicLayout from "./rootLayout";
 import { Metadata } from "next";
+import Script from "next/script";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -47,13 +48,14 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={poppins.className}>
+      <head>
       <link rel="icon" id="companyLogo" type="image/svg+xml" href={process.env.NEXT_PUBLIC_COMPANY_FAVICON} />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 
       {/* Google Tag Manager */}
-      <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTIC_ID}`}></script>
-      <script dangerouslySetInnerHTML={{
+      <Script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTIC_ID}`} />
+      <Script dangerouslySetInnerHTML={{
         __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
@@ -61,9 +63,10 @@ export default function RootLayout({
 
             gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTIC_ID}');
           `
-      }}></script>
+      }} />
       {/* End Google Tag Manager */}
 
+      </head>
 
       <body className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
       <BasicLayout children={children} params={params} />
