@@ -1,18 +1,20 @@
 "use client";
 
-import { ClockIcon, HomeModernIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import {
+  ClockIcon,
+  HomeModernIcon,
+  MapPinIcon,
+} from "@heroicons/react/24/outline";
 import React, { useState, useRef, useEffect, FC } from "react";
 import ClearDataButton from "./ClearDataButton";
-import { QueryAttractions, QueryDestinations } from "@/data/attraction/types"
-
+import { QueryAttractions, QueryDestinations } from "@/data/attraction/types";
 
 interface QueryResponseData {
-  attractions?: QueryAttractions[] | []
-  destinations?: QueryDestinations[] | []
-  totalDestination?: number
-  totalAttraction?: number
+  attractions?: QueryAttractions[] | [];
+  destinations?: QueryDestinations[] | [];
+  totalDestination?: number;
+  totalAttraction?: number;
 }
-
 
 export interface LocationInputProps {
   placeHolder?: string;
@@ -21,8 +23,8 @@ export interface LocationInputProps {
   divHideVerticalLineClass?: string;
   autoFocus?: boolean;
   setQuery?: (query: string) => void;
-  setDestinationType?: (destinationType: "destination" | "attraction") => void
-  data?: QueryResponseData
+  setDestinationType?: (destinationType: "destination" | "attraction") => void;
+  data?: QueryResponseData;
 }
 
 const LocationInput: FC<LocationInputProps> = ({
@@ -33,7 +35,7 @@ const LocationInput: FC<LocationInputProps> = ({
   divHideVerticalLineClass = "left-10 -right-0.5",
   setQuery,
   setDestinationType,
-  data
+  data,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -42,7 +44,7 @@ const LocationInput: FC<LocationInputProps> = ({
   const [showPopover, setShowPopover] = useState(autoFocus);
 
   if (setQuery) {
-    setQuery(value)
+    setQuery(value);
   }
 
   useEffect(() => {
@@ -76,8 +78,14 @@ const LocationInput: FC<LocationInputProps> = ({
     setShowPopover(false);
   };
 
-  const handleSelectLocation = ({ item, category }: { item: string, category: "destination" | "attraction" }) => {
-    setDestinationType && setDestinationType(category)
+  const handleSelectLocation = ({
+    item,
+    category,
+  }: {
+    item: string;
+    category: "destination" | "attraction";
+  }) => {
+    setDestinationType && setDestinationType(category);
     setValue(item);
     setShowPopover(false);
   };
@@ -91,25 +99,26 @@ const LocationInput: FC<LocationInputProps> = ({
           </h3>
         )}
         <div className="mt-2">
-          {
-            data?.destinations && data?.destinations
-              .map((item) => (
-                <span
-                  onClick={() => handleSelectLocation({
+          {data?.destinations &&
+            data?.destinations.map((item) => (
+              <span
+                onClick={() =>
+                  handleSelectLocation({
                     item: item?.name,
-                    category: "destination"
-                  })}
-                  key={item?._id}
-                  className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
-                >
-                  <span className="block text-neutral-400">
-                    <MapPinIcon className="h-4 sm:h-6 w-4 sm:w-6" />
-                  </span>
-                  <span className=" block font-medium text-neutral-700 dark:text-neutral-200 capitalize">
-                    {item?.name}
-                  </span>
+                    category: "destination",
+                  })
+                }
+                key={item?._id}
+                className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
+              >
+                <span className="block text-neutral-400">
+                  <MapPinIcon className="h-4 sm:h-6 w-4 sm:w-6" />
                 </span>
-              ))}
+                <span className=" block font-medium text-neutral-700 dark:text-neutral-200 capitalize">
+                  {item?.name}
+                </span>
+              </span>
+            ))}
         </div>
       </>
     );
@@ -118,22 +127,26 @@ const LocationInput: FC<LocationInputProps> = ({
   const renderSearchValue = () => {
     return (
       <>
-        {data?.attractions && data?.attractions.map((item) => (
-          <span
-            onClick={() => handleSelectLocation({
-              item: item?.slug, category: "attraction"
-            })}
-            key={item?._id}
-            className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
-          >
-            <span className="block text-neutral-400">
-              <HomeModernIcon className="h-4 w-4 sm:h-6 sm:w-6" />
+        {data?.attractions &&
+          data?.attractions.map((item) => (
+            <span
+              onClick={() =>
+                handleSelectLocation({
+                  item: item?.slug,
+                  category: "attraction",
+                })
+              }
+              key={item?._id}
+              className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
+            >
+              <span className="block text-neutral-400">
+                <HomeModernIcon className="h-4 w-4 sm:h-6 sm:w-6" />
+              </span>
+              <span className="block font-medium text-neutral-700 dark:text-neutral-200 capitalize">
+                {item?.title}
+              </span>
             </span>
-            <span className="block font-medium text-neutral-700 dark:text-neutral-200 capitalize">
-              {item?.title}
-            </span>
-          </span>
-        ))}
+          ))}
       </>
     );
   };
@@ -142,8 +155,9 @@ const LocationInput: FC<LocationInputProps> = ({
     <div className={`relative flex ${className}`} ref={containerRef}>
       <div
         onClick={() => setShowPopover(true)}
-        className={`flex z-10 flex-1 relative [ nc-hero-field-padding ] flex-shrink-0 items-center space-x-3 cursor-pointer focus:outline-none text-left  ${showPopover ? "nc-hero-field-focused" : ""
-          }`}
+        className={`flex z-10 flex-1 relative [ nc-hero-field-padding ] flex-shrink-0 items-center space-x-3 cursor-pointer focus:outline-none text-left  ${
+          showPopover ? "nc-hero-field-focused" : ""
+        }`}
       >
         <div className="text-neutral-300 dark:text-neutral-400">
           <MapPinIcon className="w-5 h-5 lg:w-7 lg:h-7" />
@@ -180,11 +194,14 @@ const LocationInput: FC<LocationInputProps> = ({
 
       {showPopover && (
         <div className="absolute left-0 z-40 w-full min-w-[300px] sm:min-w-[500px] bg-white dark:bg-neutral-800 top-full mt-3 py-3 sm:py-6 rounded-3xl shadow-xl max-h-96 overflow-y-auto">
-          {value?.length > 2 ? <>
-            {renderRecentSearches(value)}
-            {renderSearchValue()}
-          </>
-            : renderRecentSearches(value)}
+          {value?.length > 2 ? (
+            <>
+              {renderRecentSearches(value)}
+              {renderSearchValue()}
+            </>
+          ) : (
+            renderRecentSearches(value)
+          )}
         </div>
       )}
     </div>
