@@ -76,27 +76,12 @@ const LandingPage = () => {
         }
       );
 
-      return response.json();
+      const data = await response.json();
+      dispatch(setUser(data));
     } catch (error) {
       console.log(error);
     }
   };
-
-  async function googleProcess() {
-    try {
-      const response = await googleSignIn();
-      dispatch(setUser(response));
-      // dispatch(fetchAffiliateUser() as any);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  useEffect(() => {
-    {
-      session && googleProcess();
-    }
-  }, [session]);
 
   const findBanner = async () => {
     try {
@@ -111,6 +96,15 @@ const LandingPage = () => {
     }
   };
 
+  const tabs: string[] = useMemo(() => {
+    let destinations: string[] =
+      response?.destinations?.map(
+        (destination: any) => destination.name || ""
+      ) || [];
+    destinations.unshift("all");
+    return destinations;
+  }, [response]);
+
   useEffect(() => {
     findBanner();
     findAttractionQuery();
@@ -120,14 +114,11 @@ const LandingPage = () => {
     findAttraction();
   }, [dest]);
 
-  const tabs: string[] = useMemo(() => {
-    let destinations: string[] =
-      response?.destinations?.map(
-        (destination: any) => destination.name || ""
-      ) || [];
-    destinations.unshift("all");
-    return destinations;
-  }, [response]);
+  useEffect(() => {
+    if (session) {
+      googleSignIn();
+    }
+  }, [session]);
 
   // console.log(attractionData, "attractions");
   // console.log(dest, "tabs");
