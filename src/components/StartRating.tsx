@@ -15,8 +15,8 @@ const StartRating: FC<StartRatingProps> = ({
   
   return (
     <div
-      className={`nc-StartRating flex items-center space-x-1 text-sm  ${className}`}
-      data-nc-id="StartRating"
+      //className={`nc-StartRating flex items-center space-x-1 text-sm  ${className}`}
+     // data-nc-id="StartRating"
     >
       {/* <div className="pb-[2px]">
         <StarIcon className="md:w-[18px] w-[12px] h-[12px] md:h-[18px] text-orange-500" />
