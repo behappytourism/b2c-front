@@ -61,7 +61,23 @@ const ExperiencesCardH: FC<ExperiencesCardHProps> = ({
             </h2>
           </div>
           <div className="flex items-center space-x-4 text-sm text-neutral-500 dark:text-neutral-400">
-            <StartRating reviewCount={reviewCount} point={reviewStart} />
+          
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6 text-yellow-500"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 1.75l2.91 5.898 6.49.943-4.7 4.58 1.11 6.468L12 16.876l-5.81 3.063 1.11-6.468-4.7-4.58 6.49-.943L12 1.75z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+
+                <p>{reviewStart}</p>
+                <p>({reviewCount})</p>
+             
             <span>· </span>
             <div className="flex items-center">
               <span className="hidden sm:inline-block  text-base">

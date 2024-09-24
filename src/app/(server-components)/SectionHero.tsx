@@ -122,8 +122,9 @@ const SectionHero: FC<SectionHeroProps> = ({
   alt={`Slide ${index + 1}`}
   width={1000}
   height={100}
-  priority={index === 0}  // Prioritize only the first slide
-  loading={index === 0 ? 'eager' : 'lazy'}  // Lazy-load other slides
+  loading={index === 0 ? 'eager' : 'lazy'} // Eager load first slide, lazy load others
+  priority={index === 0} // Prioritize first image for faster LCP
+  fetchPriority={index === 0 ? "high" : "auto"} // Only prioritize the first slide
 />
                     {/* <Image
                       src={`${process.env.NEXT_PUBLIC_SERVER_URL}${

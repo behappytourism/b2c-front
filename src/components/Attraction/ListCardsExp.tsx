@@ -27,7 +27,6 @@ const ListCardsExp: FC<ListCardsExpHProps> = ({
 }) => {
     const dispatch = useDispatch()
     const navigate = useRouter();
-console.log(data);
 
     const { selectedCurrency } = useSelector((state: RootState) => state.initials)
     const { favourites } = useSelector((state: RootState) => state.attraction)

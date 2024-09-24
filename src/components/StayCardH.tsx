@@ -118,7 +118,7 @@ const StayCardH: FC<StayCardHProps> = ({
         {renderTienIch()}
         <div className="w-14 border-b border-neutral-100 dark:border-neutral-800 my-4"></div>
         <div className="flex justify-between items-end">
-          <StartRating reviewCount={reviewCount} point={reviewStart} />
+          {/* <StartRating reviewCount={reviewCount} point={reviewStart} /> */}
           <span className="text-base font-semibold text-secondary-500">
             {price}
             {` `}

@@ -106,9 +106,9 @@ const StayCard2: FC<StayCard2Props> = ({
               </span>
             )}
           </span>
-          {!!reviewStart && (
+          {/* {!!reviewStart && (
             <StartRating reviewCount={reviewCount} point={reviewStart} />
-          )}
+          )} */}
         </div>
       </div>
     );

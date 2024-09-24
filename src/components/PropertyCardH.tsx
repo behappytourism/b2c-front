@@ -117,7 +117,7 @@ const PropertyCardH: FC<PropertyCardHProps> = ({
           {renderTienIch()}
           <div className="w-14 border-b border-neutral-200/80 dark:border-neutral-700 "></div>
           <div className="flex w-full justify-between items-end">
-            <StartRating reviewCount={reviewCount} point={reviewStart} />
+            {/* <StartRating reviewCount={reviewCount} point={reviewStart} /> */}
             <span className="flex items-center justify-center px-2.5 py-1.5 border-2 border-secondary-500 rounded-lg leading-none text-sm font-medium text-secondary-500">
               {`${price},000`}
             </span>

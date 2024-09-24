@@ -352,14 +352,33 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
 
         {/* 3 */}
         <div className="flex items-center space-x-4">
-          <StartRating
+          {/* <StartRating
             point={
               attractionData?.averageRating
                 ? Number(attractionData?.averageRating?.toFixed(2))
                 : 0
             }
             reviewCount={attractionData?.reviews?.length}
-          />
+          /> */}
+
+<div className="flex gap-1 items-center text-center text-sm">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6 text-yellow-500"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 1.75l2.91 5.898 6.49.943-4.7 4.58 1.11 6.468L12 16.876l-5.81 3.063 1.11-6.468-4.7-4.58 6.49-.943L12 1.75z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+
+                <p>{Number(attractionData?.averageRating?.toFixed(2))}</p>
+                <p>({attractionData?.reviews?.length})</p>
+              </div>
+
           <span>·</span>
           <span>
             <i className="las la-map-marker-alt"></i>
@@ -848,14 +867,32 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
             </div>
           )}
 
-          <StartRating
+          {/* <StartRating
             point={
               attractionData?.averageRating
                 ? Number(attractionData?.averageRating?.toFixed(2))
                 : 0
             }
             reviewCount={attractionData?.totalRating}
-          />
+          /> */}
+
+           <div className="flex gap-1 items-center text-center text-sm">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6 text-yellow-500"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M12 1.75l2.91 5.898 6.49.943-4.7 4.58 1.11 6.468L12 16.876l-5.81 3.063 1.11-6.468-4.7-4.58 6.49-.943L12 1.75z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+
+                <p>{Number(attractionData?.averageRating?.toFixed(2))}</p>
+                <p>({attractionData?.totalRating})</p>
+              </div>
         </div>
 
         <div className="">

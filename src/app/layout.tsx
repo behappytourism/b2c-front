@@ -1,8 +1,8 @@
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import "@/fonts/line-awesome-1.3.0/css/line-awesome.css";
+// import "@/fonts/line-awesome-1.3.0/css/line-awesome.css";
 import "@/styles/index.scss";
-import "rc-slider/assets/index.css";
+// import "rc-slider/assets/index.css";
 import BasicLayout from "./rootLayout";
 import { Metadata } from "next";
 import Script from "next/script";
