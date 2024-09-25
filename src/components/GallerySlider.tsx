@@ -112,6 +112,9 @@ export default function GallerySlider({
                   className={`object-cover ${imageClass} rounded-lg md:rounded-none transform hover:scale-110 transition-transform duration-300`}
                   onLoadingComplete={() => setLoaded(true)}
                   sizes="(max-width: 1025px) 100vw, 100px"
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={index === 0 ? "high" : "auto"}
+                  priority={index === 0}
                 />
               </motion.div>
             </AnimatePresence>
