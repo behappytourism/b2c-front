@@ -162,6 +162,16 @@ export interface SearchByDestination {
   _id: UUID | string;
 }
 
+
+export interface Blogs {
+  title: string;
+  body: string;
+  thumbnail: string;
+  _id: UUID | string;
+  category: CategorySearchByDestination;
+  createdAt: string;
+}
+
 export interface AvailablityExcursion {
   isEnabled: boolean;
   day: string;

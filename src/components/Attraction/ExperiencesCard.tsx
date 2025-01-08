@@ -76,6 +76,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
           galleryImgs={images}
           href={data && (`/${data?.destination?.slug}/${data?.slug}` as Route)}
           galleryClass={size === "default" ? "" : ""}
+          className=""
         />
         <BtnLikeIcon
           isLiked={isLiked}
@@ -126,7 +127,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   const renderContent = () => {
     return (
       <div
-        className={`${size === "default" ? "p-3 space-y-1 " : "p-3 space-y-1"}`}
+        className={`${size === "default" ? "p-3 space-y-1 -mt-[40px]" : "p-3 space-y-1 -mt-[40px]"} absolute  w-full border rounded-3xl bg-secondary-50 z-30`}
       >
         <div className="md:space-y-5 md:mb-1">
           <div className="items-center space-y-1 md:mb-3">
@@ -214,18 +215,29 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
           </div>
         </div>
         <div className="border-b border-neutral-100 dark:border-neutral-800"></div>
-        <div className="md:flex hidden justify-between items-center">
-          <div className="text-base font-semibold">
+        <div className="md:flex hidden justify-between items-center w-full">
+          <div className="text-base font-semibold w-full">
+
             <p className="font-thin text-gray-400 text-sm capitalize">
               Starting from
             </p>
-            <p className="text-xl font-bold">
+
+           
+            <div className="w-full flex justify-between">
+
+            <p className="text-xl font-bold pt-2">
               {priceConversion(activity?.lowPrice, selectedCurrency, true)}
             </p>
 
-            <p className="text-xs text-gray-400 dark:text-neutral-400 font-thin">
+
+            <p className="text-xs pt-4 text-gray-400 dark:text-neutral-400 font-thin">
               * price varies
             </p>
+
+            </div>
+
+
+         
           </div>
         </div>
 
@@ -388,15 +400,15 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   return (
     <>
       <div
-        className={`nc-ExperiencesCard hidden md:block  border rounded-xl group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
+        className={`nc-ExperiencesCard  md:block min-h-[350px] group relative m-1 dark:bg-gray-800 ${className}`}
       >
         {renderSliderGallery()}
-        <Link href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
+        <Link className="" href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
           {renderContent()}
         </Link>
       </div>
 
-      <div
+      {/* <div
         className={`nc-ExperiencesCard md:hidden block  group relative m-1 bg-secondary-50 dark:bg-gray-800 ${className}`}
       >
         <BtnLikeIcon
@@ -405,7 +417,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
           className="absolute left-0 top-4"
         />
         {renderMobileContent()}
-      </div>
+      </div> */}
     </>
   );
 };

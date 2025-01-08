@@ -1,5 +1,6 @@
 import {
   BestSellingAttractions,
+  Blogs,
   Home,
   InitialAttractionDestiantions,
   InitialCountries,
@@ -21,6 +22,7 @@ type InitialState = {
     home: Home;
     topAttractions: TopAttractions[];
     bestSellingAttractions: BestSellingAttractions[];
+    blogs: Blogs[];
   };
 };
 
@@ -42,6 +44,7 @@ const initialState = {
     home: {},
     topAttractions: [],
     bestSellingAttractions: [],
+    blogs: [],
   },
 } as InitialState;
 
@@ -113,6 +116,7 @@ export const initials = createSlice({
     // setting Home global Data.
     setGlobalHomeData: (state, action) => {
       state.globalData.home = action.payload.home;
+      state.globalData.blogs = action.payload.recentBlogs;
       state.globalData.topAttractions = action.payload.topAttractions;
       state.globalData.bestSellingAttractions =
         action.payload.bestSellingAttractions;

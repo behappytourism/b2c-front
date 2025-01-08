@@ -136,6 +136,18 @@ export interface Heros {
   place: string;
   _id: UUID | string;
 }
+
+export interface Blogs {
+  title: string;
+  body: string;
+  thumbnail: string;
+  createdAt: string;
+  _id: UUID | string;
+  category: CategorySearchByDestination;
+  slug: string;
+  tags?: string[];
+}
+
 export interface Home {
   _id?: UUID | string;
   settingsNumber?: number;
@@ -163,4 +175,5 @@ export interface Home {
   phoneNumber1?: number;
   phoneNumber2?: number;
   heros?: Heros[];
+  recentBlogs?: Blogs[]
 }

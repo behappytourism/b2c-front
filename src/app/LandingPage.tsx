@@ -12,6 +12,8 @@ import { setUser } from "@/redux/features/usersSlice";
 import { fetchAffiliateUser } from "@/redux/features/affiliatesSlice";
 import ComponentLoader from "@/components/loader/ComponentLoader";
 import SliderCards from "@/components/Attraction/SliderCards";
+import BlogsCard from "@/components/Attraction/BlogsCard";
+import BlogsSlider from "@/components/Attraction/BlogsSlider";
 
 interface responseTS {
   destinations: [];
@@ -120,10 +122,13 @@ const LandingPage = () => {
     }
   }, [session]);
 
+  console.log(globalData);
+  
+
   // console.log(attractionData, "attractions");
   // console.log(dest, "tabs");
 
-  //const tabs = ["dubai", "sharjah", "fujairah", "ras al khaimah", "ajman", "abu dhabi", "oman", "hatta"]
+  //const tabs = ["dubai", "sharjah", "fujairah", "ras al khaimah", "ajman", "abu dhabi", "oman", "hatta"]  
 
   return (
     <>
@@ -191,6 +196,19 @@ const LandingPage = () => {
                   className="md:pb-24 lg:pb-28"
                 />
               )}
+
+
+              <div>
+                {/* <h3 className="text-black font-extrabold text-3xl md:text-4xl">News, Tips Guides</h3> */}
+                <div className="w-full">
+                {/* {globalData?.blogs.map((blog, blogIndex) => (
+                    <BlogsCard data={blog} />
+                  ))} */}
+
+                  <BlogsSlider data={globalData.blogs} />
+                  </div>
+                
+              </div>
 
               {attractionDestinations.length === 0 && (
                 <>
