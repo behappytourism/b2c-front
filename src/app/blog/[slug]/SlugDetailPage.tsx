@@ -191,7 +191,7 @@ const SlugDetailPage: FC<BlogDetailPageSectionProps> = ({ slug }) => {
 									className=" space-y-2 leading-relaxed md:text-lg"
 								></div>
 							</div>
-							{blogResponse?.tags!?.length > 0 ? (
+							{/* {blogResponse?.tags!?.length > 0 ? (
 								<div className="space-y-2">
 									<h2 className="text-darktext text-2xl font-medium">
 										Tags
@@ -211,7 +211,7 @@ const SlugDetailPage: FC<BlogDetailPageSectionProps> = ({ slug }) => {
 								</div>
 							) : (
 								""
-							)}
+							)} */}
 						</div>
 					</div>
 				) : (

@@ -148,6 +148,19 @@ export interface Blogs {
   tags?: string[];
 }
 
+
+export interface StandAlone {
+  title: string;
+  description: string;
+  shortDesc: string;
+  images: string[];
+  createdAt: string;
+  _id: UUID | string;
+  category: CategorySearchByDestination;
+  slug: string;
+  tags?: string[];
+}
+
 export interface Home {
   _id?: UUID | string;
   settingsNumber?: number;

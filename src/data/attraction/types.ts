@@ -101,6 +101,7 @@ export interface ActivitySearchByDestination {
   isPrivateTransferAvailable: boolean;
   isSharedTransferAvailable: boolean;
   lowPrice: number;
+  promoAmountAdult: number;
 }
 
 export interface MarkupSearchByDestination {
@@ -160,6 +161,33 @@ export interface SearchByDestination {
   title: string;
   totalReviews: number;
   _id: UUID | string;
+}
+
+export interface StandAloneDestination {
+	activity: ActivitySearchByDestination;
+	markup: MarkupSearchByDestination;
+	privateTransfer: PrivateTransferSearchByDestination;
+	category: any;
+	destination: any;
+	averageRating: number;
+	bookingType: string;
+	cancelBeforeTime?: string;
+	cancellationFee?: string;
+	cancellationType: CancellationTypeEnum;
+	duration: number;
+	durationType: DurationTypeEnum;
+	images: string[];
+	isCombo: boolean;
+	isOffer: boolean;
+	lowPrice: number;
+	isPromoCode: boolean;
+	offerAmount?: number;
+	offerAmountType: OfferTypeEnum;
+	slug: string;
+	title: string;
+	lowestPriceActivity: number;
+	totalReviews: number;
+	_id: UUID | string;
 }
 
 
@@ -366,6 +394,8 @@ export interface ExcursionDetails {
   faqs: FaqsExcursion[];
   latitude: number;
   longitude: number;
+  attractions: [];
+  description: string;
 }
 
 // Excursion timeslot.

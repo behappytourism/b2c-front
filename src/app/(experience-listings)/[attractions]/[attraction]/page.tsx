@@ -21,7 +21,7 @@ export async function generateMetadata(
 
 	const title = (await parent).title;
 	const description = (await parent).description;
-	const keywords = (await parent).keywords;
+	const keywords = (await parent).keywords;	
 
 	return {
 		title: data?.title ? data?.title : title,

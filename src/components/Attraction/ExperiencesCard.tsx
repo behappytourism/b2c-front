@@ -69,7 +69,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
 
   const renderSliderGallery = () => {
     return (
-      <div className="relative w-full rounded-t-xl overflow-hidden">
+      <div className={`${size === "default" ? "" : "min-w-[250px]"} relative w-full rounded-t-xl overflow-hidden`}>
         <GallerySlider
           uniqueID={`ExperiencesCard_${"id"}`}
           ratioClass={ratioClass}
@@ -127,7 +127,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   const renderContent = () => {
     return (
       <div
-        className={`${size === "default" ? "p-3 space-y-1 -mt-[40px]" : "p-3 space-y-1 -mt-[40px]"} absolute  w-full border rounded-3xl bg-secondary-50 z-30`}
+        className={`${size === "default" ? "p-3 space-y-1 -mt-[40px]" : "p-3 space-y-1 -mt-[30px] min-w-[250px]"} absolute  w-full border rounded-3xl bg-secondary-50 z-30`}
       >
         <div className="md:space-y-5 md:mb-1">
           <div className="items-center space-y-1 md:mb-3">
@@ -400,7 +400,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   return (
     <>
       <div
-        className={`nc-ExperiencesCard  md:block min-h-[350px] group relative m-1 dark:bg-gray-800 ${className}`}
+        className={`nc-ExperiencesCard block min-h-[350px] group relative m-1 dark:bg-gray-800 ${className}`}
       >
         {renderSliderGallery()}
         <Link className="" href={`/${data?.destination?.slug}/${data?.slug}` as Route}>

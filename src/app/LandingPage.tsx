@@ -14,9 +14,14 @@ import ComponentLoader from "@/components/loader/ComponentLoader";
 import SliderCards from "@/components/Attraction/SliderCards";
 import BlogsCard from "@/components/Attraction/BlogsCard";
 import BlogsSlider from "@/components/Attraction/BlogsSlider";
+import SliderStandAlone from "@/components/Attraction/SliderStandAlone";
 
 interface responseTS {
   destinations: [];
+}
+
+interface standalones {
+  standAlones: [];
 }
 
 interface bannerImages {
@@ -30,6 +35,7 @@ const LandingPage = () => {
   const [dest, setDest] = useState("all");
   const [response, setResponse] = useState<responseTS>();
   const [banner, setBanner] = useState<bannerImages[]>([]);
+  const [standAloneAttr, setStandAloneAttr] = useState<standalones>();
 
   const { attractionDestinations, globalData } = useSelector(
     (state: RootState) => state.initials
@@ -107,9 +113,23 @@ const LandingPage = () => {
     return destinations;
   }, [response]);
 
+  const findStandAloneAttraction = async () => {
+    try {
+      const attraction = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/standalone/all`,
+        { next: { revalidate: 1 } }
+      );
+      const data = await attraction.json();
+      setStandAloneAttr(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     findBanner();
     findAttractionQuery();
+    findStandAloneAttraction();
   }, []);
 
   useEffect(() => {
@@ -122,13 +142,12 @@ const LandingPage = () => {
     }
   }, [session]);
 
-  console.log(globalData);
-  
-
   // console.log(attractionData, "attractions");
   // console.log(dest, "tabs");
+  console.log(standAloneAttr);
+  
 
-  //const tabs = ["dubai", "sharjah", "fujairah", "ras al khaimah", "ajman", "abu dhabi", "oman", "hatta"]  
+  //const tabs = ["dubai", "sharjah", "fujairah", "ras al khaimah", "ajman", "abu dhabi", "oman", "hatta"]
 
   return (
     <>
@@ -143,7 +162,7 @@ const LandingPage = () => {
         </main>
       )}
       {banner?.length > 0 && (
-        <main className="nc-PageHome flex justify-center relative overflow-hidden">
+        <main className="nc-PageHome relative overflow-hidden">
           {/* GLASSMOPHIN */}
           <BgGlassmorphism />
 
@@ -171,6 +190,12 @@ const LandingPage = () => {
                 ""
               )}
 
+              <SliderStandAlone
+                data={standAloneAttr?.standAlones}
+                heading="Popular Attractions"
+                subHeading="Visit our popular listed packages"
+              />
+
               {attractionDestinations.length > 0 && (
                 <SectionSliderNewCategories
                   destinations={attractionDestinations}
@@ -197,17 +222,10 @@ const LandingPage = () => {
                 />
               )}
 
-
               <div>
-                {/* <h3 className="text-black font-extrabold text-3xl md:text-4xl">News, Tips Guides</h3> */}
                 <div className="w-full">
-                {/* {globalData?.blogs.map((blog, blogIndex) => (
-                    <BlogsCard data={blog} />
-                  ))} */}
-
                   <BlogsSlider data={globalData.blogs} />
-                  </div>
-                
+                </div>
               </div>
 
               {attractionDestinations.length === 0 && (

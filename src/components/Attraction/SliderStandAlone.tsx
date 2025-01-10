@@ -8,7 +8,9 @@ import PrevBtn from "../PrevBtn";
 import NextBtn from "../NextBtn";
 import { variants } from "@/utils/animationVariants";
 import { useWindowSize } from "react-use";
-import BlogsCard from "./BlogsCard";
+import ExperiencesCard from "./ExperiencesCard";
+import { SearchByDestination } from "@/data/attraction/types";
+import StandAloneCard from "./StandAloneCard";
 
 export interface SliderCardsProps {
     className?: string;
@@ -20,15 +22,13 @@ export interface SliderCardsProps {
     sliderStyle?: "style1" | "style2";
 }
 
-
-
-const BlogsSlider: FC<SliderCardsProps> = ({
-    heading = "News, Tips Guides",
-    subHeading = "Favorite destinations based on customer reviews",
+const SliderStandAlone: FC<SliderCardsProps> = ({
+    heading = "Suggestions for discovery",
+    subHeading = "Popular places to recommends for you",
     className = "",
     itemClassName = "",
     data,
-    itemPerRow = 4,
+    itemPerRow = 3,
     sliderStyle = "style1",
 }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -37,10 +37,7 @@ const BlogsSlider: FC<SliderCardsProps> = ({
 
     const windowWidth = useWindowSize().width;
     useEffect(() => {
-        if (windowWidth < 320) {
-            return setNumberOfitem(1);
-        }
-        if (windowWidth < 500) {
+        if (windowWidth < 320 || windowWidth < 500) {
             return setNumberOfitem(1);
         }
         if (windowWidth < 1024) {
@@ -52,7 +49,6 @@ const BlogsSlider: FC<SliderCardsProps> = ({
 
         setNumberOfitem(itemPerRow);
     }, [itemPerRow, windowWidth]);
-
 
     useEffect(() => {
         if ((windowWidth >= 1024 && (data?.length ?? 0) > currentIndex + numberOfItems) || 
@@ -75,14 +71,9 @@ const BlogsSlider: FC<SliderCardsProps> = ({
         setCurrentIndex(newVal);
     }
 
-    // return if data is not persist.
-    if (typeof data === "undefined") {
-        return null
-    }
-
     const handlers = useSwipeable({
         onSwipedLeft: () => {
-            if (currentIndex < data?.length - 1) {
+            if (currentIndex < (data?.length || 0) - 1) {
                 changeItemId(currentIndex + 1);
             }
         },
@@ -96,13 +87,15 @@ const BlogsSlider: FC<SliderCardsProps> = ({
 
     if (!numberOfItems) return null;
 
+    if (typeof data === "undefined") {
+        return null;
+    }
+
     return (
-        <div className={`nc-SectionSliderNewCategories ${className}`}>
+        <div className={`nc-SectionSliderNewCategories  ${className}`}>
             <Heading desc={subHeading} isCenter={sliderStyle === "style2"}>
                 {heading}
             </Heading>
-
-
             <MotionConfig
                 transition={{
                     x: { type: "spring", stiffness: 300, damping: 30 },
@@ -113,7 +106,7 @@ const BlogsSlider: FC<SliderCardsProps> = ({
                     <div className={`flow-root overflow-hidden rounded-xl`}>
                         <motion.ul
                             initial={false}
-                            className="relative whitespace-nowrap"
+                            className="relative flex-root block whitespace-nowrap -mx-2 xl:-mx-4"
                         >
                             <AnimatePresence initial={false} custom={direction}>
                                 {data.map((item, indx) => (
@@ -129,11 +122,10 @@ const BlogsSlider: FC<SliderCardsProps> = ({
                                         variants={variants(200, 1)}
                                         key={indx}
                                         style={{
-                                            width: `calc(1/${numberOfItems} * 90%)`,
+                                            width: `calc(1/${numberOfItems} * 100%)`,
                                         }}
                                     >
-                                        
-                                        <BlogsCard size="small" key={item._id} data={item} />
+                                        <StandAloneCard size="default" key={item._id} data={item} />
                                     </motion.li>
                                 ))}
                             </AnimatePresence>
@@ -161,4 +153,4 @@ const BlogsSlider: FC<SliderCardsProps> = ({
     );
 };
 
-export default BlogsSlider;
+export default SliderStandAlone;
