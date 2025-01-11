@@ -16,6 +16,7 @@ const LikeSaveBtns = ({
   isLiked?: boolean;
 }) => {
   const pathname = usePathname();
+  
 
   const [modalHandler, setModalHandler] = useState<boolean>(false);
   const [isCopied, setIsCopied] = useState<boolean>(false);
@@ -110,13 +111,13 @@ const LikeSaveBtns = ({
                       )}
                       <div className="flex justify-between  items-center space-x-2">
                         <div className="w-full text-xs py-2 rounded-lg bg-stone-200 px-2 whitespace-nowrap overflow-hidden">
-                          {process.env.NEXT_PUBLIC_CLIENT_URL + "/" + attraction?.destination?.slug + "/" + attraction?.slug}{" "}
+                          {process.env.NEXT_PUBLIC_CLIENT_URL + pathname}
                         </div>
                         <div
                           className="text-2xl"
                           onClick={() => {
                             navigator.clipboard.writeText(
-                              process.env.NEXT_PUBLIC_CLIENT_URL  + "/" + attraction?.destination?.slug + "/" + attraction?.slug
+                              process.env.NEXT_PUBLIC_CLIENT_URL  + pathname
                             );
                             setIsCopied(true);
                           }}
