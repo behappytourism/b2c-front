@@ -25,6 +25,7 @@ export interface SectionGridFilterCardProps {
   headingIsCenter?: boolean;
   tabs?: string[];
   setDest?: (dest: string) => void;
+  setVisibleAttraction?: (visibleAttraction: number) => void;
 }
 
 const SectionGridFilterAttractionCard: FC<SectionGridFilterCardProps> = ({
@@ -35,8 +36,16 @@ const SectionGridFilterAttractionCard: FC<SectionGridFilterCardProps> = ({
   headingIsCenter,
   tabs = ["all"],
   setDest,
+  setVisibleAttraction
 }) => {
   const [visibleData, setVisibleData] = useState(4); // State to track how many items to display
+
+  useEffect(() => {
+    if (setVisibleAttraction) {
+      setVisibleAttraction(visibleData);
+    }
+  }, [visibleData]);
+  
 
   const handleOnclickTab = (item: string) => {
     if (setDest) {

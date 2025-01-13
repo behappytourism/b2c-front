@@ -15,6 +15,8 @@ import SliderCards from "@/components/Attraction/SliderCards";
 import BlogsCard from "@/components/Attraction/BlogsCard";
 import BlogsSlider from "@/components/Attraction/BlogsSlider";
 import SliderStandAlone from "@/components/Attraction/SliderStandAlone";
+import { UUID } from "crypto";
+import { SearchByDestination } from "@/data/attraction/types";
 
 interface responseTS {
   destinations: [];
@@ -28,14 +30,24 @@ interface bannerImages {
   img: string;
 }
 
+interface attractionDataProps {
+  attractions: {
+    _id: UUID | string | null;
+    totalAttractions: number;
+    data: SearchByDestination[];
+  };
+  skip: number;
+  limit: number;}
+
 const LandingPage = () => {
   const dispatch = useDispatch();
   const { data: session } = useSession();
-  const [attractionData, setAttractionData] = useState();
+  const [attractionData, setAttractionData] = useState<attractionDataProps>();
   const [dest, setDest] = useState("all");
   const [response, setResponse] = useState<responseTS>();
   const [banner, setBanner] = useState<bannerImages[]>([]);
   const [standAloneAttr, setStandAloneAttr] = useState<standalones>();
+  const [visibleAttraction, setVisibleAttraction] = useState(0);
 
   const { attractionDestinations, globalData } = useSelector(
     (state: RootState) => state.initials
@@ -144,10 +156,10 @@ const LandingPage = () => {
 
   // console.log(attractionData, "attractions");
   // console.log(dest, "tabs");
-  console.log(standAloneAttr);
   
 
   //const tabs = ["dubai", "sharjah", "fujairah", "ras al khaimah", "ajman", "abu dhabi", "oman", "hatta"]
+  
 
   return (
     <>
@@ -219,13 +231,16 @@ const LandingPage = () => {
                   tabs={tabs}
                   setDest={setDest}
                   className="md:pb-24 lg:pb-28"
+                  setVisibleAttraction={setVisibleAttraction}
                 />
               )}
 
               <div>
-                <div className="w-full">
+                {visibleAttraction > (attractionData?.attractions?.data?.length ?? 0) && (
+                  <div className="w-full">
                   <BlogsSlider data={globalData.blogs} />
                 </div>
+                )}
               </div>
 
               {attractionDestinations.length === 0 && (
