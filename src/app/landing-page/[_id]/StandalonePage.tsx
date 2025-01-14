@@ -368,7 +368,7 @@ function StandalonePage() {
 											Home
 										</a>
 									</li>
-									<li>
+									{/* <li>
 										<div className="flex items-center">
 											<svg
 												className="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 "
@@ -386,10 +386,10 @@ function StandalonePage() {
 												/>
 											</svg>
 											<a className="ms-1 md:text-sm text-xs font-medium text-gray-500  md:ms-2 dark:text-gray-400  capitalize">
-												stand-alone
+												landing-page
 											</a>
 										</div>
-									</li>
+									</li> */}
 									<li aria-current="page">
 										<div className="flex items-center">
 											<svg
