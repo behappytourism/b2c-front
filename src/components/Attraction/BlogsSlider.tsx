@@ -118,7 +118,7 @@ const BlogsSlider: FC<SliderCardsProps> = ({
                             <AnimatePresence initial={false} custom={direction}>
                                 {data.map((item, indx) => (
                                     <motion.li
-                                        className={`relative inline-block px-2 xl:px-4 ${itemClassName}`}
+                                        className={`relative inline-block px-2 xl:px-4  ${itemClassName}`}
                                         custom={direction}
                                         initial={{
                                             x: `${(currentIndex - 1) * -100}%`,
@@ -129,7 +129,7 @@ const BlogsSlider: FC<SliderCardsProps> = ({
                                         variants={variants(200, 1)}
                                         key={indx}
                                         style={{
-                                            width: `calc(1/${numberOfItems} * 90%)`,
+                                            width: `calc(1/${numberOfItems} * 100%)`,
                                         }}
                                     >
                                         

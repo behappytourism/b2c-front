@@ -135,7 +135,7 @@ const BlogsCard: FC<ExperiencesCardProps> = ({
                 {title}
               </span>
             </h2>
-            <div className="md:flex  gap-5 text-gray-500 text-sm justify-center break-words whitespace-normal">
+            <div className="md:flex  gap-5 text-gray-500 text-sm justify-center break-words whitespace-normal min-h-[80px]">
               <div dangerouslySetInnerHTML={{ __html: slicedBody }} />
             </div>
 
