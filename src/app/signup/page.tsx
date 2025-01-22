@@ -152,7 +152,7 @@ const PageSignUp: FC<PageSignUpProps> = ({}) => {
               onClick={() =>
                 signIn("google", {
                   callbackUrl:
-                    "https://behappytourism.com/api/auth/callback/google",
+                    "https://behappydubai.com/api/auth/callback/google",
                 })
               }
               className="flex w-full cursor-pointer rounded-lg bg-primary-50 dark:bg-neutral-800 px-4 py-3 transform transition-transform sm:px-6 hover:translate-y-[-2px]"
