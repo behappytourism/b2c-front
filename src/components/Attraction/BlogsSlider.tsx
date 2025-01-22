@@ -23,7 +23,7 @@ export interface SliderCardsProps {
 
 
 const BlogsSlider: FC<SliderCardsProps> = ({
-    heading = "News, Tips Guides",
+    heading = "News, Blogs, Tips Guides",
     subHeading = "Favorite destinations based on customer reviews",
     className = "",
     itemClassName = "",
