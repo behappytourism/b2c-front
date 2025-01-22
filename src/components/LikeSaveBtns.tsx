@@ -117,7 +117,7 @@ const LikeSaveBtns = ({
                           className="text-2xl"
                           onClick={() => {
                             navigator.clipboard.writeText(
-                              process.env.NEXT_PUBLIC_CLIENT_URL  + pathname
+                              process.env.NEXT_PUBLIC_CLIENT_URL + pathname
                             );
                             setIsCopied(true);
                           }}
