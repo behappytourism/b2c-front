@@ -37,7 +37,8 @@ const StandAloneCard: FC<ExperiencesCardProps> = ({
   );
   const { favourites } = useSelector((state: RootState) => state.attraction);
 
-  const { _id, title, slug, description, images, shortDesc } = data as StandAlone;
+  const { _id, title, slug, description, images, shortDesc } =
+    data as StandAlone;
 
   const isLiked = useMemo(() => {
     const liked = favourites.find((item) => item._id === _id);
@@ -55,47 +56,53 @@ const StandAloneCard: FC<ExperiencesCardProps> = ({
     }
   };
 
+  const strippedBody = shortDesc?.replace(/<[^>]*>/g, ""); // Remove all HTML tags
+  const slicedBody = strippedBody?.slice(0, 150) + "..."; // Slice the plain text
 
- const strippedBody = shortDesc?.replace(/<[^>]*>/g, ""); // Remove all HTML tags
- const slicedBody = strippedBody?.slice(0, 150) + "..."; // Slice the plain text
- 
   return (
     <>
-     <Link href={`/landing-page/${slug}` as Route} className={`nc-CardCategory3 flex flex-col ${className}`}>
-      <div
-        className={`flex-shrink-0 relative w-full aspect-w-5 aspect-h-5 sm:aspect-h-6 h-0 rounded-2xl overflow-hidden group`}
+      <Link
+        href={`/landing-page/${slug}` as Route}
+        className={`nc-CardCategory3 flex flex-col ${className}`}
       >
-        <Image
-        //   src={images ? `${process.env.NEXT_PUBLIC_CDN_URL + images[0]}` : ""}
-         src={`${process.env.NEXT_PUBLIC_CDN_URL}${images[0] || ""}`}
-          className="object-cover w-full h-full rounded-2xl min-w-[600px]"
-          alt="packages thumbnail"
-          height={1000}
-          width={1000}
-        />
-        <span className="opacity-0 group-hover:opacity-100 absolute right-10 inset-0 bg-black bg-opacity-10 transition-opacity"></span>
-        {/* <span className=" bg-gradient-to-b  dark:from-[#1f2836] from-transparent  via-gray-800  to-black md:max-h-[80px] max-h-[90px] top-[80%] absolute md:top-[80%]"></span> */}
-      </div>
-      <div className="mt-4 w-full absolute top-10 justify-center items-center text-center">
-        <h2
-          className={`text-3xl text-white dark:text-neutral-100  absolute right-14  font-extrabold truncate capitalize`}
+        <div
+          className={`flex-shrink-0 relative w-full aspect-w-5  aspect-h-5 sm:aspect-h-6 h-0 rounded-2xl overflow-hidden group`}
         >
-          {title}
-        </h2>
-        <div className="md:flex  gap-5 text-white/90 text-xs md:text-sm mt-10 justify-center px-10 md:px-0 md:text-right md:absolute md:right-14 break-words whitespace-normal">
+          <Image
+            //   src={images ? `${process.env.NEXT_PUBLIC_CDN_URL + images[0]}` : ""}
+            src={`${process.env.NEXT_PUBLIC_CDN_URL}${images[0] || ""}`}
+            className="object-cover w-full h-full rounded-2xl min-w-[600px]"
+            alt="packages thumbnail"
+            height={1000}
+            width={1000}
+          />
+          <span className="opacity-0 group-hover:opacity-100 absolute right-10 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
+          {/* <span className=" bg-gradient-to-b  dark:from-[#1f2836] from-transparent  via-gray-800  to-black md:max-h-[80px] max-h-[90px] top-[80%] absolute md:top-[80%]"></span> */}
+        </div>
+        <div className="mt-4 max-h-[200px] flex flex-col gap-32 w-full absolute top-10 text-right items-end">
+          <div className="flex flex-col gap-4">
+            <h2
+              className={`text-3xl text-white dark:text-neutral-100 break-words md:pr-12 whitespace-normal text-right font-extrabold capitalize`}
+            >
+              {title}
+            </h2>
+            <div className=" text-white text-xs md:text-sm px-10 md:px-0  md:pr-[34px] md:text-right break-words whitespace-normal">
               <div dangerouslySetInnerHTML={{ __html: slicedBody }} />
             </div>
-            
-                    <button className="bg-yellow-300 mt-32 absolute right-14 font-semibold text-black rounded-3xl py-3 px-4">
-          View More &rarr;
-        </button>
-        <span
-          className={`block mt-1.5 text-sm text-neutral-6000 dark:text-neutral-400`}
-        >
-          {/* {convertNumbThousand(count || 0)} properties */}
-        </span>
-      </div>
-    </Link>
+          </div>
+
+          <div className="pr-12">
+            <button className="bg-yellow-300 font-semibold text-black rounded-3xl py-3 px-4">
+              View More &rarr;
+            </button>
+          </div>
+          <span
+            className={`block mt-1.5 text-sm text-neutral-6000 dark:text-neutral-400`}
+          >
+            {/* {convertNumbThousand(count || 0)} properties */}
+          </span>
+        </div>
+      </Link>
     </>
   );
 };
