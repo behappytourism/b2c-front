@@ -56,7 +56,7 @@ const BlogsCard: FC<ExperiencesCardProps> = ({
   };
 
   const strippedBody = body.replace(/<[^>]*>/g, ""); // Remove all HTML tags
-  const slicedBody = strippedBody.slice(0, 150) + "..."; // Slice the plain text
+  const slicedBody = strippedBody.slice(0, 100) + "..."; // Slice the plain text
 
   const formattedDate = new Intl.DateTimeFormat("en-GB", {
     day: "2-digit",
