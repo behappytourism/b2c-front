@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ButtonClose from "@/shared/ButtonClose";
 import Logo from "@/shared/Logo";
 import { Disclosure } from "@headlessui/react";
@@ -19,6 +19,7 @@ import { signOut } from "next-auth/react";
 import { RootState } from "@/redux/store";
 import LoginBar from "@/shared/LoginBar";
 import ButtonSecondary from "../ButtonSecondary";
+import priceConversion from "@/utils/priceConversion";
 
 export interface NavMobileProps {
   data?: NavItemType[];
@@ -31,12 +32,44 @@ const NavMobile: React.FC<NavMobileProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { user, jwtToken } = useSelector((state: RootState) => state.users);
+  const { selectedCurrency } = useSelector(
+    (state: RootState) => state.initials
+  );
+
+  const [walletBalance, setWalletBalance] = useState({balance: 0})
 
   const handleLogout = async() => {
     await signOut()
     await localStorage.removeItem("random-string");
     await dispatch(logoutUser() as any);
   };
+
+
+  
+  const getWalletBalance = async () => {
+    try {  
+      const walletBalance = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users/wallet-balance`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "Content-Type": "application/json",
+          },
+          next: { revalidate: 1 },
+        }
+      );
+  
+      const data = await walletBalance.json();
+      setWalletBalance(data || 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getWalletBalance();
+  },[jwtToken])
 
   const _renderMenuChild = (item: NavItemType) => {
     return (
@@ -142,16 +175,27 @@ const NavMobile: React.FC<NavMobileProps> = ({
       <ul className="flex flex-col py-6 px-2 space-y-1">
         {data.map(_renderItem)}
         {user?.name && jwtToken && (
+          <>
+          <div className="pt-5">
+
+          <div
+          className="container dark:bg-neutral-700 bg-gray-100 rounded py-1 flex justify-between"
+          >
+            <p>Available Wallet Balance</p>
+            <p className="font-semibold">{priceConversion(walletBalance?.balance, selectedCurrency, true)}</p>
+          </div>
+            </div>
         <div
           onClick={handleLogout}
           className="flex gap-1 items-center text-center cursor-pointer py-6 px-2 space-y-1"
-        >
+          >
           <OutlineLogout className="h-6 w-6" />
 
           <span className="text-neutral-6000 dark:text-neutral-300">
             Logout
           </span>
         </div>
+          </>
 )}
 
 {!user?.name && (

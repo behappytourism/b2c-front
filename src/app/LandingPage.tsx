@@ -17,6 +17,9 @@ import BlogsSlider from "@/components/Attraction/BlogsSlider";
 import SliderStandAlone from "@/components/Attraction/SliderStandAlone";
 import { UUID } from "crypto";
 import { SearchByDestination } from "@/data/attraction/types";
+import PaymentSection from "@/components/payment/PaymentSection";
+import WhyChooseUsSection from "@/components/WhyChooseUs/WhyChooseUsSection";
+import TestimonialsSection from "@/components/Testimonials/TestimonialsSection";
 
 interface responseTS {
   destinations: [];
@@ -266,11 +269,29 @@ const LandingPage = () => {
 
               <div>
                 {visibleAttraction > (attractionData?.attractions?.data?.length ?? 0) && (
-                  <div className="w-full">
+                  <>
+                  <div className="w-full mb-20">
                   <BlogsSlider data={globalData.blogs} />
                 </div>
+
+                <div className="mt-30">
+                <PaymentSection />
+              </div>
+
+              <div className="mt-20">
+                <WhyChooseUsSection />
+              </div>
+
+           <div className="mt-20">
+            <TestimonialsSection />
+           </div>
+
+                </>
                 )}
               </div>
+
+
+            
 
               {attractionDestinations.length === 0 && (
                 <>

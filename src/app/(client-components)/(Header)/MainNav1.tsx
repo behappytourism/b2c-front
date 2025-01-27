@@ -28,7 +28,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
   const { transferCart } = useSelector((state: RootState) => state.transfer);
   const [enableLogin, setEnableLogin] = useState(false);
   const [displayWallet, setDisplayWallet] = useState(false);
-  const [walletBalance, setWalletBalance] = useState(0)
+  const [walletBalance, setWalletBalance] = useState({balance: 0})
 
   const { selectedCurrency } = useSelector(
     (state: RootState) => state.initials
