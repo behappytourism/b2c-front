@@ -86,7 +86,7 @@ const StandAloneCard: FC<ExperiencesCardProps> = ({
             >
               {title}
             </h2>
-            <div className=" text-white text-xs md:text-sm px-10  md:text-right break-words whitespace-normal">
+            <div className=" text-white text-xs md:text-sm px-10 md:text-right break-words whitespace-normal">
               <div dangerouslySetInnerHTML={{ __html: slicedBody }} />
             </div>
           </div>

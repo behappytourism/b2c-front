@@ -36,6 +36,7 @@ import {
 } from "@/redux/features/transferSlice";
 import Link from "next/link";
 import { Route } from "next";
+import Checkbox from "@/shared/Checkbox";
 
 interface vehicleType {
   name: string;
@@ -44,8 +45,13 @@ interface vehicleType {
   vehicleType: string;
 }
 
+interface walletType {
+  balance: number
+}
+
 const Cart = () => {
   const thisPathname = usePathname();
+  const { jwtToken } = useSelector((state: RootState) => state.users);
   const route = useRouter();
   const [leadPaxDes, setLeadPaxDes] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -62,6 +68,46 @@ const Cart = () => {
   });
   const [paxphoneCode, setPaxPhoneCode] = useState<string>("");
   const [paxCountryCode, setPaxCountryCode] = useState<string>("");
+  const [walletBalance, setWalletBalance] = useState({balance: 0})
+  const [walletApply, setWalletApply] = useState(false);
+  const [remainingBalance, setRemainingBalance] = useState(0);
+
+  useEffect(() => {
+    const calculateRemainingBalance = () => {
+      if (walletBalance?.balance < grandTotal + totalTransferPrice) {
+        setRemainingBalance(0);
+      } else {
+        setRemainingBalance(walletBalance.balance - (grandTotal + totalTransferPrice));
+      }
+    };
+  
+    calculateRemainingBalance();
+  }, [walletApply, walletBalance]);
+
+  const getWalletBalance = async () => {
+    try {  
+      const walletBalance = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users/wallet-balance`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "Content-Type": "application/json",
+          },
+          next: { revalidate: 1 },
+        }
+      );
+  
+      const data = await walletBalance.json();
+      setWalletBalance(data || 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getWalletBalance();
+  },[])
 
   // Making breadcrums data.
   const parts = thisPathname?.split("/").filter((part) => part !== "");
@@ -79,7 +125,6 @@ const Cart = () => {
     (state: RootState) => state.initials
   );
 
-  const { jwtToken } = useSelector((state: RootState) => state.users);
   const { cart } = useSelector((state: RootState) => state.attraction);
   
   const { transfer, transferCart } = useSelector(
@@ -215,7 +260,7 @@ const Cart = () => {
             name: pax.firstname + " " + pax.lastname,
             email: pax.email,
             phoneNumber: pax.phone,
-            paymentMethod: "ccavenue",
+            paymentMethod: walletApply ? "wallet" : "ccavenue",
             countryCode: paxCountryCode,
           }),
           headers: headers,
@@ -991,7 +1036,6 @@ const Cart = () => {
   const PriceSidebar = () => {
     return (
       <div
-        onClick={() => setFinalPayment(!finalPayment)}
         className="rounded-lg border p-3 cursor-pointer mt-5"
       >
         <div
@@ -1012,6 +1056,7 @@ const Cart = () => {
           {finalPayment === true && (
             <p>
               <ChevronUpIcon
+              className="cursor-pointer"
                 onClick={() => setFinalPayment(!finalPayment)}
                 height={20}
                 width={20}
@@ -1025,30 +1070,57 @@ const Cart = () => {
             {grandTotal > 0 && (
               <div className="flex justify-between pt-3 pb-1">
                 <p>Tours Total Amount Incl. VAT</p>
-                <p> {priceConversion(grandTotal, selectedCurrency, true)}</p>
+                <p className="font-semibold"> {priceConversion(grandTotal, selectedCurrency, true)}</p>
               </div>
             )}
 
             {totalTransferPrice > 0 && (
               <div className="flex justify-between pt-1 mb-5">
                 <p>Transfer Total Amount Incl. VAT</p>
-                <p>
+                <p className="font-semibold">
                   {" "}
                   {priceConversion(totalTransferPrice, selectedCurrency, true)}
                 </p>
               </div>
             )}
 
-            <div className="flex justify-between font-bold text-xl dark:bg-neutral-800 bg-gray-200 p-3 rounded-lg">
-              <p>Final Amount</p>
-              <p>
-                {priceConversion(
-                  grandTotal + totalTransferPrice,
-                  selectedCurrency,
-                  true
-                )}
-              </p>
+           {jwtToken && (
+             <div className="flex items-center text-center gap-3 my-2 opacity-90">
+              <Checkbox onChange={() => setWalletApply(!walletApply)} name="wallet" />
+              <div className="w-full flex justify-between">
+              <p className="">Apply available wallet balance</p>
+              <p className="font-semibold">{priceConversion(walletBalance?.balance - remainingBalance, selectedCurrency, true)}</p>
+              </div>
             </div>
+            )}
+
+           {walletApply ? (
+ <div className="flex justify-between font-bold text-xl dark:bg-neutral-800 bg-gray-200 p-3 rounded-lg">
+ <p>Final Amount</p>
+ <p>
+   {priceConversion(
+     grandTotal + totalTransferPrice - (walletBalance?.balance - remainingBalance),
+     selectedCurrency,
+     true
+   )}
+ </p>
+</div>
+           ) : (
+            <div className="flex justify-between font-bold text-xl dark:bg-neutral-800 bg-gray-200 p-3 rounded-lg">
+            <p>Final Amount</p>
+            <p>
+              {priceConversion(
+                grandTotal + totalTransferPrice,
+                selectedCurrency,
+                true
+              )}
+            </p>
+          </div>
+           )}
+
+           
+
+
           </div>
         )}
       </div>
@@ -1060,7 +1132,7 @@ const Cart = () => {
   };
 
   return (
-    <div className="container relative z-10 mt-11 flex flex-col gap-10">
+    <div className="container mb-10 relative z-10 mt-11 flex flex-col gap-10">
       {/* BREADCRUMBS */}
       <div className="my-3 flex justify-between">
         <div

@@ -1,13 +1,8 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Logo from "@/shared/Logo";
-import Navigation from "@/shared/Navigation/Navigation";
-import SearchDropdown from "./SearchDropdown";
-import ButtonPrimary from "@/shared/ButtonPrimary";
 import MenuBar from "@/shared/MenuBar";
 import SwitchDarkMode from "@/shared/SwitchDarkMode";
 import HeroSearchForm2MobileFactory from "../(HeroSearchForm2Mobile)/HeroSearchForm2MobileFactory";
-import LangDropdown from "./LangDropdown";
-import CurrencySelector from "@/shared/CurrencySelector";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Avatar from "@/shared/Avatar";
@@ -16,13 +11,11 @@ import { Route } from "next";
 import {
   ShoppingCartIcon,
   UserIcon,
-  XMarkIcon,
+  WalletIcon,
 } from "@heroicons/react/24/outline";
-import Cart from "./Cart";
-import { PhoneIcon } from "@heroicons/react/24/solid";
+import { WalletIcon as SolidWallet } from "@heroicons/react/24/solid";
 import Link from "next/link";
-import ModalLogin from "@/app/login/ModalLogin";
-import ModalSignUp from "@/app/signup/ModalSignup";
+import priceConversion from "@/utils/priceConversion";
 
 export interface MainNav1Props {
   className?: string;
@@ -31,34 +24,45 @@ export interface MainNav1Props {
 const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
   const router = useRouter();
   const { user, jwtToken } = useSelector((state: RootState) => state.users);
-  const { globalData } = useSelector((state: RootState) => state.initials);
   const { cart } = useSelector((state: RootState) => state.attraction);
   const { transferCart } = useSelector((state: RootState) => state.transfer);
   const [enableLogin, setEnableLogin] = useState(false);
-  const [login, setLogin] = useState("login");
+  const [displayWallet, setDisplayWallet] = useState(false);
+  const [walletBalance, setWalletBalance] = useState(0)
+
+  const { selectedCurrency } = useSelector(
+    (state: RootState) => state.initials
+  );
+
+
+  const getWalletBalance = async () => {
+    try {  
+      const walletBalance = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users/wallet-balance`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "Content-Type": "application/json",
+          },
+          next: { revalidate: 1 },
+        }
+      );
+  
+      const data = await walletBalance.json();
+      setWalletBalance(data || 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getWalletBalance();
+  },[jwtToken])
 
   return (
     <>
-      {/* {enableLogin === true && (
-        <div className="fixed z-50 w-full mt-20 flex justify-center backdrop-blur-xl bg-opacity-30 bg-black">
-          <div
-            onClick={() => setEnableLogin(false)}
-            className="absolute mt-6 right-[300px] bg-white rounded-full cursor-pointer"
-          >
-            <XMarkIcon height={40} width={40} />
-          </div>
-          <div className="bg-white mb-[200px] max-h-[510px] overflow-x-auto mt-5 py-5 rounded-xl shadow-2xl">
-            <div className="grid grid-cols-2 text-center mb-5 cursor-pointer">
-              <h2 className={`${login === "login" ? "text-primary-500" : "text-black"} ${login === "login" ? "border-b" : "border-none"} ${login === "login" ? "border-primary-500" : "border-none"} text-2xl`} onClick={() => setLogin("login")}>Login</h2>
-              <h2 className={`${login === "signup" ? "text-primary-500" : "text-black"} ${login === "signup" ? "border-b" : "border-none"} ${login === "signup" ? "border-primary-500" : "border-none"} text-2xl`} onClick={() => setLogin("signup")}>Sign up</h2>
-            </div>
-            {login === "login" && <ModalLogin />}
-
-            {login === "signup" && <ModalSignUp />}
-          </div>
-        </div>
-      )} */}
-
+     
       <div className={`nc-MainNav1 relative z-10 ${className}`}>
         <div className="px-4 lg:container h-20 relative flex justify-between">
           <div className="flex justify-center md:justify-start flex-1 space-x-4 sm:space-x-10">
@@ -85,17 +89,20 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
                 Contact us
               </Link>
 
-              {/* <a
-                href={`tel:${globalData?.home?.phoneNumber1}`}
-                className="self-center px-3 cursor-pointer flex items-center"
-              >
-                <span className="">
-                  <PhoneIcon className="w-4 h-4" />
-                </span>
-                <span className="">{globalData?.home?.phoneNumber1}</span>
-              </a> */}
-              {/* <Cart className="flex items-center" /> */}
              
+             {jwtToken && (
+               <div onMouseEnter={() => setDisplayWallet(true)} onMouseLeave={() => setDisplayWallet(false)}  className="flex flex-col pr-1 justify-center cursor-pointer">
+                {displayWallet ? <SolidWallet className="w-7 h-7 cursor-pointer"/> : <WalletIcon className="w-7 h-7 cursor-pointer"/> }
+                
+                {displayWallet && (
+                  <div className="absolute cursor-pointer bg-white -ml-10 z-10 shadow-sm py-1 px-4 rounded shadow-black/40 top-10">
+                    <p>Wallet: <span className="font-extrabold">{priceConversion(walletBalance?.balance, selectedCurrency, true)}</span></p>
+                  </div>
+                )}
+              </div>
+              )}
+
+
              <Link className="self-center"  href={"/cart" as Route}>
               <p className="absolute bg-orange-400 text-white p-2 rounded-full h-5 w-5 -mt-[8px] ml-[12px] items-center text-xs flex justify-center">{cart?.length + transferCart?.length || 0}</p>
               <ShoppingCartIcon  className="w-7 h-7"  />

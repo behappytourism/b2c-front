@@ -48,9 +48,14 @@ const LandingPage = () => {
   const [banner, setBanner] = useState<bannerImages[]>([]);
   const [standAloneAttr, setStandAloneAttr] = useState<standalones>();
   const [visibleAttraction, setVisibleAttraction] = useState(0);
+  const [walletBalance, setWalletBalance] = useState(0)
 
   const { attractionDestinations, globalData } = useSelector(
     (state: RootState) => state.initials
+  );
+
+  const { jwtToken} = useSelector(
+    (state: RootState) => state.users
   );
 
   const findAttraction = async () => {
@@ -138,10 +143,34 @@ const LandingPage = () => {
     }
   };
 
+
+  const getWalletBalance = async () => {
+    try {  
+      const walletBalance = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users/wallet-balance`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+            "Content-Type": "application/json",
+          },
+          next: { revalidate: 1 },
+        }
+      );
+  
+      const data = await walletBalance.json();
+      setWalletBalance(data || 0);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
+
   useEffect(() => {
     findBanner();
     findAttractionQuery();
     findStandAloneAttraction();
+    getWalletBalance();
   }, []);
 
   useEffect(() => {
