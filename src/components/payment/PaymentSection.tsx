@@ -7,23 +7,23 @@ import visaIcon from "../../../public/visa.png"
 
 function PaymentSection() {
   return (
-    <div className='w-full flex gap-20 container'>
-        <div>
-        <Image className='max-h-[400px] max-w-[300px] rounded-2xl' height={1000} width={1000} src={paymentImage} alt='payment-cover' />
+    <div className='w-full flex md:flex-row flex-col md:gap-20 gap-10 container'>
+        <div className='md:block hidden'>
+        <Image className='md:max-h-[400px] md:max-w-[300px] rounded-2xl' height={1000} width={1000} src={paymentImage} alt='payment-cover' />
         </div>
 
-        <div>
-            <div className='xl:space-y-7'>
+        <div className='mt-10 md:mt-0'>
+            <div className='xl:space-y-7 space-y-8'>
                 <div className='bg-gray-100 w-fit px-4 py-3 rounded-3xl'>
                     <p className='font-semibold'>Easy & Secure payment</p>
                 </div>
 
                 <div>
-                    <h2 className='font-extrabold text-6xl'>Discover Dream <br /> Destinations with Ease</h2>
+                    <h2 className='font-extrabold text-4xl md:text-6xl'>Discover Dream <br /> Destinations with Ease</h2>
                 </div>
 
                 <div>
-                    <p className='text-xl font-semibold opacity-60'>Book with confidence using our easy and secure payment options, powered by trusted payment providers for a hassle-free and smooth experience.</p>
+                    <p className='md:text-xl text-lg font-semibold opacity-60'>Book with confidence using our easy and secure payment options, powered by trusted payment providers for a hassle-free and smooth experience.</p>
                 </div>
 
                 <div className='flex gap-4 items-center text-center'>
@@ -36,6 +36,10 @@ function PaymentSection() {
                 </div>
                 </div>
             </div>
+        </div>
+
+        <div className='md:hidden'>
+        <Image className='md:max-h-[400px] md:max-w-[300px] rounded-2xl' height={1000} width={1000} src={paymentImage} alt='payment-cover' />
         </div>
     </div>
   )

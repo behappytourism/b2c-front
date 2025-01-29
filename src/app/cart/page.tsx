@@ -242,6 +242,7 @@ const Cart = () => {
       if (jwtToken?.length && jwtToken !== null && jwtToken !== undefined) {
         headers = {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${jwtToken}`,
         };
       } else {
         headers = {

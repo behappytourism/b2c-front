@@ -9,10 +9,19 @@ import { variants } from "@/utils/animationVariants";
 import PrevBtn from "../PrevBtn";
 import NextBtn from "../NextBtn";
 
+interface TestimonialsProps {
+  description: string;
+  image: string;
+  name: string;
+  place: string;
+  rating: string;
+}
+
 function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [numberOfItems, setNumberOfitem] = useState(0);
+  const [testimonials, setTestimonials] = useState<TestimonialsProps[]>([]);
 
   const windowWidth = useWindowSize().width;
   useEffect(() => {
@@ -34,12 +43,12 @@ function TestimonialsSection() {
 
   useEffect(() => {
     if (
-      (windowWidth >= 1024 && (10 ?? 0) > currentIndex + numberOfItems) ||
-      (windowWidth < 1024 && (10 ?? 0) > 1)
+      (windowWidth >= 1024 && (testimonials.length ?? 0) > currentIndex + numberOfItems) ||
+      (windowWidth < 1024 && (testimonials.length ?? 0) > 1)
     ) {
       const interval = setInterval(() => {
         setCurrentIndex((prevIndex) =>
-          prevIndex < (10 ?? 0) - 1 ? prevIndex + 1 : 0
+          prevIndex < (testimonials.length ?? 0) - 1 ? prevIndex + 1 : 0
         );
       }, 3000);
       return () => clearInterval(interval);
@@ -57,7 +66,7 @@ function TestimonialsSection() {
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
-      if (currentIndex < 10 - 1) {
+      if (currentIndex < testimonials.length - 1) {
         changeItemId(currentIndex + 1);
       }
     },
@@ -69,31 +78,52 @@ function TestimonialsSection() {
     trackMouse: true,
   });
 
-  if (!numberOfItems) return null;
+  const getTestimonials = async () => {
+    try {
+      const attraction = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/home/reviews`,
+        { next: { revalidate: 1 } }
+      );
+      const data = await attraction.json();
+      setTestimonials(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getTestimonials();
+  },[])
+
+
+  if (!numberOfItems) {
+    return <div>Loading...</div>; // Or any fallback UI
+  }  
+  
 
   return (
     <div className="w-full container">
-    <div className="flex gap-10">
-      <div className="space-y-5 w-6/12">
+    <div className="flex md:flex-row flex-col gap-10">
+      <div className="space-y-5 md:w-6/12">
         <div className="bg-gray-100 w-fit px-4 py-3 rounded-3xl">
           <p className="font-semibold">Testimonials</p>
         </div>
 
         <div>
-          <h2 className="font-extrabold text-5xl">
+          <h2 className="font-extrabold text-4xl md:text-5xl">
             What out clients are saying about us?
           </h2>
         </div>
 
         <div>
-          <p className="text-xl font-semibold opacity-60">
+          <p className="md:text-xl text-lg font-semibold opacity-60">
             Discover unforgettable attractions and experiences across the UAE,
             straight from those who’ve enjoyed them.
           </p>
         </div>
       </div>
 
-      <div className="flex gap-4 w-6/12 ">
+      <div className="flex gap-4 md:w-6/12 ">
         <MotionConfig
           transition={{
             x: { type: "spring", stiffness: 300, damping: 30 },
@@ -101,10 +131,10 @@ function TestimonialsSection() {
           }}
         >
           <div className={`relative flow-root`} {...handlers}>
-            <div className={`flow-root overflow-hidden rounded-xl`}>
+            <div className={`hidden md:flow-root overflow-hidden rounded-xl`}>
               <motion.ul initial={false} className="relative whitespace-nowrap">
                 <AnimatePresence initial={false} custom={direction}>
-                  {[0, 1, 2, 3, 4,5,6,7,8,9].map((item, indx) => (
+                  {testimonials.map((item, indx) => (
                     <motion.li
                       className={`relative inline-block px-2 xl:px-4`}
                       custom={direction}
@@ -120,7 +150,34 @@ function TestimonialsSection() {
                         flex: `0 0 calc(100% / ${numberOfItems})`,
                       }}
                     >
-                      <TestimonialCard />
+                      <TestimonialCard data={item} />
+                    </motion.li>
+                  ))}
+                </AnimatePresence>
+              </motion.ul>
+            </div>
+
+
+            <div className={`md:hidden inset-0 flow-root overflow-hidden rounded-xl`}>
+              <motion.ul initial={false} className="relative whitespace-nowrap">
+                <AnimatePresence initial={false} custom={direction}>
+                  {testimonials.map((item, indx) => (
+                    <motion.li
+                      className={`relative inline-block`}
+                      custom={direction}
+                      initial={{
+                        x: `${(currentIndex - 1) * -100}%`,
+                      }}
+                      animate={{
+                        x: `${currentIndex * -100}%`,
+                      }}
+                      variants={variants(200, 1)}
+                      key={indx}
+                      style={{
+                        width: `calc(1/${1} * 100%)`,
+                      }}
+                    >
+                      <TestimonialCard data={item} />
                     </motion.li>
                   ))}
                 </AnimatePresence>
@@ -142,10 +199,10 @@ function TestimonialsSection() {
         />
 
             <NextBtn
-        disabled={currentIndex >= 9}
+        disabled={currentIndex >= testimonials.length - 1}
         style={{ transform: "translate3d(0, 0, 0)" }}
               onClick={() => changeItemId(currentIndex + 1)}
-              className={`${currentIndex >= 9 ? "cursor-not-allowed opacity-50" : ""} w-9 h-9 xl:w-12 xl:h-12 text-lg -translate-y-1/2 z-[1]`}
+              className={`${currentIndex >= testimonials.length - 1 ? "cursor-not-allowed opacity-50" : ""} w-9 h-9 xl:w-12 xl:h-12 text-lg -translate-y-1/2 z-[1]`}
             />
 
 </div>
