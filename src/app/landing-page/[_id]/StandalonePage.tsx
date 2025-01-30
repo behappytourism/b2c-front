@@ -216,7 +216,7 @@ function StandalonePage() {
         </h2>
         <div className="w-14 border-b border-neutral-200 dark:border-neutral-700"></div>
         <div
-          className={`md:grid md:grid-cols-${gridValue} gap-2 flow-root overflow-hidden rounded-xl`}
+          className={`md:grid md:grid-cols-4 gap-2 flow-root overflow-hidden rounded-xl`}
         >
           {attractionData &&
             attractionData?.attractions?.map((item: any, index: number) => (

@@ -32,13 +32,13 @@ function TestimonialsSection() {
       return setNumberOfitem(1);
     }
     if (windowWidth < 1024) {
-      return setNumberOfitem(3 - 1);
+      return setNumberOfitem(4 - 1);
     }
     if (windowWidth < 1280) {
-      return setNumberOfitem(3 - 1);
+      return setNumberOfitem(4 - 1);
     }
 
-    setNumberOfitem(2);
+    setNumberOfitem(3);
   }, [windowWidth]);
 
   useEffect(() => {
@@ -132,7 +132,7 @@ function TestimonialsSection() {
         >
           <div className={`relative flow-root`} {...handlers}>
             <div className={`hidden md:flow-root overflow-hidden rounded-xl`}>
-              <motion.ul initial={false} className="relative whitespace-nowrap">
+              <motion.ul initial={false} className="relative flex">
                 <AnimatePresence initial={false} custom={direction}>
                   {testimonials.map((item, indx) => (
                     <motion.li
@@ -158,8 +158,8 @@ function TestimonialsSection() {
             </div>
 
 
-            <div className={`md:hidden inset-0 flow-root overflow-hidden rounded-xl`}>
-              <motion.ul initial={false} className="relative whitespace-nowrap">
+            <div className={`md:hidden flow-root overflow-hidden rounded-xl`}>
+              <motion.ul initial={false} className="relative flex">
                 <AnimatePresence initial={false} custom={direction}>
                   {testimonials.map((item, indx) => (
                     <motion.li
@@ -174,7 +174,7 @@ function TestimonialsSection() {
                       variants={variants(200, 1)}
                       key={indx}
                       style={{
-                        width: `calc(1/${1} * 100%)`,
+                        flex: `0 0 calc(100% / ${numberOfItems})`,
                       }}
                     >
                       <TestimonialCard data={item} />
