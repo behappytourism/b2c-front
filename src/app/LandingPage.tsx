@@ -3,16 +3,13 @@
 import React, { useEffect, useMemo, useState } from "react";
 import SectionHero from "@/app/(server-components)/SectionHero";
 import BgGlassmorphism from "@/components/BgGlassmorphism";
-import SectionSliderNewCategories from "@/components/SectionSliderNewCategories";
 import SectionGridFilterAttractionCard from "@/components/Attraction/SectionGridFilterAttractionCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import { RootState } from "@/redux/store";
 import { setUser } from "@/redux/features/usersSlice";
-import { fetchAffiliateUser } from "@/redux/features/affiliatesSlice";
 import ComponentLoader from "@/components/loader/ComponentLoader";
 import SliderCards from "@/components/Attraction/SliderCards";
-import BlogsCard from "@/components/Attraction/BlogsCard";
 import BlogsSlider from "@/components/Attraction/BlogsSlider";
 import SliderStandAlone from "@/components/Attraction/SliderStandAlone";
 import { UUID } from "crypto";
@@ -20,6 +17,7 @@ import { SearchByDestination } from "@/data/attraction/types";
 import PaymentSection from "@/components/payment/PaymentSection";
 import WhyChooseUsSection from "@/components/WhyChooseUs/WhyChooseUsSection";
 import TestimonialsSection from "@/components/Testimonials/TestimonialsSection";
+import DestinationsSection from "@/components/Destinations/DestinationsSection";
 
 interface responseTS {
   destinations: [];
@@ -224,6 +222,12 @@ const LandingPage = () => {
             <div className="relative container space-y-10 lg:space-y-12 md:mt-[10px]">
               {/* SECTION 1 */}
 
+               {globalData.topAttractions?.length ? (
+                 <DestinationsSection />
+               ):(
+                ""
+               )}
+
               {globalData.topAttractions?.length ? (
                 <SliderCards
                   data={globalData.topAttractions}
@@ -240,11 +244,7 @@ const LandingPage = () => {
                 subHeading="Visit our popular listed packages"
               />
 
-              {attractionDestinations.length > 0 && (
-                <SectionSliderNewCategories
-                  destinations={attractionDestinations}
-                />
-              )}
+           
 
               {globalData.bestSellingAttractions?.length ? (
                 <SliderCards
@@ -270,9 +270,7 @@ const LandingPage = () => {
               <div>
                 {visibleAttraction > (attractionData?.attractions?.data?.length ?? 0) && (
                   <>
-                  <div className="w-full mb-20">
-                  <BlogsSlider data={globalData.blogs} />
-                </div>
+             
 
                 <div className="mt-30">
                 <PaymentSection />
@@ -281,6 +279,10 @@ const LandingPage = () => {
               <div className="mt-20">
                 <WhyChooseUsSection />
               </div>
+
+              <div className="w-full my-20">
+                  <BlogsSlider data={globalData.blogs} />
+                </div>
 
            <div className="mt-20">
             <TestimonialsSection />

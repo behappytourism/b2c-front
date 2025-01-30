@@ -24,8 +24,10 @@ export interface InitialCountries {
 
 export interface InitialAttractionDestiantions {
   country?: string;
+  slug?: string;
+  attractionCount?: string;
   createdAt?: Date | string;
-  image?: string;
+  image: string;
   isDeleted?: boolean;
   name?: string;
   updatedAt?: Date | string;

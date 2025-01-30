@@ -41,7 +41,7 @@ function WhyChooseUsSection() {
               width={1000}
               alt="why choose us #1"
             />
-            <span className="opacity-0 w-full absolute right-10 hover:opacity-100 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
+            <span className=" w-full absolute right-10 opacity-100 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
             <div className="absolute text-white z-30 top-8 left-4">
               <p className="text-2xl font-semibold">1000+ Activities</p>
               <p>our expert team handpicked all activities for you.</p>
@@ -55,7 +55,7 @@ function WhyChooseUsSection() {
               width={1000}
               alt="why choose us #1"
             />
-            <span className="opacity-0 w-full absolute right-10 hover:opacity-100 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
+            <span className="w-full absolute right-10 opacity-100 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
             <div className="absolute text-white z-30 bottom-3 left-4">
               <p className="text-2xl font-semibold">900K+ Happy Travelers</p>
             </div>
@@ -70,7 +70,7 @@ function WhyChooseUsSection() {
               width={1000}
               alt="why choose us #1"
             />
-            <span className="opacity-0 w-full absolute right-10 hover:opacity-100 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
+            <span className="w-full absolute right-10 opacity-100 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
             <div className="absolute text-white z-30 bottom-4 left-4">
               <p className="text-2xl font-semibold">Great 24/7 Support </p>
               <p>
@@ -86,7 +86,7 @@ function WhyChooseUsSection() {
               width={1000}
               alt="why choose us #1"
             />
-            <span className="opacity-0 w-full absolute right-10 hover:opacity-100 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
+            <span className="w-full absolute right-10 opacity-100 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
             <div className="absolute text-white z-30 top-4 left-4">
               <p className="text-2xl font-semibold">Fast & Easy Booking</p>
               <p>Secure & Safe payment</p>
@@ -100,7 +100,7 @@ function WhyChooseUsSection() {
               width={1000}
               alt="why choose us #1"
             />
-            <span className="opacity-0 w-full absolute right-10 hover:opacity-100 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
+            <span className="w-full absolute right-10 opacity-100 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
             <div className="absolute text-white z-30 bottom-3 left-4">
               <p className="text-2xl font-semibold">Best Price Guaranteed </p>
               <p>
