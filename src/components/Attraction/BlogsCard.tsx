@@ -165,7 +165,7 @@ const BlogsCard: FC<ExperiencesCardProps> = ({
         className={`group relative block border rounded-3xl ${className}`}
       >
         {renderSliderGallery()}
-        <Link className="" href={`/blog/${data?.slug}` as Route}>
+        <Link className="" href={`/blogs/${data?.slug}` as Route}>
           {renderContent()}
         </Link>
       </div>

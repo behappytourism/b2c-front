@@ -1,5 +1,6 @@
 "use client";
 
+import BlogsCard from "@/components/Attraction/BlogsCard";
 import { Blogs } from "@/data/general/types";
 import ButtonCircle from "@/shared/ButtonCircle";
 import { Route } from "next";
@@ -105,24 +106,24 @@ const BlogLandingPage = () => {
 		};
 	}, [blogResponse?.blogs]);
 
-	const renderSearchSection = () => {
-		return (
-			<div className=" items-center">
-				<div className=" flex items-center gap-2">
-					<input
-						type="search"
-						placeholder="Search here!!!"
-						onChange={(e) => setValue(e.target.value)}
-						value={value}
-						className=" py-3 bg-light border border-main px-2  outline-none rounded-xl"
-					/>
-					<ButtonCircle size="w-14 h-14">
-						<i className="las la-search text-2xl"></i>
-					</ButtonCircle>
-				</div>
-			</div>
-		);
-	};
+	// const renderSearchSection = () => {
+	// 	return (
+	// 		<div className=" items-center">
+	// 			<div className=" flex items-center gap-2">
+	// 				<input
+	// 					type="search"
+	// 					placeholder="Search here!!!"
+	// 					onChange={(e) => setValue(e.target.value)}
+	// 					value={value}
+	// 					className=" py-3 bg-light border border-main px-2  outline-none rounded-xl"
+	// 				/>
+	// 				<ButtonCircle size="w-14 h-14">
+	// 					<i className="las la-search text-2xl"></i>
+	// 				</ButtonCircle>
+	// 			</div>
+	// 		</div>
+	// 	);
+	// };
 
 	const renderMappingCard = (item: Blogs, index: number) => {
 		return (
@@ -169,8 +170,8 @@ const BlogLandingPage = () => {
 
 	const loadingComponent = () => {
 		return (
-			<div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-5 my-5">
-				{Array.from({ length: 3 }).map((data, index) => (
+			<div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-10 my-5">
+				{Array.from({ length: 6 }).map((data, index) => (
 					<div
 						key={index}
 						role="status"
@@ -214,15 +215,16 @@ const BlogLandingPage = () => {
 	};
 
 	return (
-		<>
-			{/* <div className="mb-3">
-				<MobileMainNav />
-			</div> */}
-			<div className="lg:max-w-screen-xl lg:mx-auto lg:py-14 py-3 p-5">
-				{renderSearchSection()}
+			<div className="container py-10">
+				<div className="mb-20">
+				 <h2 className='md:text-5xl text-3xl font-extrabold'>News, Tips & Guides</h2>
+      <p className='font-semibold md:text-xl text-lg mt-3'>Favorite destinations based on customer reviews</p>
+				</div>
+
+
 				{!isLoading ? (
-					<div className="mt-5">
-						<div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+					<div className="">
+						<div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-10">
 							{filteredData?.map((item, index) => (
 								<Link
 									key={item?.slug}
@@ -230,7 +232,7 @@ const BlogLandingPage = () => {
 										`${thisPathname}/${item?.slug}` as Route
 									}
 								>
-									{renderMappingCard(item, index)}
+								<BlogsCard size="small" key={item._id} data={item} />
 								</Link>
 							))}
 						</div>
@@ -239,7 +241,6 @@ const BlogLandingPage = () => {
 					loadingComponent()
 				)}
 			</div>
-		</>
 	);
 };
 
