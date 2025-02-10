@@ -111,7 +111,7 @@ function TestimonialsSection() {
 
         <div>
           <h2 className="font-extrabold text-4xl md:text-5xl">
-            What out clients are saying about us?
+            What our clients are saying about us?
           </h2>
         </div>
 

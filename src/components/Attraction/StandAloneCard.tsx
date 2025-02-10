@@ -76,7 +76,7 @@ const StandAloneCard: FC<ExperiencesCardProps> = ({
             height={1000}
             width={1000}
           />
-          <span className="opacity-0 group-hover:opacity-100 absolute right-10 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
+          <span className="opacity-100 absolute right-10 inset-0 bg-black bg-opacity-40 transition-all duration-300 group-hover:transition-all group-hover:duration-300"></span>
           {/* <span className=" bg-gradient-to-b  dark:from-[#1f2836] from-transparent  via-gray-800  to-black md:max-h-[80px] max-h-[90px] top-[80%] absolute md:top-[80%]"></span> */}
         </div>
         <div className="mt-4 max-h-[200px] flex flex-col  md:gap-32 w-full absolute top-10 text-right items-end">

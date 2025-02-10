@@ -34,7 +34,7 @@ function WhyChooseUsSection() {
 
       <div className="flex md:flex-row flex-col gap-4">
         <div className="flex flex-col gap-4 pt-20">
-          <div className="border rounded-2xl md:min-w-[300px] relative overflow-hidden cursor-pointer md:max-w-[300px] md:min-h-[300px]">
+          <div className="border rounded-2xl md:min-w-[300px] relative overflow-hidden md:max-w-[300px] md:min-h-[300px]">
             <Image
               src={wcu1}
               height={1000}
@@ -48,7 +48,7 @@ function WhyChooseUsSection() {
             </div>
           </div>
 
-          <div className="border rounded-2xl min-w-[300px] cursor-pointer relative overflow-hidden md:max-w-[300px] min-h-[200px]">
+          <div className="border rounded-2xl min-w-[300px] relative overflow-hidden md:max-w-[300px] min-h-[200px]">
             <Image
               src={wcu2}
               height={1000}
@@ -63,7 +63,7 @@ function WhyChooseUsSection() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="border rounded-2xl min-w-[300px] cursor-pointer relative overflow-hidden md:max-w-[300px] min-h-[200px]">
+          <div className="border rounded-2xl min-w-[300px] relative overflow-hidden md:max-w-[300px] min-h-[200px]">
             <Image
               src={wcu3}
               height={1000}
@@ -79,7 +79,7 @@ function WhyChooseUsSection() {
             </div>
           </div>
 
-          <div className="border rounded-2xl min-w-[300px] cursor-pointer relative overflow-hidden md:max-w-[300px] min-h-[300px]">
+          <div className="border rounded-2xl min-w-[300px] relative overflow-hidden md:max-w-[300px] min-h-[300px]">
             <Image
               src={wcu4}
               height={1000}
@@ -93,7 +93,7 @@ function WhyChooseUsSection() {
             </div>
           </div>
 
-          <div className="border rounded-2xl min-w-[300px] cursor-pointer relative overflow-hidden md:max-w-[300px] min-h-[200px]">
+          <div className="border rounded-2xl min-w-[300px] relative overflow-hidden md:max-w-[300px] min-h-[200px]">
             <Image
               src={wcu5}
               height={1000}
