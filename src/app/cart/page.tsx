@@ -453,7 +453,6 @@ const Cart = () => {
         // getOrderComplete(order.orderId || "");
         setWalletResponse(order.orderId || "");
         setConfirmationModal(true);
-        setLoader(true);
       }
 
       dispatch(handleEmptyCart(""));
