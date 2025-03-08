@@ -37,6 +37,7 @@ import {
 import Link from "next/link";
 import { Route } from "next";
 import Checkbox from "@/shared/Checkbox";
+import ComponentLoader from "@/components/loader/ComponentLoader";
 
 interface vehicleType {
   name: string;
@@ -46,7 +47,7 @@ interface vehicleType {
 }
 
 interface walletType {
-  balance: number
+  balance: number;
 }
 
 const Cart = () => {
@@ -68,24 +69,29 @@ const Cart = () => {
   });
   const [paxphoneCode, setPaxPhoneCode] = useState<string>("");
   const [paxCountryCode, setPaxCountryCode] = useState<string>("");
-  const [walletBalance, setWalletBalance] = useState({balance: 0})
+  const [walletBalance, setWalletBalance] = useState({ balance: 0 });
   const [walletApply, setWalletApply] = useState(false);
   const [remainingBalance, setRemainingBalance] = useState(0);
+  const [walletResponse, setWalletResponse] = useState<string>("");
+  const [loader, setLoader] = useState(false);
+  const [confirmationModal, setConfirmationModal] = useState(false);
 
   useEffect(() => {
     const calculateRemainingBalance = () => {
       if (walletBalance?.balance < grandTotal + totalTransferPrice) {
         setRemainingBalance(0);
       } else {
-        setRemainingBalance(walletBalance.balance - (grandTotal + totalTransferPrice));
+        setRemainingBalance(
+          walletBalance.balance - (grandTotal + totalTransferPrice)
+        );
       }
     };
-  
+
     calculateRemainingBalance();
   }, [walletApply, walletBalance]);
 
   const getWalletBalance = async () => {
-    try {  
+    try {
       const walletBalance = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users/wallet-balance`,
         {
@@ -97,7 +103,7 @@ const Cart = () => {
           next: { revalidate: 1 },
         }
       );
-  
+
       const data = await walletBalance.json();
       setWalletBalance(data || 0);
     } catch (error) {
@@ -107,7 +113,7 @@ const Cart = () => {
 
   useEffect(() => {
     getWalletBalance();
-  },[])
+  }, []);
 
   // Making breadcrums data.
   const parts = thisPathname?.split("/").filter((part) => part !== "");
@@ -126,7 +132,7 @@ const Cart = () => {
   );
 
   const { cart } = useSelector((state: RootState) => state.attraction);
-  
+
   const { transfer, transferCart } = useSelector(
     (state: RootState) => state.transfer
   );
@@ -152,7 +158,7 @@ const Cart = () => {
     const updatedBriefPayments = [...briefPayments];
     updatedBriefPayments[index] = !updatedBriefPayments[index];
     setBriefPayments(updatedBriefPayments);
-  };  
+  };
 
   useEffect(() => {
     const filteredCountries = countries?.filter(
@@ -176,13 +182,14 @@ const Cart = () => {
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
-  
 
   const activity = cart.map((item) => {
-    const formattedDate = item?.date ? new Date(item.date).toISOString().split('T')[0] : '';
+    const formattedDate = item?.date
+      ? new Date(item.date).toISOString().split("T")[0]
+      : "";
     return {
       activity: item?._id,
-      date: formattedDate, 
+      date: formattedDate,
       adultsCount: item?.adultCount,
       childrenCount: item?.childCount,
       infantCount: item?.infantCount,
@@ -225,30 +232,184 @@ const Cart = () => {
   );
 
   // Handling submit.
+  // const submitHandler = async (e: { preventDefault: () => void }) => {
+  //   try {
+  //     e.preventDefault();
+  //     setError("");
+
+  //     setIsLoading(true);
+
+  //     // if (cart.length || transfer.length === 0) {
+  //     //   setError("Your cart is empty.");
+  //     //   setIsLoading(false);
+  //     //   return;
+  //     // }
+
+  //     let headers = {};
+  //     if (jwtToken?.length && jwtToken !== null && jwtToken !== undefined) {
+  //       headers = {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${jwtToken}`,
+  //       };
+  //     } else {
+  //       headers = {
+  //         "Content-Type": "application/json",
+  //       };
+  //     }
+
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/orders/create`,
+  //       {
+  //         method: "POST",
+  //         body: JSON.stringify({
+  //           selectedActivities: activity,
+  //           selectedJourneys: transferArray,
+  //           country: pax.country,
+  //           name: pax.firstname + " " + pax.lastname,
+  //           email: pax.email,
+  //           phoneNumber: pax.phone,
+  //           paymentMethod: walletApply ? "wallet" : "ccavenue",
+  //           countryCode: paxCountryCode,
+  //         }),
+  //         headers: headers,
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       const res = await response.json();
+  //       console.log(res);
+
+  //       setError(res?.error || "Something went wrong.!");
+  //       setIsLoading(false);
+  //       return;
+  //     }
+
+  //     const order = await response.text();
+
+  //     const winUrl = URL.createObjectURL(
+  //       new Blob([order], { type: "text/html" })
+  //     );
+
+  //     // window.open(winUrl, "win");
+
+  //     if (typeof window !== undefined) {
+  //       window.location.replace(winUrl);
+  //     }
+
+  //     dispatch(handleEmptyCart(""));
+  //     dispatch(handleEmptyTransferCart(""));
+
+  //     setIsLoading(false);
+  //   } catch (error: any) {
+  //     setError(error?.response?.data?.error || "Something went wrong!");
+  //     console.log(error);
+
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  // const submitHandler = async (e: { preventDefault: () => void }) => {
+  //   try {
+  //     e.preventDefault();
+  //     setError("");
+  //     setIsLoading(true);
+
+  //     // Calculate the remaining amount after using wallet balance
+  //     const remainingAmount =
+  //       grandTotal +
+  //       totalTransferPrice -
+  //       (walletBalance?.balance && remainingBalance
+  //         ? walletBalance.balance - remainingBalance
+  //         : 0);
+
+  //     // Determine payment method
+  //     let paymentMethod: "wallet" | "ccavenue-wallet" | "ccavenue" = "ccavenue";
+  //     if (walletApply) {
+  //       paymentMethod = remainingAmount === 0 ? "wallet" : "ccavenue-wallet";
+  //     }
+
+  //     let headers = {
+  //       "Content-Type": "application/json",
+  //       ...(jwtToken ? { Authorization: `Bearer ${jwtToken}` } : {}),
+  //     };
+
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/orders/create`,
+  //       {
+  //         method: "POST",
+  //         body: JSON.stringify({
+  //           selectedActivities: activity,
+  //           selectedJourneys: transferArray,
+  //           country: pax.country,
+  //           name: pax.firstname + " " + pax.lastname,
+  //           email: pax.email,
+  //           phoneNumber: pax.phone,
+  //           paymentMethod,
+  //           countryCode: paxCountryCode,
+  //         }),
+  //         headers,
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       const res = await response.json();
+  //       console.log(res);
+  //       setError(res?.error || "Something went wrong.!");
+  //       setIsLoading(false);
+  //       return;
+  //     }
+
+  //     const order = await response.text();
+  //     const orderData = JSON.parse(order); // Parse response JSON
+
+  //     if (paymentMethod === "wallet") {
+  //       getOrderComplete(orderData?.orderId || "");
+  //       setWalletResponse(order); // Store response in state
+  //     } else {
+  //           const winUrl = URL.createObjectURL(
+  //       new Blob([order], { type: "text/html" })
+  //     );
+
+  //     if (typeof window !== undefined) {
+  //       window.location.replace(winUrl);
+  //     }
+  //     }
+
+  //     dispatch(handleEmptyCart(""));
+  //     dispatch(handleEmptyTransferCart(""));
+
+  //     setIsLoading(false);
+  //   } catch (error: any) {
+  //     setError(error?.response?.data?.error || "Something went wrong!");
+  //     console.log(error);
+  //     setIsLoading(false);
+  //   }
+  // };
+
   const submitHandler = async (e: { preventDefault: () => void }) => {
     try {
       e.preventDefault();
       setError("");
-
       setIsLoading(true);
 
-      // if (cart.length || transfer.length === 0) {
-      //   setError("Your cart is empty.");
-      //   setIsLoading(false);
-      //   return;
-      // }
+      // Calculate the remaining amount after using wallet balance
+      const remainingAmount =
+        grandTotal +
+        totalTransferPrice -
+        (walletBalance?.balance
+          ? walletBalance.balance - remainingBalance
+          : 0);
 
-      let headers = {};
-      if (jwtToken?.length && jwtToken !== null && jwtToken !== undefined) {
-        headers = {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwtToken}`,
-        };
-      } else {
-        headers = {
-          "Content-Type": "application/json",
-        };
+      // Determine payment method
+      let paymentMethod: "wallet" | "ccavenue-wallet" | "ccavenue" = "ccavenue";
+      if (walletApply) {
+        paymentMethod = remainingAmount === 0 ? "wallet" : "ccavenue-wallet";
       }
+
+      let headers = {
+        "Content-Type": "application/json",
+        ...(jwtToken ? { Authorization: `Bearer ${jwtToken}` } : {}),
+      };
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/orders/create`,
@@ -261,32 +422,38 @@ const Cart = () => {
             name: pax.firstname + " " + pax.lastname,
             email: pax.email,
             phoneNumber: pax.phone,
-            paymentMethod: walletApply ? "wallet" : "ccavenue",
+            paymentMethod,
             countryCode: paxCountryCode,
+            specialRequest: pax.special_request_text
           }),
-          headers: headers,
+          headers,
         }
       );
 
       if (!response.ok) {
         const res = await response.json();
         console.log(res);
-
         setError(res?.error || "Something went wrong.!");
         setIsLoading(false);
         return;
       }
 
-      const order = await response.text();
-
-      const winUrl = URL.createObjectURL(
-        new Blob([order], { type: "text/html" })
-      );
-
-      // window.open(winUrl, "win");
-
-      if (typeof window !== undefined) {
-        window.location.replace(winUrl);
+      if (paymentMethod === "ccavenue" || paymentMethod === "ccavenue-wallet") {
+        // Get response as raw HTML for CCAvenue redirection
+        const orderHtml = await response.text();
+        const winUrl = URL.createObjectURL(
+          new Blob([orderHtml], { type: "text/html" })
+        );
+        if (typeof window !== "undefined") {
+          window.location.replace(winUrl);
+        }
+      } else {
+        // Parse JSON response for wallet transactions
+        const order = await response.json();
+        // getOrderComplete(order.orderId || "");
+        setWalletResponse(order.orderId || "");
+        setConfirmationModal(true);
+        setLoader(true);
       }
 
       dispatch(handleEmptyCart(""));
@@ -296,10 +463,51 @@ const Cart = () => {
     } catch (error: any) {
       setError(error?.response?.data?.error || "Something went wrong!");
       console.log(error);
-
       setIsLoading(false);
     }
   };
+
+  const orderComplete = async (orderId: string) => {
+    const payload = {
+      orderId: orderId,
+    };
+
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/orders/complete`,
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+
+      return response.json();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async function getOrderComplete(orderId: string) {
+    try {
+      const response = await orderComplete(orderId);
+      if (response?._id) {
+        route.push(`/order/${response._id}`);
+        setLoader(false);
+      } else {
+        console.error("Order ID not found in response:", response);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+
+  const walletConfirmation = () => {
+    getOrderComplete(walletResponse || "");  }
 
   // handle Remove each activity from cart.
   const handleRemoveActivityFromCart = (id: string) => {
@@ -325,7 +533,9 @@ const Cart = () => {
   const grandTotal: number = useMemo(() => {
     return cart.reduce((acc, item) => {
       if (item.isPromoAdded) {
-        return acc + item.priceWithoutPromoGrandTotal - item?.appliedPromoAmount;
+        return (
+          acc + item.priceWithoutPromoGrandTotal - item?.appliedPromoAmount
+        );
       } else {
         return acc + item.priceWithoutPromoGrandTotal;
       }
@@ -1014,7 +1224,8 @@ const Cart = () => {
                     <span>
                       {item.isPromoAdded
                         ? priceConversion(
-                            item.priceWithoutPromoGrandTotal - item?.appliedPromoAmount,
+                            item.priceWithoutPromoGrandTotal -
+                              item?.appliedPromoAmount,
                             selectedCurrency,
                             true
                           )
@@ -1033,12 +1244,10 @@ const Cart = () => {
       </div>
     );
   };
-
+  
   const PriceSidebar = () => {
     return (
-      <div
-        className="rounded-lg border p-3 cursor-pointer mt-5"
-      >
+      <div className="rounded-lg border p-3 cursor-pointer mt-5">
         <div
           className={`flex justify-between items-center gap-2 ${
             finalPayment === false ? "" : "border-b"
@@ -1057,7 +1266,7 @@ const Cart = () => {
           {finalPayment === true && (
             <p>
               <ChevronUpIcon
-              className="cursor-pointer"
+                className="cursor-pointer"
                 onClick={() => setFinalPayment(!finalPayment)}
                 height={20}
                 width={20}
@@ -1071,7 +1280,10 @@ const Cart = () => {
             {grandTotal > 0 && (
               <div className="flex justify-between pt-3 pb-1">
                 <p>Tours Total Amount Incl. VAT</p>
-                <p className="font-semibold"> {priceConversion(grandTotal, selectedCurrency, true)}</p>
+                <p className="font-semibold">
+                  {" "}
+                  {priceConversion(grandTotal, selectedCurrency, true)}
+                </p>
               </div>
             )}
 
@@ -1085,43 +1297,52 @@ const Cart = () => {
               </div>
             )}
 
-           {jwtToken && (
-             <div className="flex items-center text-center gap-3 my-2 opacity-90">
-              <Checkbox onChange={() => setWalletApply(!walletApply)} name="wallet" />
-              <div className="w-full flex justify-between">
-              <p className="">Apply available wallet balance</p>
-              <p className="font-semibold">{priceConversion(walletBalance?.balance - remainingBalance, selectedCurrency, true)}</p>
+            {jwtToken && (
+              <div className="flex items-center text-center gap-3 my-2 opacity-90">
+                <Checkbox
+                  onChange={() => setWalletApply(!walletApply)}
+                  name="wallet"
+                />
+                <div className="w-full flex justify-between">
+                  <p className="">Apply available wallet balance</p>
+                  <p className="font-semibold">
+                    {priceConversion(
+                      walletBalance?.balance - remainingBalance,
+                      selectedCurrency,
+                      true
+                    )}
+                  </p>
+                </div>
               </div>
-            </div>
             )}
 
-           {walletApply ? (
- <div className="flex justify-between font-bold text-xl dark:bg-neutral-800 bg-gray-200 p-3 rounded-lg">
- <p>Final Amount</p>
- <p>
-   {priceConversion(
-     grandTotal + totalTransferPrice - (walletBalance?.balance - remainingBalance),
-     selectedCurrency,
-     true
-   )}
- </p>
-</div>
-           ) : (
-            <div className="flex justify-between font-bold text-xl dark:bg-neutral-800 bg-gray-200 p-3 rounded-lg">
-            <p>Final Amount</p>
-            <p>
-              {priceConversion(
-                grandTotal + totalTransferPrice,
-                selectedCurrency,
-                true
-              )}
-            </p>
-          </div>
-           )}
-
-           
-
-
+            {walletApply ? (
+              <div className="flex justify-between font-bold text-xl dark:bg-neutral-800 bg-gray-200 p-3 rounded-lg">
+                <p>Final Amount</p>
+                <p>
+                  {priceConversion(
+                    grandTotal +
+                      totalTransferPrice -
+                      (walletBalance?.balance
+                        ? walletBalance.balance - remainingBalance
+                        : 0),
+                    selectedCurrency,
+                    true
+                  )}
+                </p>
+              </div>
+            ) : (
+              <div className="flex justify-between font-bold text-xl dark:bg-neutral-800 bg-gray-200 p-3 rounded-lg">
+                <p>Final Amount</p>
+                <p>
+                  {priceConversion(
+                    grandTotal + totalTransferPrice,
+                    selectedCurrency,
+                    true
+                  )}
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -1133,48 +1354,84 @@ const Cart = () => {
   };
 
   return (
-    <div className="container mb-10 relative z-10 mt-11 flex flex-col gap-10">
-      {/* BREADCRUMBS */}
-      <div className="my-3 flex justify-between">
-        <div
-          onClick={() => backfunction()}
-          className="flex items-center cursor-pointer text-center gap-3"
-        >
-          <ArrowLeftIcon height={20} width={20} />
-          <p>Back</p>
-        </div>
-        <Breadcrumb breadCrumbs={breadcrum} />
-      </div>
-
-      {cart.length || transferCart.length ? (
-        <form onSubmit={submitHandler}>
-          <div className="flex lg:flex-row gap-10 w-full">
-            <div className="md:w-8/12 space-y-10">
-              {cart.length ? renderSidebar() : ""}
-              {transferCart.length ? renderTransfer() : ""}
-              <div className="md:hidden block">{renderDetailsCollection()}</div>
-              {cart.length || transferCart.length ? renderPaymentSection() : ""}
-            </div>
-
-            {/* SIDEBAR */}
-            <div className="hidden lg:block w-4/12 flex-grow mt-14 lg:mt-0">
-              {renderDetailsCollection()}
-              {PriceSidebar()}
-            </div>
-          </div>
-        </form>
-      ) : (
-        <div>
-          <div className="listingSectionSidebar__wrap shadow max-w-sm mb-20">
-            <div className="flex flex-wrap gap-2 items-center justify-center text-neutral-600 dark:text-neutral-400">
-              <i className="las la-cart-plus text-3xl "></i>
-              <p className="">Your cart is empty.</p>
-            </div>
-            <ButtonPrimary href="/">Continue Shopping</ButtonPrimary>
+    <>
+      {loader && (
+        <div className="container my-10">
+          <div className="flex flex-col gap-10">
+            {[0, 1, 2].map((loader) => (
+              <ComponentLoader key={loader} />
+            ))}
           </div>
         </div>
       )}
-    </div>
+
+      {confirmationModal && (
+      <div className="w-full flex flex-col justify-center absolute h-screen bg-black/30 inset-0 z-30">
+        <div className="w-full flex justify-center">
+          <div className="bg-white p-4 rounded-3xl">
+
+          <h3 className="text-3xl font-semibold">
+          Are you sure to continue with this order?
+          </h3>
+
+          <div className="w-full flex mt-10 gap-5">
+            <button className="bg-black text-white font-thin rounded-full px-4 py-1">Back</button>
+            <button onClick={() => walletConfirmation()} className="bg-[#1db5bf] text-white font-thin rounded-full px-4 py-1">Proceed</button>
+          </div>
+          </div>
+        </div>
+      </div>
+      )}
+
+      {!loader && (
+        <div className="container mb-10 relative z-10 mt-11 flex flex-col gap-10">
+          {/* BREADCRUMBS */}
+          <div className="my-3 flex justify-between">
+            <div
+              onClick={() => backfunction()}
+              className="flex items-center cursor-pointer text-center gap-3"
+            >
+              <ArrowLeftIcon height={20} width={20} />
+              <p>Back</p>
+            </div>
+            <Breadcrumb breadCrumbs={breadcrum} />
+          </div>
+
+          {cart.length || transferCart.length ? (
+            <form onSubmit={submitHandler}>
+              <div className="flex lg:flex-row gap-10 w-full">
+                <div className="md:w-8/12 space-y-10">
+                  {cart.length ? renderSidebar() : ""}
+                  {transferCart.length ? renderTransfer() : ""}
+                  <div className="md:hidden block">
+                    {renderDetailsCollection()}
+                  </div>
+                  {cart.length || transferCart.length
+                    ? renderPaymentSection()
+                    : ""}
+                </div>
+
+                {/* SIDEBAR */}
+                <div className="hidden lg:block w-4/12 flex-grow mt-14 lg:mt-0">
+                  {renderDetailsCollection()}
+                  {PriceSidebar()}
+                </div>
+              </div>
+            </form>
+          ) : (
+            <div>
+              <div className="listingSectionSidebar__wrap shadow max-w-sm mb-20">
+                <div className="flex flex-wrap gap-2 items-center justify-center text-neutral-600 dark:text-neutral-400">
+                  <i className="las la-cart-plus text-3xl "></i>
+                  <p className="">Your cart is empty.</p>
+                </div>
+                <ButtonPrimary href="/">Continue Shopping</ButtonPrimary>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </>
   );
 };
 

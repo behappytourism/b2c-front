@@ -46,7 +46,8 @@ enum CategoryAccounts {
   DeleteAccount = "delete-account",
   Orders = "orders",
   Logout = "logout",
-  favourite = "favourite"
+  favourite = "favourite",
+  Affiliate = "affiliate"
 }
 
 interface ProfileSideBarProps {
