@@ -1375,7 +1375,7 @@ const Cart = () => {
           </h3>
 
           <div className="w-full flex mt-10 gap-5">
-            <button className="bg-black text-white font-thin rounded-full px-4 py-1">Back</button>
+            <button onClick={() => setConfirmationModal(false)} className="bg-black text-white font-thin rounded-full px-4 py-1">Back</button>
             <button onClick={() => walletConfirmation()} className="bg-[#1db5bf] text-white font-thin rounded-full px-4 py-1">Proceed</button>
           </div>
           </div>
