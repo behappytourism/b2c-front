@@ -80,7 +80,7 @@ const AffiliateTC = ({ setAffiliateTC, affiliateTC, affiliatePolicy, setModalOpe
       const response = await affiliateAdd();
       dispatch(setAffiliateUser(response));
       {response && (
-        setModalOpen(true)
+        setModalOpen(false)
       )}
     } catch (error) {
       console.error(error);

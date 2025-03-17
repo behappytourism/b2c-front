@@ -7,7 +7,7 @@ import ButtonPrimary from "@/shared/ButtonPrimary";
 import Input from "@/shared/Input";
 import Select from "@/shared/Select";
 import Textarea from "@/shared/Textarea";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import AffiliateDashboard from "./AffiliateDashboard";
 import AffiliateLinks from "./AffiliateLinks";
@@ -16,10 +16,17 @@ import AffiliateTransactions from "./AffiliateTransactions";
 import AffiliateTC from "./AffiliateTC";
 import ProfileSideBar from "../ProfileSideBar";
 import { useRouter } from "next/navigation";
+import { setAffiliateUser } from "@/redux/features/affiliatesSlice";
 export interface AffiliatePageProps {}
+
+interface AffiliateUser {
+  affiliateCode?: string;
+  error: string;
+}
 
 const Affiliate = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { jwtToken, user } = useSelector((state: RootState) => state.users);
   const [ordersCategory, setOrdersCategory] = useState("dashboard");
   const [affiliatePolicy, setAffiliatePolicy] = useState("");
@@ -35,7 +42,6 @@ const Affiliate = () => {
     }
   }, [affiliateUser]);
 
-  console.log(affiliateUser, "user");
   
 
   useEffect(() => {
@@ -74,6 +80,50 @@ const Affiliate = () => {
   useEffect(() => {
     getAffiliateTC();
   }, []);
+
+
+  const affiliateUsers = async () => {
+    try {
+      const affiliateUser = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/affiliate/single/user`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+      return affiliateUser.json();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  async function getAffiliateUsers() {
+    try {
+      const response: AffiliateUser = await affiliateUsers();
+      dispatch(setAffiliateUser(response));
+      {response?.error && (
+        setModalOpen(true)
+      )}
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    {
+      jwtToken && getAffiliateUsers();
+    }
+  }, []);
+
+  useEffect(() => {
+    {
+      jwtToken && getAffiliateUsers();
+    }
+  }, [modalOpen]);
+
 
   return (
     <div className={`nc-AuthorPage `}>
