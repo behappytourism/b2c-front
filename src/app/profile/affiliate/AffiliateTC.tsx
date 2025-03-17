@@ -88,10 +88,10 @@ const AffiliateTC = ({ setAffiliateTC, affiliateTC, affiliatePolicy, setModalOpe
   }
 
   return (
-    <div className="bg-white p-4 text-center items-center rounded fixed top-0 left-0 right-0 bottom-0 z-30  bg-opacity-50 shadow-lg backdrop-blur-md">
+    <div className="bg-black p-4 text-center items-center rounded fixed top-0 left-0 right-0 bottom-0 z-30  bg-opacity-50 shadow-lg backdrop-blur-md">
       <div className="flex justify-center items-center w-full h-[95vh] z-50">
         <div
-          className="min-h-[80vh] p-4 bg-[#fcfeff]  rounded-2xl overflow-hidden"
+          className="min-h-[80vh] py-10 px-10 bg-[#fcfeff]  rounded-2xl overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
         <div
@@ -101,7 +101,7 @@ const AffiliateTC = ({ setAffiliateTC, affiliateTC, affiliatePolicy, setModalOpe
        <XMarkIcon 
        className="h-20 w-20" />
       </div>
-          <h2 className="text-3xl font-semibold">Terms and Condition</h2>
+          <h2 className="text-3xl font-thin">Terms and Condition</h2>
           <div className="flex flex-col gap-4  max-w-[800px] container mt-10 max-h-[480px] overflow-x-auto">
             <div className="listingSection__wrap">
             <div dangerouslySetInnerHTML={{ __html: affiliateTC }}></div>

@@ -45,10 +45,13 @@ const AffiliateLinks = () => {
     Array(affiliateLinks?.length).fill(false)
   );
 
+  console.log(filteredAttractionsLinks, "aatraction");
+  
+
   const affiliateLink = async () => {
     try {
       const affiliateLink = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/affiliate/attractions`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/affiliate/attractions?limit=100`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -91,7 +94,7 @@ const AffiliateLinks = () => {
     affiliateCode: number
   ) => {
     // Get the URL you want to copy
-    const linkToCopy = `https://mytravellerschoice.com/details/${slug}?affiliateCode=${affiliateCode}`;
+    const linkToCopy = `${process.env.NEXT_PUBLIC_CLIENT_URL}/details/${slug}?affiliateCode=${affiliateCode}`;
     // const linkToCopy = `http://localhost:3050/details/${slug}?affiliateCode=${affiliateCode}`
 
     // Create a new input element to temporarily hold the URL

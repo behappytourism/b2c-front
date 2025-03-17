@@ -49,7 +49,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
     totalReviews,
     averageRating,
     category,
-  } = data as SearchByDestination;
+  } = data as SearchByDestination;  
 
   const isLiked = useMemo(() => {
     const liked = favourites.find((item) => item._id === _id);

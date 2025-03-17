@@ -764,7 +764,7 @@ const Cart = () => {
               Special Request
             </p> */}
             <Textarea
-              placeholder="Special Request"
+              placeholder="Pickup Address & Special Request"
               name="special_request_text"
               value={pax.special_request_text}
               onChange={onChangeHandler}

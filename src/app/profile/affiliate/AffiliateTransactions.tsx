@@ -9,23 +9,26 @@ import Select from "@/shared/Select";
 import Textarea from "@/shared/Textarea";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import priceConversion from "@/utils/priceConversion";
 
 export interface AffiliateTransactionsPageProps {}
 
 interface AffiliateTrans {
   points: string;
-  amount: string;
+  amount: number;
   currency: string;
   createdAt: string;
   redeemOption: string;
   status: string;
   network: string;
   transactionNo: string;
+  feeDeduction: number;
 }
 
 
 const AffiliateTransactions = () => {
   const { user, jwtToken } = useSelector((state: RootState) => state.users);
+  const { selectedCurrency } = useSelector((state: RootState) => state.initials);
   const [affiliateLinks, setAffiliateLinks] = useState([]);
   const [affiliateTransHistory, setAffiliateTransHistory] = useState<AffiliateTrans[]>([]);
   const [transactionCategory, setTransactionCategory] = useState("redeem");
@@ -87,7 +90,7 @@ const AffiliateTransactions = () => {
                 Redeem History
               </a>
             </li>
-            <li
+            {/* <li
               onClick={() => setTransactionCategory("withdrawal")}
               className="mr-2 cursor-pointer"
             >
@@ -104,7 +107,7 @@ const AffiliateTransactions = () => {
               >
              Withdrawal History
               </a>
-            </li>
+            </li> */}
           </ul>
         </div>
       <div className="flex flex-col md:flex-col">
@@ -118,7 +121,10 @@ const AffiliateTransactions = () => {
                       Redeem Amount
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Value in (Currency)
+                      Amount Credited
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Fee Deduction
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Date
@@ -137,7 +143,8 @@ const AffiliateTransactions = () => {
                     >
                      {trans?.points} Points
                     </th>
-                    <td className="px-6 py-4">{trans?.amount} {trans?.currency}</td>
+                    <td className="px-6 py-4">{priceConversion(trans?.amount || 0, selectedCurrency, true)}</td>
+                    <td className="px-6 py-4">{priceConversion(trans?.feeDeduction || 0, selectedCurrency, true)}</td>
                     <td className="px-6 py-4"> {trans?.createdAt
                                 ? new Date(trans.createdAt)
                                     .toISOString()
@@ -159,9 +166,9 @@ const AffiliateTransactions = () => {
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th scope="col" className="px-6 py-3">
+                    {/* <th scope="col" className="px-6 py-3">
                       Withdrawal Method & Network
-                    </th>
+                    </th> */}
                     <th scope="col" className="px-6 py-3">
                       Amount
                     </th>
@@ -176,12 +183,12 @@ const AffiliateTransactions = () => {
                 {affiliateTransHistory?.map((trans, index) => (
                 <tbody>
                   <tr className="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th
+                    {/* <th
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
                     {trans?.redeemOption} ({trans?.network})
-                    </th>
+                    </th> */}
                     <td className="px-6 py-4">{trans?.amount} {trans?.currency}</td>
                     <td className="px-6 py-4">{trans?.status}</td>
                     <td className="px-6 py-4">{trans?.transactionNo}</td>

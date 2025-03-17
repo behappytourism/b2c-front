@@ -55,10 +55,12 @@ export interface AttractionDetailPageProps {
   attraction: string;
 }
 
-const findAttraction = async (attractionSlug: string) => {
+
+const findAttraction = async (attractionSlug: string, searchParams: URLSearchParams) => {
   try {
+    const affiliateCode = searchParams.get("affiliateCode") || "";
     const attraction = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/single/${attractionSlug}?affiliateCode=`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/attractions/single/${attractionSlug}?affiliateCode=${affiliateCode}`,
       { next: { revalidate: 1 } }
     );
     return attraction.json();
@@ -66,6 +68,7 @@ const findAttraction = async (attractionSlug: string) => {
     console.log(error);
   }
 };
+
 
 const findAttractionReviews = async ({
   limit = 5,
@@ -159,9 +162,9 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
 
   // Fetching the attraction details.
   useEffect(() => {
-    const fecthApiResponse = async (attraction: string) => {
+    const fetchApiResponse = async (attraction: string) => {
       try {
-        const response = await findAttraction(attraction);
+        const response = await findAttraction(attraction, searchParams);
         setAttractionData(response);
         dispatch(
           storeAttractionActivity({
@@ -174,8 +177,9 @@ const AttractionDetails: FC<AttractionDetailPageProps> = ({ attraction }) => {
         console.log(error);
       }
     };
-    fecthApiResponse(attraction);
-  }, [attraction]);
+    fetchApiResponse(attraction);
+  }, [attraction, searchParams]);
+  
 
   // Fetching the reviews of attraction.
   const fetchReviewResponse = async ({

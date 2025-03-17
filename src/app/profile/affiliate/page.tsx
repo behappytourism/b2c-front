@@ -35,6 +35,9 @@ const Affiliate = () => {
     }
   }, [affiliateUser]);
 
+  console.log(affiliateUser, "user");
+  
+
   useEffect(() => {
     if (!jwtToken) {
       router.push("/");
@@ -159,7 +162,7 @@ const Affiliate = () => {
           {ordersCategory === "links" && <AffiliateLinks />}
           {ordersCategory === "settings" && <AffiliateSettings />}
           {ordersCategory === "transactions" && <AffiliateTransactions />}
-          {modalOpen === false && (
+          {modalOpen === true && (
             <AffiliateTC
               affiliatePolicy={affiliatePolicy}
               setAffiliateTC={setAffiliateTC}

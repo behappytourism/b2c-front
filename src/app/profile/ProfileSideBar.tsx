@@ -257,7 +257,7 @@ const ProfileSideBar: React.FC<ProfileSideBarProps> = ({ currentTab }) => {
           </span>
         </div> */}
 
-        {/* <div
+        <div
           onClick={() => router.push("/profile/affiliate" as Route)}
           className="flex items-center cursor-pointer space-x-4"
         >
@@ -274,7 +274,7 @@ const ProfileSideBar: React.FC<ProfileSideBarProps> = ({ currentTab }) => {
           >
             Affiliate
           </span>
-        </div> */}
+        </div>
 
         <div
           onClick={handleLogout}

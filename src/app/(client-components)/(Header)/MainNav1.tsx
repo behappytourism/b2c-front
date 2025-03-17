@@ -91,7 +91,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
 
              
              {jwtToken && (
-               <div onMouseEnter={() => setDisplayWallet(true)} onMouseLeave={() => setDisplayWallet(false)}  className="flex flex-col pr-1 justify-center cursor-pointer">
+               <div onClick={() => router.push("/wallet")}  onMouseEnter={() => setDisplayWallet(true)} onMouseLeave={() => setDisplayWallet(false)}  className="flex flex-col pr-1 justify-center cursor-pointer">
                 {displayWallet ? <SolidWallet className="w-7 h-7 cursor-pointer"/> : <WalletIcon className="w-7 h-7 cursor-pointer"/> }
                 
                 {displayWallet && (
@@ -112,7 +112,7 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
               {/* <CurrencySelector className="flex items-center" /> */}
               <SwitchDarkMode />
               <div className="px-1" />
-              {!user?.name && (
+              {!jwtToken && (
                 <Link className="self-center"  href={"/login" as Route}>
                 <div
                   onClick={() => setEnableLogin(true)}
@@ -135,7 +135,41 @@ const MainNav1: FC<MainNav1Props> = ({ className = "" }) => {
             </div>
 
             <div className="flex xl:hidden items-center">
+            {jwtToken && (
+               <div onClick={() => router.push("/wallet")} onMouseEnter={() => setDisplayWallet(true)} onMouseLeave={() => setDisplayWallet(false)}  className="flex flex-col pr-1 justify-center cursor-pointer">
+                {displayWallet ? <SolidWallet className="w-7 h-7 cursor-pointer"/> : <WalletIcon className="w-7 h-7 cursor-pointer"/> }
+                
+                {displayWallet && (
+                  <div className="absolute cursor-pointer bg-white -ml-10 z-10 shadow-sm py-1 px-4 rounded shadow-black/40 top-10">
+                    <p>Wallet: <span className="font-extrabold">{priceConversion(walletBalance?.balance, selectedCurrency, true)}</span></p>
+                  </div>
+                )}
+              </div>
+              )}
+
               <SwitchDarkMode />
+
+              {!jwtToken && (
+                <Link className="self-center"  href={"/login" as Route}>
+                <div
+                  onClick={() => setEnableLogin(true)}
+                  className="flex gap-1 items-center cursor-pointer"
+                >
+                  <UserIcon className="w-4 h-4" />
+                  <p>Login</p>
+                </div>
+                 </Link>
+              )}
+
+              {user?.name && jwtToken && (
+                <div
+                  onClick={() => router.push("/profile" as Route)}
+                  className="self-center cursor-pointer"
+                >
+                  <Avatar userName={user?.name} sizeClass="w-10 h-10" />
+                </div>
+              )}
+              
               <div className="px-0.5" />
               <MenuBar />
             </div>
