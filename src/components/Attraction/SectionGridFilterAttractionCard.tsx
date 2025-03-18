@@ -73,9 +73,7 @@ const SectionGridFilterAttractionCard: FC<SectionGridFilterCardProps> = ({
       // Clean up the event listener on component unmount
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
-  
-  
+  }, []);  
 
   return (
     <div className={`nc-SectionGridFilterCard ${className}`}>

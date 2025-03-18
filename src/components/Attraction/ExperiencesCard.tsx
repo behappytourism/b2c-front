@@ -49,7 +49,7 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
     totalReviews,
     averageRating,
     category,
-  } = data as SearchByDestination;  
+  } = data as SearchByDestination;
 
   const isLiked = useMemo(() => {
     const liked = favourites.find((item) => item._id === _id);
@@ -69,7 +69,11 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
 
   const renderSliderGallery = () => {
     return (
-      <div className={`${size === "default" ? "" : "min-w-[250px]"} relative w-full rounded-t-xl overflow-hidden`}>
+      <div
+        className={`${
+          size === "default" ? "" : "min-w-[250px]"
+        } relative w-full rounded-t-xl overflow-hidden`}
+      >
         <GallerySlider
           uniqueID={`ExperiencesCard_${"id"}`}
           ratioClass={ratioClass}
@@ -127,7 +131,11 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
   const renderContent = () => {
     return (
       <div
-        className={`${size === "default" ? "p-3 space-y-1 -mt-[40px]" : "p-3 space-y-1 -mt-[30px] min-w-[250px]"} absolute  w-full border rounded-3xl bg-secondary-50 z-30`}
+        className={`${
+          size === "default"
+            ? "p-3 space-y-1 -mt-[40px]"
+            : "p-3 space-y-1 -mt-[30px] min-w-[250px]"
+        } absolute  w-full border rounded-3xl bg-secondary-50 z-30`}
       >
         <div className="md:space-y-5 md:mb-1">
           <div className="items-center space-y-1 md:mb-3">
@@ -139,14 +147,12 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
                   color="red"
                 />
               </p>
-              {/* <p className="text-xs font-thin"> */}
-                {" "}
-                {/* <StartRating
+              {/* <p className="text-xs font-thin"> */}{" "}
+              {/* <StartRating
                   reviewCount={totalReviews}
                   point={Number(averageRating?.toFixed(2))}
                 /> */}
-
-<div className="flex gap-1 items-center text-center text-sm">
+              <div className="flex gap-1 items-center text-center text-sm">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -163,7 +169,6 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
                 <p>{Number(averageRating?.toFixed(2))}</p>
                 <p>({totalReviews})</p>
               </div>
-              
               {/* </p> */}
             </div>
 
@@ -217,34 +222,75 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
         <div className="border-b border-neutral-100 dark:border-neutral-800"></div>
         <div className="md:flex hidden justify-between items-center w-full">
           <div className="text-base font-semibold w-full">
-
             <p className="font-thin text-gray-400 text-sm capitalize">
               Starting from
             </p>
 
-           
             <div className="w-full flex justify-between">
+              {activity && activity?.promoAmountAdult && (
+                <div className="flex gap-3 items-center">
+                  <p className="text-lg font-semibold pt-2 line-through">
+                    {priceConversion(
+                      activity?.lowPrice,
+                      selectedCurrency,
+                      true
+                    )}
+                  </p>
 
-            <p className="text-xl font-bold pt-2">
-              {priceConversion(activity?.lowPrice, selectedCurrency, true)}
-            </p>
+                  <p className="text-lg font-semibold pt-2">
+                    {priceConversion(
+                      activity?.lowPrice - activity?.promoAmountAdult,
+                      selectedCurrency,
+                      true
+                    )}
+                  </p>
+                </div>
+              )}
 
+              {activity && !activity?.promoAmountAdult && (
+                <div className="flex gap-3 items-center">
+                  <p className="text-lg font-semibold pt-2">
+                    {priceConversion(
+                      activity?.lowPrice - activity?.promoAmountAdult,
+                      selectedCurrency,
+                      true
+                    )}
+                  </p>
+                </div>
+              )}
 
-            <p className="text-xs pt-4 text-gray-400 dark:text-neutral-400 font-thin">
-              * price varies
-            </p>
-
+              <p className="text-xs pt-4 text-gray-400 dark:text-neutral-400 font-thin">
+                * price varies
+              </p>
             </div>
-
-
-         
           </div>
         </div>
 
         <div className="flex md:hidden items-center">
-          <p className="text-xs font-bold">
-            {priceConversion(activity?.lowPrice, selectedCurrency, true)}
-          </p>
+          {activity && activity?.promoAmountAdult && (
+            <div className="flex gap-3 items-center">
+              <p className="text-xs font-semibold line-through">
+                {priceConversion(activity?.lowPrice, selectedCurrency, true)}
+              </p>
+
+              <p className="text-xs font-semibold">
+                {priceConversion(
+                  activity?.lowPrice - activity?.promoAmountAdult,
+                  selectedCurrency,
+                  true
+                )}
+              </p>
+            </div>
+          )}
+
+          {activity && !activity?.promoAmountAdult && (
+            <div className="flex gap-3 items-center">
+              <p className="text-xs font-semibold">
+                {priceConversion(activity?.lowPrice, selectedCurrency, true)}
+              </p>
+            </div>
+          )}
+
           <p className="text-xs font-thin">/person</p>
         </div>
       </div>
@@ -292,23 +338,23 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
                       />
                     </p> */}
 
-<div className="flex gap-1 items-center text-center text-sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-6 h-6 text-yellow-500"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12 1.75l2.91 5.898 6.49.943-4.7 4.58 1.11 6.468L12 16.876l-5.81 3.063 1.11-6.468-4.7-4.58 6.49-.943L12 1.75z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                    <div className="flex gap-1 items-center text-center text-sm">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-6 h-6 text-yellow-500"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M12 1.75l2.91 5.898 6.49.943-4.7 4.58 1.11 6.468L12 16.876l-5.81 3.063 1.11-6.468-4.7-4.58 6.49-.943L12 1.75z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
 
-                <p>{Number(averageRating?.toFixed(2))}</p>
-                <p>({totalReviews})</p>
-              </div>
+                      <p>{Number(averageRating?.toFixed(2))}</p>
+                      <p>({totalReviews})</p>
+                    </div>
                   </div>
 
                   <h2
@@ -333,26 +379,23 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
                       point={Number(averageRating?.toFixed(2))}
                     /> */}
 
-                    
-<div className="flex gap-1 items-center text-center text-sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="w-6 h-6 text-yellow-500"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12 1.75l2.91 5.898 6.49.943-4.7 4.58 1.11 6.468L12 16.876l-5.81 3.063 1.11-6.468-4.7-4.58 6.49-.943L12 1.75z"
-                    clipRule="evenodd"
-                  />
-                </svg>
+                    <div className="flex gap-1 items-center text-center text-sm">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-6 h-6 text-yellow-500"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M12 1.75l2.91 5.898 6.49.943-4.7 4.58 1.11 6.468L12 16.876l-5.81 3.063 1.11-6.468-4.7-4.58 6.49-.943L12 1.75z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
 
-                <p>{Number(averageRating?.toFixed(2))}</p>
-                <p>({totalReviews})</p>
-              </div>
-
-                    
+                      <p>{Number(averageRating?.toFixed(2))}</p>
+                      <p>({totalReviews})</p>
+                    </div>
                   </div>
 
                   <div className="flex md:hidden  text-neutral-900 ">
@@ -403,7 +446,10 @@ const ExperiencesCard: FC<ExperiencesCardProps> = ({
         className={`nc-ExperiencesCard block min-h-[350px] group relative m-1 dark:bg-gray-800 ${className}`}
       >
         {renderSliderGallery()}
-        <Link className="" href={`/${data?.destination?.slug}/${data?.slug}` as Route}>
+        <Link
+          className=""
+          href={`/${data?.destination?.slug}/${data?.slug}` as Route}
+        >
           {renderContent()}
         </Link>
       </div>
