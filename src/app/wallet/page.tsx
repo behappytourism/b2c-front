@@ -171,14 +171,16 @@ function Page() {
           </h3>
         </div>
 
+      {walletBalance?.balance > 0 && (
         <div>
           <button
             onClick={() => setIsModal(true)}
             className="font-light bg-secondary-500 text-white rounded-3xl text-sm px-4 py-1"
-          >
+            >
             Withdraw
           </button>
         </div>
+          )}
       </div>
 
       {isModal && (
