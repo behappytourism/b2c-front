@@ -1,19 +1,23 @@
 "use client";
 
 import { RootState } from "@/redux/store";
+import ButtonSecondary from "@/shared/ButtonSecondary";
 import Input from "@/shared/Input";
 import priceConversion from "@/utils/priceConversion";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 function Page() {
-  const { user, jwtToken } = useSelector((state: RootState) => state.users);
+  const { jwtToken } = useSelector((state: RootState) => state.users);
   const [walletBalance, setWalletBalance] = useState({ balance: 0 });
   const [isModal, setIsModal] = useState(false);
   const [isNewBankAccount, setIsNewBankAccount] = useState(true);
   const { selectedCurrency, countries } = useSelector(
     (state: RootState) => state.initials
   );
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [withdrawalResponse, setWithdrawalResponse] = useState("");
 
   const handleChange = (e: any) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -56,6 +60,9 @@ function Page() {
   }, [jwtToken]);
 
   const withdrawReq = async () => {
+    setError("")
+    setIsLoading(true)
+    setWithdrawalResponse("");
     const payload = {
       isNewBankAccount: isNewBankAccount,
       ...data,
@@ -63,11 +70,12 @@ function Page() {
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users/wallets/withdraw-requests/initiate`,
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/wallet/withdraw-requests/initiate`,
         {
           method: "POST",
           body: JSON.stringify(payload),
           headers: {
+            Authorization: `Bearer ${jwtToken}`,
             "Content-Type": "application/json",
           },
         }
@@ -76,14 +84,38 @@ function Page() {
       return response.json();
     } catch (error) {
       console.log(error);
+      setIsLoading(false)
     }
   };
 
   async function getWithdrawReq() {
     try {
       const response = await withdrawReq();
+      setIsLoading(false)
+      
+      if (response?.error) {
+        setError(response.error || "");
+      }
+  
+      if (response?.message) {
+        setWithdrawalResponse(response.message || "Success");
+  
+        // Reset data object after successful response
+        setData({
+          isoCode: "",
+          bankName: "",
+          branchName: "",
+          accountHolderName: "",
+          accountNumber: "",
+          ifscCode: "",
+          ibanCode: "",
+          amount: 0,
+        });
+      }
+
     } catch (error) {
       console.error(error);
+      setIsLoading(false)
     }
   }
 
@@ -251,15 +283,29 @@ function Page() {
                 />
               </div>
 
+              {error !== "" && (
+                <div className="text-red-500">
+                  <p>Error: {error || ""}</p>
+                </div>
+              )}
+
+{withdrawalResponse !== "" && (
+                <div className="text-green-500">
+                  <p>Success: {withdrawalResponse || ""}</p>
+                </div>
+              )}
+
               <div className="flex justify-around">
-                <button
+                <ButtonSecondary
                   onClick={() => getWithdrawReq()}
-                  className="font-light bg-secondary-500 text-white rounded-3xl text-sm px-4 py-1"
+                  loading={isLoading}
+                  className="font-light bg-secondary-500 text-black rounded-3xl text-sm px-4 py-1"
                 >
                   Withdraw
-                </button>
+                </ButtonSecondary>
                 <button
-                  onClick={() => setIsModal(false)}
+                disabled={isLoading}
+                  onClick={() => {setIsModal(false); setIsLoading(false); setWithdrawalResponse(""); setError("")}}
                   className="font-light bg-black text-white rounded-3xl text-sm px-4 py-1"
                 >
                   Cancel
