@@ -131,7 +131,7 @@ const Affiliate = () => {
         <h2 className="text-3xl font-semibold">Affiliation</h2>
         <div className="flex flex-col md:flex-row">
           <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
-            <ul className="flex flex-wrap -mb-px">
+          <ul className="md:flex md:flex-wrap grid grid-cols-4 -mb-px">
               <li
                 onClick={() => setOrdersCategory("dashboard")}
                 className="mr-2 cursor-pointer"
@@ -145,7 +145,7 @@ const Affiliate = () => {
                     ordersCategory === "dashboard"
                       ? "border-primary-6000"
                       : "border-neutral-3000"
-                  } inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300`}
+                  } inline-block text-xs md:text-base md:p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300`}
                 >
                   Dashboard
                 </a>
@@ -163,9 +163,9 @@ const Affiliate = () => {
                     ordersCategory === "links"
                       ? "border-primary-6000"
                       : "border-neutral-3000"
-                  } inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300`}
+                  } inline-block text-xs md:text-base md:p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300`}
                 >
-                  Attractions link
+                 Affiliate Links
                 </a>
               </li>
               <li
@@ -181,7 +181,7 @@ const Affiliate = () => {
                     ordersCategory === "settings"
                       ? "border-primary-6000"
                       : "border-neutral-3000"
-                  } inline-block p-4  border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300`}
+                  } inline-block text-xs md:text-base md:p-4  border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300`}
                 >
                   Settings
                 </a>
@@ -199,7 +199,7 @@ const Affiliate = () => {
                     ordersCategory === "transactions"
                       ? "border-primary-6000"
                       : "border-neutral-3000"
-                  } inline-block p-4  border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300`}
+                  } inline-block text-xs md:text-base md:p-4  border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300`}
                 >
                   Transactions
                 </a>
