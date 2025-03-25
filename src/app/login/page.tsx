@@ -54,6 +54,7 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
 
   const logIn = async () => {
@@ -63,6 +64,8 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
     };
 
     try {
+      setError("")
+      setIsLoading(true)
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/users/login`,
         {
@@ -77,6 +80,7 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
       return response.json();
     } catch (error) {
       console.log(error);
+      setIsLoading(false)
     }
   };
 
@@ -95,8 +99,10 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
         </>
       )}
       setError(response?.error)
+      setIsLoading(false)
     } catch (error) {
       console.error(error);
+      setIsLoading(false)
     }
   }
 
@@ -201,6 +207,7 @@ const PageLogin: FC<PageLoginProps> = ({}) => {
 
           <ButtonPrimary 
           className="md:w-fit w-full"
+          loading={isLoading}
           disabled={userName === "" && password.trim() === ""}
           onClick={loginProcess}>Continue</ButtonPrimary>
 
